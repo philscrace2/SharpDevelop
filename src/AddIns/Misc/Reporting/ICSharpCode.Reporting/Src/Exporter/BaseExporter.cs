@@ -29,18 +29,19 @@ namespace ICSharpCode.Reporting.Exporter
 	{
 		public BaseExporter(Collection<ExportPage> pages)
 		{
-			if (pages == null) {
+			if (pages == null)
+			{
 				throw new ArgumentException("pages");
 			}
-			
+
 			Pages = pages;
 		}
-		
-		public virtual void Run () {
-			
+
+		public virtual void Run()
+		{
 		}
 
 
-	    protected Collection<ExportPage> Pages {get;private set;}
+		protected Collection<ExportPage> Pages { get; private set; }
 	}
 }

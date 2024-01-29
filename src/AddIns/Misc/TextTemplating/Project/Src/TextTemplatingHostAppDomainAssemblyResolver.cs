@@ -26,14 +26,14 @@ namespace ICSharpCode.TextTemplating
 	{
 		IAppDomain hostAppDomain;
 		IAddInTree addInTree;
-		
+
 		public TextTemplatingHostAppDomainAssemblyResolver()
 			: this(
 				new TextTemplatingHostAppDomain(),
 				new TextTemplatingAddInTree())
 		{
 		}
-		
+
 		public TextTemplatingHostAppDomainAssemblyResolver(
 			IAppDomain hostAppDomain,
 			IAddInTree addInTree)
@@ -48,38 +48,42 @@ namespace ICSharpCode.TextTemplating
 			var assemblyName = new AddInAssemblyName(args.Name);
 			return ResolveAssembly(assemblyName);
 		}
-		
+
 		Assembly ResolveAssembly(AddInAssemblyName assemblyName)
 		{
 			IAddIn addIn = FindAddIn(assemblyName);
-			if (addIn != null) {
+			if (addIn != null)
+			{
 				return FindAddInAssemblyFromRuntimes(addIn);
 			}
+
 			return null;
 		}
-		
+
 		IAddIn FindAddIn(AddInAssemblyName assemblyName)
 		{
 			return addInTree
 				.GetAddIns()
 				.SingleOrDefault(addIn => assemblyName.Matches(addIn));
 		}
-		
+
 		Assembly FindAddInAssemblyFromRuntimes(IAddIn addIn)
 		{
 			IAddInRuntime runtime = FindRuntime(addIn);
-			if (runtime != null) {
+			if (runtime != null)
+			{
 				return runtime.LoadedAssembly;
 			}
+
 			return null;
 		}
-		
+
 		IAddInRuntime FindRuntime(IAddIn addIn)
 		{
 			var addinRuntime = new AddInAssemblyRuntime(addIn);
 			return addinRuntime.Runtime;
 		}
-		
+
 		public void Dispose()
 		{
 			hostAppDomain.AssemblyResolve -= ResolveAssembly;

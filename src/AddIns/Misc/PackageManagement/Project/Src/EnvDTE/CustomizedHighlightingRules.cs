@@ -25,23 +25,26 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class CustomizedHighlightingRules : ICustomizedHighlightingRules
 	{
 		IPackageManagementWorkbench workbench;
-		
+
 		public CustomizedHighlightingRules()
 		{
 			this.workbench = new PackageManagementWorkbench();
 		}
-		
+
 		public IReadOnlyList<CustomizedHighlightingColor> LoadColors()
 		{
 			return CustomizedHighlightingColor.LoadColors();
 		}
-		
+
 		public void SaveColors(IEnumerable<CustomizedHighlightingColor> colors)
 		{
-			if (workbench.InvokeRequired) {
+			if (workbench.InvokeRequired)
+			{
 				Action<IEnumerable<CustomizedHighlightingColor>> action = SaveColors;
 				workbench.SafeThreadAsyncCall(action, colors);
-			} else {
+			}
+			else
+			{
 				CustomizedHighlightingColor.SaveColors(colors);
 			}
 		}

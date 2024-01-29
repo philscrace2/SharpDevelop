@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using ICSharpCode.AvalonEdit.AddIn;
 
 namespace ICSharpCode.PackageManagement.EnvDTE
@@ -27,65 +26,74 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class FontsAndColorsItems : MarshalByRefObject, global::EnvDTE.FontsAndColorsItems
 	{
 		static readonly string PlainTextItem = "Plain Text";
-		
+
 		ICustomizedHighlightingRules highlightingRules;
 		List<CustomizedHighlightingColor> colors;
-		
+
 		public FontsAndColorsItems()
 			: this(new CustomizedHighlightingRules())
 		{
 		}
-		
+
 		public FontsAndColorsItems(ICustomizedHighlightingRules highlightingRules)
 		{
 			this.highlightingRules = highlightingRules;
 		}
-		
+
 		public global::EnvDTE.ColorableItems Item(string name)
 		{
-			if (IsPlainText(name)) {
+			if (IsPlainText(name))
+			{
 				return CreatePlainTextColorableItems();
 			}
+
 			return null;
 		}
-		
+
 		bool IsPlainText(string name)
 		{
 			return String.Equals(name, PlainTextItem, StringComparison.InvariantCultureIgnoreCase);
 		}
-		
+
 		ColorableItems CreatePlainTextColorableItems()
 		{
 			CustomizedHighlightingColor color = FindPlainTextHighlightingColor();
-			if (color == null) {
+			if (color == null)
+			{
 				color = AddPlainTextHighlightingColorToCustomColors();
 			}
+
 			return new ColorableItems(PlainTextItem, color, this);
 		}
-		
+
 		CustomizedHighlightingColor FindPlainTextHighlightingColor()
 		{
 			return Colors.Find(c => c.Name == CustomizingHighlighter.DefaultTextAndBackground);
 		}
-		
+
 		CustomizedHighlightingColor AddPlainTextHighlightingColorToCustomColors()
 		{
-			var color = new CustomizedHighlightingColor() {
+			var color = new CustomizedHighlightingColor()
+			{
 				Name = CustomizingHighlighter.DefaultTextAndBackground
 			};
 			Colors.Add(color);
 			return color;
 		}
-		
-		List<CustomizedHighlightingColor> Colors {
-			get {
-				if (colors == null) {
+
+		List<CustomizedHighlightingColor> Colors
+		{
+			get
+			{
+				if (colors == null)
+				{
 					colors = new List<CustomizedHighlightingColor>(highlightingRules.LoadColors());
 				}
+
 				return colors;
 			}
 		}
-		
+
 		internal void Save()
 		{
 			highlightingRules.SaveColors(Colors);

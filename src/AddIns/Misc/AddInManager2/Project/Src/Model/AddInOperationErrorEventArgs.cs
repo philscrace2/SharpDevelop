@@ -26,24 +26,20 @@ namespace ICSharpCode.AddInManager2.Model
 	public class AddInOperationErrorEventArgs : EventArgs
 	{
 		private string _message = null;
-		
+
 		public AddInOperationErrorEventArgs(Exception exception)
 		{
 			Exception = exception;
 		}
-		
+
 		public AddInOperationErrorEventArgs(string message)
 		{
 			Exception = null;
 			_message = message;
 		}
-		
-		public Exception Exception
-		{
-			get;
-			private set;
-		}
-		
+
+		public Exception Exception { get; private set; }
+
 		public string Message
 		{
 			get
@@ -52,11 +48,12 @@ namespace ICSharpCode.AddInManager2.Model
 				{
 					return _message;
 				}
+
 				if (Exception != null)
 				{
 					return Exception.Message;
 				}
-				
+
 				return null;
 			}
 		}

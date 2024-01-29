@@ -30,7 +30,7 @@ namespace ICSharpCode.PackageManagement
 			: base(project, packageManagementEvents)
 		{
 		}
-		
+
 		public IEnumerable<PackageOperation> Operations { get; set; }
 
 		public override bool HasPackageScriptsToRun()
@@ -39,20 +39,21 @@ namespace ICSharpCode.PackageManagement
 			var files = new PackageFilesForOperations(Operations);
 			return files.HasAnyPackageScripts();
 		}
-		
+
 		protected override void BeforeExecute()
 		{
 			base.BeforeExecute();
 			GetPackageOperationsIfMissing();
 		}
-		
+
 		void GetPackageOperationsIfMissing()
 		{
-			if (Operations == null) {
+			if (Operations == null)
+			{
 				Operations = GetPackageOperations();
 			}
 		}
-		
+
 		protected virtual IEnumerable<PackageOperation> GetPackageOperations()
 		{
 			return null;

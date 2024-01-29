@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		IPackageInitializationScriptsFactory scriptsFactory;
 		PackageInitializationScriptsConsole scriptsConsole;
-		
+
 		public RunPackageInitializationScriptsOnSolutionOpen(
 			IPackageManagementProjectService projectService)
 			: this(
@@ -34,7 +34,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 				new PackageInitializationScriptsFactory())
 		{
 		}
-		
+
 		public RunPackageInitializationScriptsOnSolutionOpen(
 			IPackageManagementProjectService projectService,
 			PackageInitializationScriptsConsole scriptsConsole,
@@ -44,35 +44,39 @@ namespace ICSharpCode.PackageManagement.Scripting
 			this.scriptsConsole = scriptsConsole;
 			this.scriptsFactory = scriptsFactory;
 		}
-		
+
 		void SolutionOpened(object sender, SolutionEventArgs e)
 		{
-			try {
+			try
+			{
 				RunPackageInitializationScripts(e.Solution);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				scriptsConsole.WriteError(ex.Message);
 			}
 		}
-		
+
 		void RunPackageInitializationScripts(ISolution solution)
 		{
-			if (SolutionHasPackageInitializationScripts(solution)) {
+			if (SolutionHasPackageInitializationScripts(solution))
+			{
 				RunInitializePackagesCmdlet();
 			}
 		}
-		
+
 		bool SolutionHasPackageInitializationScripts(ISolution solution)
 		{
 			IPackageInitializationScripts scripts = CreatePackageInitializationScripts(solution);
 			return scripts.Any();
 		}
-		
+
 		void RunInitializePackagesCmdlet()
 		{
 			string command = "Invoke-InitializePackages";
 			scriptsConsole.ExecuteCommand(command);
 		}
-		
+
 		IPackageInitializationScripts CreatePackageInitializationScripts(ISolution solution)
 		{
 			return scriptsFactory.CreatePackageInitializationScripts(solution);

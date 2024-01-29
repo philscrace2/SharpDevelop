@@ -32,7 +32,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			this.AllowPrereleaseVersions = true;
 		}
-		
+
 		public bool ForceRemove { get; set; }
 		public bool RemoveDependencies { get; set; }
 
@@ -40,19 +40,19 @@ namespace ICSharpCode.PackageManagement
 		{
 			base.BeforeExecute();
 		}
-		
+
 		protected override void ExecuteCore()
 		{
 			Project.UninstallPackage(Package, this);
 			OnParentPackageUninstalled();
 		}
-		
+
 		public override bool HasPackageScriptsToRun()
 		{
 			var files = new PackageFiles(Package);
 			return files.HasUninstallPackageScript();
 		}
-		
+
 		protected override IPackage FindPackage()
 		{
 			return Project.FindPackage(PackageId, PackageVersion);

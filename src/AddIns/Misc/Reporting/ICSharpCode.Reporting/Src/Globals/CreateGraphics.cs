@@ -26,11 +26,14 @@ namespace ICSharpCode.Reporting.Globals
 	/// </summary>
 	static class CreateGraphics
 	{
-		public static Graphics FromSize (Size size){
-			if (size == Size.Empty) {
+		public static Graphics FromSize(Size size)
+		{
+			if (size == Size.Empty)
+			{
 				throw new ArgumentNullException("size");
 			}
-			var bitmap = new Bitmap(size.Width,size.Height);
+
+			var bitmap = new Bitmap(size.Width, size.Height);
 			var graphics = Graphics.FromImage(bitmap);
 			return graphics;
 		}

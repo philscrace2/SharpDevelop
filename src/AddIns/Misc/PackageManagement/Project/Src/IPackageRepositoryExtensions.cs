@@ -23,17 +23,20 @@ namespace ICSharpCode.PackageManagement
 {
 	public static class IPackageRepositoryExtensions
 	{
-		public static IDisposable StartInstallOperation(this IPackageRepository repository, string mainPackageId = null, string mainPackageVersion = null)
+		public static IDisposable StartInstallOperation(this IPackageRepository repository, string mainPackageId = null,
+			string mainPackageVersion = null)
 		{
 			return repository.StartOperation(RepositoryOperationNames.Install, mainPackageId, mainPackageVersion);
 		}
-		
-		public static IDisposable StartUpdateOperation(this IPackageRepository repository, string mainPackageId = null, string mainPackageVersion = null)
+
+		public static IDisposable StartUpdateOperation(this IPackageRepository repository, string mainPackageId = null,
+			string mainPackageVersion = null)
 		{
 			return repository.StartOperation(RepositoryOperationNames.Update, mainPackageId, mainPackageVersion);
 		}
-		
-		public static IDisposable StartReinstallOperation(this IPackageRepository repository, string mainPackageId = null, string mainPackageVersion = null)
+
+		public static IDisposable StartReinstallOperation(this IPackageRepository repository,
+			string mainPackageId = null, string mainPackageVersion = null)
 		{
 			return repository.StartOperation(RepositoryOperationNames.Reinstall, mainPackageId, mainPackageVersion);
 		}

@@ -26,45 +26,45 @@ namespace ICSharpCode.Reporting.PageBuilder.ExportColumns
 	/// <summary>
 	/// Description of BaseExportColumn.
 	/// </summary>
-	public class ExportColumn:IExportColumn
+	public class ExportColumn : IExportColumn
 	{
-		public ExportColumn() {
+		public ExportColumn()
+		{
 			ForeColor = Color.Black;
 			FrameColor = Color.Black;
 			BackColor = Color.White;
 		}
-		
-		public string Name {get;set;}
-		
-		public Size Size {get;set;}
-		
-		public Point Location {get;set;}
-		
-		public Size DesiredSize {get;set;}
-		
-		public Color ForeColor {get;set;}
-		
-		public Color BackColor {get;set;}
-		
-		public Color FrameColor {get;set;}
-		
-		public IExportColumn Parent {get;set;}
-			
-		public bool CanGrow {get;set;}
-		
-		public bool DrawBorder {get;set;}
-		
-		public Rectangle DisplayRectangle {
-			get {
-				return new Rectangle(Location,DesiredSize);
-			}
+
+		public string Name { get; set; }
+
+		public Size Size { get; set; }
+
+		public Point Location { get; set; }
+
+		public Size DesiredSize { get; set; }
+
+		public Color ForeColor { get; set; }
+
+		public Color BackColor { get; set; }
+
+		public Color FrameColor { get; set; }
+
+		public IExportColumn Parent { get; set; }
+
+		public bool CanGrow { get; set; }
+
+		public bool DrawBorder { get; set; }
+
+		public Rectangle DisplayRectangle
+		{
+			get { return new Rectangle(Location, DesiredSize); }
 		}
-		
-		public virtual IArrangeStrategy GetArrangeStrategy ()
+
+		public virtual IArrangeStrategy GetArrangeStrategy()
 		{
 			return null;
 		}
-		
+
 		public virtual IMeasurementStrategy MeasurementStrategy()
 		{
 			throw new NotImplementedException();

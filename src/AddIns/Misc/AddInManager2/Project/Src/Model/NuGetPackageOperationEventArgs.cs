@@ -30,11 +30,7 @@ namespace ICSharpCode.AddInManager2.Model
 		{
 			Package = package;
 		}
-		
-		public IPackage Package
-		{
-			get;
-			private set;
-		}
+
+		public IPackage Package { get; private set; }
 	}
 }

@@ -25,21 +25,22 @@ namespace ICSharpCode.TextTemplating
 	{
 		string hint = String.Empty;
 		FileProjectItem templateFile;
-		
+
 		public NamespaceHint(FileProjectItem templateFile)
 		{
 			this.templateFile = templateFile;
 			GetNamespaceHint();
 		}
-		
+
 		void GetNamespaceHint()
 		{
 			hint = GetCustomToolNamespace();
-			if (String.IsNullOrEmpty(hint)) {
+			if (String.IsNullOrEmpty(hint))
+			{
 				hint = GetProjectRootNamespace();
 			}
 		}
-		
+
 		string GetProjectRootNamespace()
 		{
 			return templateFile.Project.RootNamespace;
@@ -49,7 +50,7 @@ namespace ICSharpCode.TextTemplating
 		{
 			return templateFile.GetEvaluatedMetadata("CustomToolNamespace");
 		}
-		
+
 		public override string ToString()
 		{
 			return hint;

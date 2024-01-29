@@ -25,23 +25,23 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class ProjectItemPropertyFactory : IPropertyFactory
 	{
 		ProjectItem projectItem;
-		
+
 		public ProjectItemPropertyFactory(ProjectItem projectItem)
 		{
 			this.projectItem = projectItem;
 		}
-		
+
 		public Property CreateProperty(string name)
 		{
 			return new ProjectItemProperty(projectItem, name);
 		}
-		
+
 		public IEnumerator<Property> GetEnumerator()
 		{
 			List<Property> properties = GetProperties().ToList();
 			return properties.GetEnumerator();
 		}
-		
+
 		IEnumerable<Property> GetProperties()
 		{
 			yield return new ProjectItemProperty(projectItem, ProjectItem.CopyToOutputDirectoryPropertyName);

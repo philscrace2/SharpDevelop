@@ -25,12 +25,16 @@ namespace ICSharpCode.PackageManagement
 	public class ServiceWithWorkbenchOwner
 	{
 		Window owner;
-		
-		public Window Owner {
-			get {
-				if (owner == null) {
+
+		public Window Owner
+		{
+			get
+			{
+				if (owner == null)
+				{
 					owner = SD.Workbench.MainWindow;
 				}
+
 				return owner;
 			}
 			set { owner = value; }

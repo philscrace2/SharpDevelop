@@ -24,7 +24,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public interface IPackageManagementAddInPath
 	{
 		string CmdletsAssemblyFileName { get; }
-		
+
 		IEnumerable<string> GetPowerShellFormattingFileNames();
 	}
 }

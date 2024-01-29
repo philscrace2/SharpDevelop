@@ -26,21 +26,21 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class Properties : MarshalByRefObject, global::EnvDTE.Properties
 	{
 		IPropertyFactory propertyFactory;
-		
+
 		public Properties(IPropertyFactory propertyFactory)
 		{
 			this.propertyFactory = propertyFactory;
 		}
-		
+
 		public Properties()
 		{
 		}
-		
+
 		public virtual global::EnvDTE.Property Item(string propertyName)
 		{
 			return propertyFactory.CreateProperty(propertyName);
 		}
-		
+
 		public virtual IEnumerator GetEnumerator()
 		{
 			return propertyFactory.GetEnumerator();

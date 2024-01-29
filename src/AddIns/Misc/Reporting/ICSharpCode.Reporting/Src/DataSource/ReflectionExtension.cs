@@ -22,10 +22,9 @@ using System.Reflection;
 
 namespace ICSharpCode.Reporting.DataSource
 {
-	
 	public static class ReflectionExtensions
 	{
-		public static PropertyPath ParsePropertyPath(this object target,string propertyPath)
+		public static PropertyPath ParsePropertyPath(this object target, string propertyPath)
 		{
 			if (target == null || String.IsNullOrEmpty(propertyPath))
 				return null;
@@ -33,8 +32,8 @@ namespace ICSharpCode.Reporting.DataSource
 			return PropertyPath.Parse(target.GetType(), propertyPath);
 		}
 
-		
-		public static object EvaluatePropertyPath(this object target,string propertyPath)
+
+		public static object EvaluatePropertyPath(this object target, string propertyPath)
 		{
 			PropertyPath path = ParsePropertyPath(target, propertyPath);
 			if (path != null)
@@ -42,18 +41,18 @@ namespace ICSharpCode.Reporting.DataSource
 			return null;
 		}
 
-		
+
 		public static IMemberAccessor FindAccessor(this Type type, string accessorName)
 		{
 			PropertyInfo prop = type.GetProperty(accessorName,
-			                                     BindingFlags.IgnoreCase | BindingFlags.NonPublic |
-			                                     BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+				BindingFlags.IgnoreCase | BindingFlags.NonPublic |
+				BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
 			if (prop != null)
 				return new PropertyMemberAccessor(prop);
 
 			FieldInfo field = type.GetField(accessorName,
-			                                BindingFlags.IgnoreCase | BindingFlags.NonPublic |
-			                                BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+				BindingFlags.IgnoreCase | BindingFlags.NonPublic |
+				BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
 			if (field != null)
 				return new FieldMemberAccessor(field);
 

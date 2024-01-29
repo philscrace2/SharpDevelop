@@ -25,22 +25,24 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class CodeVariable : CodeElement, global::EnvDTE.CodeVariable
 	{
 		readonly IField field;
-		
+
 		public CodeVariable()
 		{
 		}
-		
+
 		public CodeVariable(CodeModelContext context, IField field)
 			: base(context, field)
 		{
 			this.field = field;
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementVariable; }
 		}
-		
-		public global::EnvDTE.vsCMAccess Access {
+
+		public global::EnvDTE.vsCMAccess Access
+		{
 			get { return field.Accessibility.ToAccess(); }
 			set { }
 		}

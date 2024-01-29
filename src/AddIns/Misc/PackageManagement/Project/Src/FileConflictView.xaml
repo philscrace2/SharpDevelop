@@ -11,40 +11,40 @@
 	Height="150"
 	MinWidth="400"
 	Width="200">
-	
+
 	<Window.Resources>
-		<Style TargetType="Button" BasedOn="{x:Static core:GlobalStyles.ButtonStyle}"/>
+		<Style TargetType="Button" BasedOn="{x:Static core:GlobalStyles.ButtonStyle}" />
 	</Window.Resources>
-	
+
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"/>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
 		<TextBlock
 			Margin="5"
 			Text="{Binding Message}"
 			Grid.ColumnSpan="5"
-			TextWrapping="Wrap"/>
+			TextWrapping="Wrap" />
 		<Button
 			Margin="4"
 			Grid.Row="1"
 			Grid.Column="1"
 			Command="{Binding YesCommand}"
-			Content="Yes"/>
+			Content="Yes" />
 		<Button
 			Margin="4"
 			Grid.Row="1"
 			Grid.Column="2"
 			Command="{Binding YesToAllCommand}"
-			Content="Yes to All"/>
+			Content="Yes to All" />
 		<Button
 			x:Name="NoButton"
 			Margin="4"
@@ -52,12 +52,12 @@
 			Grid.Column="3"
 			IsDefault="True"
 			Command="{Binding NoCommand}"
-			Content="No"/>
+			Content="No" />
 		<Button
 			Margin="4"
 			Grid.Row="1"
 			Grid.Column="4"
 			Command="{Binding NoToAllCommand}"
-			Content="No to All"/>
+			Content="No to All" />
 	</Grid>
 </Window>

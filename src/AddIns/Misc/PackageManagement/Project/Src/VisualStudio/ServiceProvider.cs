@@ -18,14 +18,14 @@
 
 using System;
 
-namespace Microsoft.VisualStudio.Shell 
+namespace Microsoft.VisualStudio.Shell
 {
 	public class ServiceProvider : IServiceProvider
 	{
 		public ServiceProvider(IServiceProvider serviceProvider)
 		{
 		}
-		
+
 		public object GetService(Type serviceType)
 		{
 			throw new NotImplementedException();

@@ -27,35 +27,36 @@ namespace ICSharpCode.PackageManagement
 	{
 		ISolution solution;
 		DefaultPackagePathResolver pathResolver;
-		
+
 		public SolutionPackageRepositoryPath(IProject project)
 			: this(project, PackageManagementServices.Options)
 		{
 		}
-		
+
 		public SolutionPackageRepositoryPath(IProject project, PackageManagementOptions options)
 			: this(project.ParentSolution, options)
 		{
 		}
-		
+
 		public SolutionPackageRepositoryPath(ISolution solution, PackageManagementOptions options)
 		{
 			this.solution = solution;
 			PackageRepositoryPath = GetSolutionPackageRepositoryPath(options);
 		}
-		
+
 		string GetSolutionPackageRepositoryPath(PackageManagementOptions options)
 		{
-			string customPath = options.GetCustomPackagesDirectory ();
-			if (!String.IsNullOrEmpty (customPath)) {
+			string customPath = options.GetCustomPackagesDirectory();
+			if (!String.IsNullOrEmpty(customPath))
+			{
 				return customPath;
 			}
 
-			return Path.Combine (solution.Directory, options.PackagesDirectory);
+			return Path.Combine(solution.Directory, options.PackagesDirectory);
 		}
-		
+
 		public string PackageRepositoryPath { get; private set; }
-		
+
 		public string GetInstallPath(IPackage package)
 		{
 			pathResolver = new DefaultPackagePathResolver(PackageRepositoryPath);

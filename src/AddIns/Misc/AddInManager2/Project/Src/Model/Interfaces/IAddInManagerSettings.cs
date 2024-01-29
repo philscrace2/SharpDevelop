@@ -25,28 +25,12 @@ namespace ICSharpCode.AddInManager2.Model
 	/// </summary>
 	public interface IAddInManagerSettings
 	{
-		string[] PackageRepositories
-		{
-			get;
-			set;
-		}
-		
-		bool ShowPreinstalledAddIns
-		{
-			get;
-			set;
-		}
-		
-		bool ShowPrereleases
-		{
-			get;
-			set;
-		}
-		
-		bool AutoSearchForUpdates
-		{
-			get;
-			set;
-		}
+		string[] PackageRepositories { get; set; }
+
+		bool ShowPreinstalledAddIns { get; set; }
+
+		bool ShowPrereleases { get; set; }
+
+		bool AutoSearchForUpdates { get; set; }
 	}
 }

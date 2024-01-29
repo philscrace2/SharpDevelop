@@ -24,13 +24,14 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class SolutionConfiguration : MarshalByRefObject, global::EnvDTE.SolutionConfiguration
 	{
 		ISolution solution;
-		
+
 		public SolutionConfiguration(ISolution solution)
 		{
 			this.solution = solution;
 		}
-		
-		public string Name {
+
+		public string Name
+		{
 			get { return solution.ActiveConfiguration.Configuration; }
 		}
 	}

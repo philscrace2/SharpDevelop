@@ -29,12 +29,12 @@ namespace ICSharpCode.PackageManagement
 			: base(GetProjectBrowserControl())
 		{
 		}
-		
+
 		static ProjectBrowserControl GetProjectBrowserControl()
 		{
 			return SD.MainThread.InvokeIfRequired(() => ProjectBrowserPad.Instance.ProjectBrowserControl);
 		}
-		
+
 		protected override void ProjectItemAdded(object sender, ProjectItemEventArgs e)
 		{
 			SD.MainThread.InvokeIfRequired(() => base.ProjectItemAdded(sender, e));

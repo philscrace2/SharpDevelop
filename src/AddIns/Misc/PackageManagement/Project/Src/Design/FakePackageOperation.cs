@@ -27,13 +27,13 @@ namespace ICSharpCode.PackageManagement.Design
 			: this(new FakePackage("MyPackage"), PackageAction.Install)
 		{
 		}
-		
+
 		public FakePackageOperation(FakePackage package, PackageAction action)
 			: base(package, action)
 		{
 			this.FakePackage = package;
 		}
-		
+
 		public FakePackage FakePackage { get; set; }
 	}
 }

@@ -34,20 +34,24 @@ namespace ICSharpCode.TextTemplating
 				GetTaskType(error.IsWarning))
 		{
 		}
-		
+
 		static TaskType GetTaskType(bool warning)
 		{
-			if (warning) {
+			if (warning)
+			{
 				return TaskType.Warning;
 			}
+
 			return TaskType.Error;
 		}
-		
+
 		static FileName GetFileName(string fileName)
 		{
-			if (!String.IsNullOrEmpty(fileName)) {
+			if (!String.IsNullOrEmpty(fileName))
+			{
 				return new FileName(fileName);
 			}
+
 			return null;
 		}
 	}

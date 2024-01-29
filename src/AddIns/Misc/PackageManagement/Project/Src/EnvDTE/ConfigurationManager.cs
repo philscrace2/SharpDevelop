@@ -23,13 +23,14 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class ConfigurationManager : MarshalByRefObject, global::EnvDTE.ConfigurationManager
 	{
 		Configuration activeConfiguration;
-		
+
 		public ConfigurationManager(Project project)
 		{
 			activeConfiguration = new Configuration(project);
 		}
-		
-		public global::EnvDTE.Configuration ActiveConfiguration {
+
+		public global::EnvDTE.Configuration ActiveConfiguration
+		{
 			get { return activeConfiguration; }
 		}
 	}

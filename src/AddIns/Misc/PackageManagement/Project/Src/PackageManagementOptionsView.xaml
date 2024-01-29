@@ -4,23 +4,23 @@
 	xmlns:gui="clr-namespace:ICSharpCode.SharpDevelop.Gui;assembly=ICSharpCode.SharpDevelop"
 	xmlns:pm="clr-namespace:ICSharpCode.PackageManagement"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-	
+
 	<gui:OptionPanel.Resources>
-		<pm:PackageManagementViewModels x:Key="ViewModels"/>
-		<BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
+		<pm:PackageManagementViewModels x:Key="ViewModels" />
+		<BooleanToVisibilityConverter x:Key="BoolToVisibility" />
 	</gui:OptionPanel.Resources>
-	
+
 	<gui:OptionPanel.DataContext>
-		<Binding Source="{StaticResource ViewModels}" Path="PackageManagementOptionsViewModel"/>
+		<Binding Source="{StaticResource ViewModels}" Path="PackageManagementOptionsViewModel" />
 	</gui:OptionPanel.DataContext>
 
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-		
+
 		<GroupBox
 			Grid.Row="0"
 			Header="_Recent Packages">
@@ -29,11 +29,11 @@
 				<Button
 					Padding="7, 2"
 					Command="{Binding Path=ClearRecentPackagesCommand}"
-					Content="Clear Recent Packages"/>
+					Content="Clear Recent Packages" />
 				<TextBlock
 					Margin="4, 4"
 					Visibility="{Binding Path=HasNoRecentPackages, Converter={StaticResource BoolToVisibility}}"
-					Text="No recent packages"/>
+					Text="No recent packages" />
 			</StackPanel>
 		</GroupBox>
 		<GroupBox
@@ -44,16 +44,16 @@
 				<Button
 					Padding="7, 2"
 					Command="{Binding Path=ClearCachedPackagesCommand}"
-					Content="Clear Package Cache"/>
+					Content="Clear Package Cache" />
 				<Button
 					Margin="8, 0, 0, 0"
 					Padding="7, 2"
 					Command="{Binding Path=BrowseCachedPackagesCommand}"
-					Content="..."/>
+					Content="..." />
 				<TextBlock
 					Margin="4, 4"
 					Visibility="{Binding Path=HasNoCachedPackages, Converter={StaticResource BoolToVisibility}}"
-					Text="No cached packages"/>
+					Text="No cached packages" />
 			</StackPanel>
 		</GroupBox>
 		<GroupBox
@@ -62,7 +62,7 @@
 			<CheckBox
 				Margin="4, 4"
 				IsChecked="{Binding Path=IsPackageRestoreEnabled}"
-				Content="Enable package restore"/>
+				Content="Enable package restore" />
 		</GroupBox>
 	</Grid>
 </gui:OptionPanel>

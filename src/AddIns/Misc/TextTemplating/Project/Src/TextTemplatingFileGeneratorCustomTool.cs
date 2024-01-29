@@ -25,18 +25,19 @@ namespace ICSharpCode.TextTemplating
 	{
 		public override void GenerateCode(FileProjectItem item, CustomToolContext context)
 		{
-			using (var generator = CreateTextTemplatingFileGenerator(item, context)) {
+			using (var generator = CreateTextTemplatingFileGenerator(item, context))
+			{
 				generator.ProcessTemplate();
 			}
 		}
-		
+
 		protected virtual ITextTemplatingFileGenerator CreateTextTemplatingFileGenerator(
 			FileProjectItem templateFile,
 			CustomToolContext context)
 		{
 			TextTemplatingHost host = CreateTextTemplatingHost(context.Project);
 			var textTemplatingCustomToolContext = new TextTemplatingCustomToolContext(context);
-			
+
 			return new TextTemplatingFileGenerator(host, templateFile, textTemplatingCustomToolContext);
 		}
 	}

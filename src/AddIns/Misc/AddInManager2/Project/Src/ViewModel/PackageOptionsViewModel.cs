@@ -27,25 +27,22 @@ namespace ICSharpCode.AddInManager2.ViewModel
 	public class PackageOptionsViewModel : Model<PackageOptionsViewModel>
 	{
 		private bool _autoSearchForUpdates;
-				
+
 		public bool AutoSearchForUpdates
 		{
-			get
-			{
-				return _autoSearchForUpdates;
-			}
+			get { return _autoSearchForUpdates; }
 			set
 			{
 				_autoSearchForUpdates = value;
 				OnPropertyChanged(m => m.AutoSearchForUpdates);
 			}
 		}
-		
+
 		public void Load()
 		{
 			AutoSearchForUpdates = AddInManagerServices.Settings.AutoSearchForUpdates;
 		}
-		
+
 		public void Save()
 		{
 			AddInManagerServices.Settings.AutoSearchForUpdates = AutoSearchForUpdates;

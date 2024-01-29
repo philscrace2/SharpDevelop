@@ -30,22 +30,22 @@ namespace ICSharpCode.PackageManagement
 		IProject CurrentProject { get; }
 		ISolution OpenSolution { get; }
 		IProjectBuilder ProjectBuilder { get; }
-		
+
 		event EventHandler<SolutionEventArgs> SolutionClosed;
 		event EventHandler<SolutionEventArgs> SolutionOpened;
-		
+
 		void RefreshProjectBrowser();
 		void AddProjectItem(IProject project, ProjectItem item);
 		void RemoveProjectItem(IProject project, ProjectItem item);
 		void Save(IProject project);
 		void Save(ISolution solution);
-		
+
 		IModelCollection<IProject> AllProjects { get; }
-		
+
 		//IProjectContent GetProjectContent(IProject project);
-		
+
 		IProjectBrowserUpdater CreateProjectBrowserUpdater();
-		
+
 		string GetDefaultCustomToolForFileName(FileProjectItem projectItem);
 	}
 }

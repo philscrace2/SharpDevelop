@@ -27,76 +27,84 @@ namespace ICSharpCode.PackageManagement
 	{
 		ListBox listBox;
 		DependencyPropertyChangedEventArgs propertyChangedEventArgs;
-		
-		public SelectedListBoxItemScrollingBehaviour(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+
+		public SelectedListBoxItemScrollingBehaviour(DependencyObject dependencyObject,
+			DependencyPropertyChangedEventArgs e)
 		{
 			this.listBox = dependencyObject as ListBox;
 			this.propertyChangedEventArgs = e;
 		}
-		
+
 		public void Update()
 		{
-			if (ShouldUpdateSelectionChangedHandlerRegistration()) {
+			if (ShouldUpdateSelectionChangedHandlerRegistration())
+			{
 				UpdateSelectionChangedHandlerRegistration();
 			}
 		}
-		
+
 		bool ShouldUpdateSelectionChangedHandlerRegistration()
 		{
 			return DependencyObjectIsListBox() && NewPropertyValueIsBoolean();
 		}
-		
+
 		bool DependencyObjectIsListBox()
 		{
 			return (listBox != null);
 		}
-		
+
 		bool NewPropertyValueIsBoolean()
 		{
 			return (propertyChangedEventArgs.NewValue is bool);
 		}
-		
+
 		void UpdateSelectionChangedHandlerRegistration()
 		{
-			if ((bool)propertyChangedEventArgs.NewValue) {
+			if ((bool)propertyChangedEventArgs.NewValue)
+			{
 				RegisterSelectionChangedHandler(listBox);
-			} else {
+			}
+			else
+			{
 				UnregisterSelectionChangedHandler(listBox);
 			}
 		}
-		
+
 		protected virtual void RegisterSelectionChangedHandler(ListBox listBox)
 		{
 			listBox.SelectionChanged += OnListBoxSelectionChanged;
 		}
-		
+
 		protected virtual void UnregisterSelectionChangedHandler(ListBox listBox)
 		{
 			listBox.SelectionChanged -= OnListBoxSelectionChanged;
 		}
-		
+
 		static void OnListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			OnListBoxSelectionChanged(sender, e.OriginalSource, e.AddedItems, ScrollListBoxItemIntoView);
 		}
-		
+
 		static void ScrollListBoxItemIntoView(ListBox listBox, object item)
 		{
 			listBox.ScrollIntoView(item);
 		}
-		
+
 		protected static void OnListBoxSelectionChanged(object sender,
 			object originalSource,
 			IList addedItems,
 			Action<ListBox, object> executeScrollListBoxItemIntoView)
 		{
-			if (!Object.ReferenceEquals(sender, originalSource)) {
+			if (!Object.ReferenceEquals(sender, originalSource))
+			{
 				return;
 			}
 
 			ListBox listBox = originalSource as ListBox;
-			if (listBox != null) {
-				if (addedItems.Count > 0) {
+			if (listBox != null)
+			{
+				if (addedItems.Count > 0)
+				{
 					executeScrollListBoxItemIntoView(listBox, addedItems[0]);
 				}
 			}

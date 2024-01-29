@@ -33,10 +33,7 @@ namespace ICSharpCode.Reporting.Xml
 	public interface IMycroXaml
 	{
 		void Initialize(object parent);
-		object ReturnedObject
-		{
-			get;
-		}
+		object ReturnedObject { get; }
 	}
 
 	/// <summary>
@@ -44,10 +41,11 @@ namespace ICSharpCode.Reporting.Xml
 	/// </summary>
 	public abstract class MycroParser
 	{
-		public MycroParser() {
+		public MycroParser()
+		{
 		}
-		
-		
+
+
 		public object Load(XmlElement element)
 		{
 			return ProcessNode(element, null);
@@ -55,38 +53,40 @@ namespace ICSharpCode.Reporting.Xml
 
 		protected abstract Type GetTypeByName(string ns, string name);
 
-	    object ProcessNode(XmlNode node, object parent)
+		object ProcessNode(XmlNode node, object parent)
 		{
-			object ret=null;
+			object ret = null;
 			if (node is XmlElement)
 			{
 				// instantiate the class
-				string ns=node.Prefix;
-				string cname=node.LocalName;
-				
-				Type t=GetTypeByName(ns, cname);
-				
+				string ns = node.Prefix;
+				string cname = node.LocalName;
+
+				Type t = GetTypeByName(ns, cname);
+
 //				Trace.Assert(t != null, "Type "+cname+" could not be determined.");
 //				Debug.WriteLine("Looking for " + cname + " and got " + t.FullName);
 //				Console.WriteLine("Looking for " + cname + " and got " + t.FullName);
 				try
 				{
-					ret=Activator.CreateInstance(t);
+					ret = Activator.CreateInstance(t);
 				}
-				catch(Exception)
+				catch (Exception)
 				{
 					Console.WriteLine("MycroParser:");
-					Console.WriteLine("\t Not found {0} - {0}",cname);
+					Console.WriteLine("\t Not found {0} - {0}", cname);
 				}
 
 				// support the ISupportInitialize interface
-				if (ret is ISupportInitialize) {
+				if (ret is ISupportInitialize)
+				{
 					((ISupportInitialize)ret).BeginInit();
 				}
 
 				// If the instance implements the IMicroXaml interface, then it may need
 				// access to the parser.
-				if (ret is IMycroXaml) {
+				if (ret is IMycroXaml)
+				{
 					((IMycroXaml)ret).Initialize(parent);
 				}
 
@@ -95,118 +95,120 @@ namespace ICSharpCode.Reporting.Xml
 				ProcessChildProperties(node, ret);
 
 				// support the ISupportInitialize interface
-				if (ret is ISupportInitialize) {
+				if (ret is ISupportInitialize)
+				{
 					((ISupportInitialize)ret).EndInit();
 				}
 
 				// If the instance implements the IMicroXaml interface, then it has the option
 				// to return an object that replaces the instance created by the parser.
-				if (ret is IMycroXaml) {
-					ret=((IMycroXaml)ret).ReturnedObject;
+				if (ret is IMycroXaml)
+				{
+					ret = ((IMycroXaml)ret).ReturnedObject;
 				}
-				
 			}
+
 			return ret;
 		}
 
-	    
+
 		protected void ProcessChildProperties(XmlNode node, object parent)
 		{
-			
-			var t=parent.GetType();
+			var t = parent.GetType();
 
 			// children of a class must always be properties
-			foreach(XmlNode child in node.ChildNodes)
+			foreach (XmlNode child in node.ChildNodes)
 			{
-			    if (!(child is XmlElement)) continue;
-			    string pname=child.LocalName;
-	
-			    var pi=t.GetProperty(pname);
+				if (!(child is XmlElement)) continue;
+				string pname = child.LocalName;
 
-			    if (pi==null)
-			    {
-			        // Special case--we're going to assume that the child is a class instance
-			        // not associated with the parent object
+				var pi = t.GetProperty(pname);
+
+				if (pi == null)
+				{
+					// Special case--we're going to assume that the child is a class instance
+					// not associated with the parent object
 //						Trace.Fail("Unsupported property: "+pname);
-			        System.Console.WriteLine("Unsupported property: "+pname);
-			        continue;
-			    }
+					System.Console.WriteLine("Unsupported property: " + pname);
+					continue;
+				}
 
-			    // a property can only have one child node unless it's a collection
-			    foreach(XmlNode grandChild in child.ChildNodes)
-			    {
-			        if (grandChild is XmlText) {
-			            SetPropertyToString(parent, pi, child.InnerText);
-			            break;
-			        }
-			        else if (grandChild is XmlElement)
-			        {
-			            var propObject=pi.GetValue(parent, null);
-			            var obj=ProcessNode(grandChild, propObject);
+				// a property can only have one child node unless it's a collection
+				foreach (XmlNode grandChild in child.ChildNodes)
+				{
+					if (grandChild is XmlText)
+					{
+						SetPropertyToString(parent, pi, child.InnerText);
+						break;
+					}
+					else if (grandChild is XmlElement)
+					{
+						var propObject = pi.GetValue(parent, null);
+						var obj = ProcessNode(grandChild, propObject);
 
-			            // A null return is valid in cases where a class implementing the IMicroXaml interface
-			            // might want to take care of managing the instance it creates itself.  See DataBinding
-			            if (obj != null)
-			            {
-
-			                // support for ICollection objects
-			                if (propObject is ICollection)
-			                {
-			                    MethodInfo mi=t.GetMethod("Add", new Type[] {obj.GetType()});
-			                    if (mi != null)
-			                    {
-			                        try
-			                        {
-			                            mi.Invoke(obj, new object[] {obj});
-			                        }
-			                        catch(Exception e)
-			                        {
-			                            Trace.Fail("Adding to collection failed:\r\n"+e.Message);
-			                        }
-			                    }
-			                    else if (propObject is IList)
-			                    {
-			                        try
-			                        {
-			                            ((IList)propObject).Add(obj);
-			                        }
-			                        catch(Exception e)
-			                        {
-			                            Trace.Fail("List/Collection add failed:\r\n"+e.Message);
-			                        }
-			                    }
-			                }
-			                else if (!pi.CanWrite) {
-			                    Trace.Fail("Unsupported read-only property: "+pname);
-			                }
-			                else
-			                {
-			                    // direct assignment if not a collection
-			                    try
-			                    {
-			                        pi.SetValue(parent, obj, null);
-			                    }
-			                    catch(Exception e)
-			                    {
-			                        Trace.Fail("Property setter for "+pname+" failed:\r\n"+e.Message);
-			                    }
-			                }
-			            }
-			        }
-			    }
+						// A null return is valid in cases where a class implementing the IMicroXaml interface
+						// might want to take care of managing the instance it creates itself.  See DataBinding
+						if (obj != null)
+						{
+							// support for ICollection objects
+							if (propObject is ICollection)
+							{
+								MethodInfo mi = t.GetMethod("Add", new Type[] { obj.GetType() });
+								if (mi != null)
+								{
+									try
+									{
+										mi.Invoke(obj, new object[] { obj });
+									}
+									catch (Exception e)
+									{
+										Trace.Fail("Adding to collection failed:\r\n" + e.Message);
+									}
+								}
+								else if (propObject is IList)
+								{
+									try
+									{
+										((IList)propObject).Add(obj);
+									}
+									catch (Exception e)
+									{
+										Trace.Fail("List/Collection add failed:\r\n" + e.Message);
+									}
+								}
+							}
+							else if (!pi.CanWrite)
+							{
+								Trace.Fail("Unsupported read-only property: " + pname);
+							}
+							else
+							{
+								// direct assignment if not a collection
+								try
+								{
+									pi.SetValue(parent, obj, null);
+								}
+								catch (Exception e)
+								{
+									Trace.Fail("Property setter for " + pname + " failed:\r\n" + e.Message);
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 
-	   static  void ProcessAttributes(XmlNode node, object ret, Type type)
+		static void ProcessAttributes(XmlNode node, object ret, Type type)
 		{
 			// process attributes
-			foreach(XmlAttribute attr in node.Attributes)
+			foreach (XmlAttribute attr in node.Attributes)
 			{
-				string pname=attr.Name;
-				string pvalue=attr.Value;
+				string pname = attr.Name;
+				string pvalue = attr.Value;
 
 				// it's either a property or an event
-				PropertyInfo pi=type.GetProperty(pname);
+				PropertyInfo pi = type.GetProperty(pname);
 
 				if (pi != null)
 				{
@@ -216,32 +218,33 @@ namespace ICSharpCode.Reporting.Xml
 				else
 				{
 					// who knows what it is???
-					Trace.Fail("Failed acquiring property information for "+pname);
+					Trace.Fail("Failed acquiring property information for " + pname);
 				}
 			}
 		}
 
-	    static void SetPropertyToString(object obj, PropertyInfo pi, string value)
+		static void SetPropertyToString(object obj, PropertyInfo pi, string value)
 		{
 			// it's string, so use a type converter.
-			var tc=TypeDescriptor.GetConverter(pi.PropertyType);
+			var tc = TypeDescriptor.GetConverter(pi.PropertyType);
 			try
 			{
 				if (tc.CanConvertFrom(typeof(string)))
 				{
-					object val=tc.ConvertFromInvariantString(value);
+					object val = tc.ConvertFromInvariantString(value);
 					pi.SetValue(obj, val, null);
-				} else if (pi.PropertyType == typeof(Type)) {
+				}
+				else if (pi.PropertyType == typeof(Type))
+				{
 					pi.SetValue(obj, Type.GetType(value), null);
 				}
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
-				var s = String.Format(CultureInfo.CurrentCulture,"Property setter for {0} failed {1}\r\n",pi.Name,
-				                         e.Message);
-				Console.WriteLine("MycroParser : {0}",s);
+				var s = String.Format(CultureInfo.CurrentCulture, "Property setter for {0} failed {1}\r\n", pi.Name,
+					e.Message);
+				Console.WriteLine("MycroParser : {0}", s);
 			}
 		}
-		
 	}
 }

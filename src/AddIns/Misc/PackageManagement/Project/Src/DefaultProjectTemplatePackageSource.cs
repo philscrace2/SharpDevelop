@@ -25,24 +25,25 @@ namespace ICSharpCode.PackageManagement
 	public class DefaultProjectTemplatePackageSource
 	{
 		PackageSource packageSource;
-		
+
 		public DefaultProjectTemplatePackageSource()
 			: this(new PackageManagementPropertyService())
 		{
 		}
-		
+
 		public DefaultProjectTemplatePackageSource(IPropertyService propertyService)
 		{
 			CreatePackageSource(propertyService.DataDirectory);
 		}
-		
+
 		void CreatePackageSource(string dataDirectory)
 		{
 			string packageDirectory = Path.Combine(dataDirectory, @"templates\packages");
 			packageSource = new PackageSource(packageDirectory, "Default");
 		}
-		
-		public PackageSource PackageSource {
+
+		public PackageSource PackageSource
+		{
 			get { return packageSource; }
 		}
 	}

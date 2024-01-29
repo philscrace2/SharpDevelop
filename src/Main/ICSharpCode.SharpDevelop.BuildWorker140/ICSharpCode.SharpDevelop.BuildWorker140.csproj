@@ -90,10 +90,12 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Configuration" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Microsoft.Build.dll" />
+    <Content Include="Microsoft.Build.Framework.dll" />
   </ItemGroup>
 </Project>

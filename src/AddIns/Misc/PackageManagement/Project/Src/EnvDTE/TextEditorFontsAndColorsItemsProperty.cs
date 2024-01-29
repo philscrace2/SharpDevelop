@@ -23,13 +23,13 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class TextEditorFontsAndColorsItemsProperty : Property
 	{
 		FontsAndColorsItems fontsAndColorsItems;
-		
+
 		public TextEditorFontsAndColorsItemsProperty()
 			: base("FontsAndColorsItems")
 		{
 			fontsAndColorsItems = new FontsAndColorsItems();
 		}
-		
+
 		protected override object GetObject()
 		{
 			return fontsAndColorsItems;

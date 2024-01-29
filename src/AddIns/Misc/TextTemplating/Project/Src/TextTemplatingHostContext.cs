@@ -27,7 +27,7 @@ namespace ICSharpCode.TextTemplating
 		ITextTemplatingAssemblyResolver assemblyResolver;
 		ITextTemplatingVariables templatingVariables;
 		IServiceProvider serviceProvider;
-		
+
 		public TextTemplatingHostContext(IProject project)
 			: this(
 				new TextTemplatingAppDomainFactory(),
@@ -36,7 +36,7 @@ namespace ICSharpCode.TextTemplating
 				new TextTemplatingServiceProvider())
 		{
 		}
-		
+
 		public TextTemplatingHostContext(
 			ITextTemplatingAppDomainFactory appDomainFactory,
 			ITextTemplatingAssemblyResolver assemblyResolver,
@@ -48,27 +48,27 @@ namespace ICSharpCode.TextTemplating
 			this.templatingVariables = templatingVariables;
 			this.serviceProvider = serviceProvider;
 		}
-		
+
 		public object GetService(Type serviceType)
 		{
 			return serviceProvider.GetService(serviceType);
 		}
-		
+
 		public string ExpandTemplateVariables(string name)
 		{
 			return templatingVariables.ExpandVariables(name);
 		}
-		
+
 		public ITextTemplatingAppDomain CreateTextTemplatingAppDomain(string applicationBase)
 		{
 			return appDomainFactory.CreateTextTemplatingAppDomain(applicationBase);
 		}
-		
+
 		public string ResolveAssemblyReference(string assemblyReference)
 		{
 			return assemblyResolver.ResolvePath(assemblyReference);
 		}
-		
+
 		public void Dispose()
 		{
 			assemblyResolver.Dispose();

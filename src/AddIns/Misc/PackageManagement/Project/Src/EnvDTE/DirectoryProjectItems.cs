@@ -25,13 +25,13 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class DirectoryProjectItems : ProjectItems
 	{
 		ProjectItem projectItem;
-		
+
 		public DirectoryProjectItems(ProjectItem projectItem)
 			: base((Project)projectItem.ContainingProject, projectItem)
 		{
 			this.projectItem = projectItem;
 		}
-		
+
 		protected override IEnumerable<global::EnvDTE.ProjectItem> GetProjectItems()
 		{
 			return new ChildProjectItems(projectItem);

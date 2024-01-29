@@ -30,41 +30,53 @@ namespace ICSharpCode.Reporting.Expressions.Irony.Ast
 	/// <summary>
 	/// Description of GlobalsNode.
 	/// </summary>
-	public class GlobalsNode: AstNode
+	public class GlobalsNode : AstNode
 	{
 		AstNode globalNode;
-		
+
 		public override void Init(AstContext context, ParseTreeNode treeNode)
 		{
 			base.Init(context, treeNode);
 			var nodes = treeNode.GetMappedChildNodes();
 			globalNode = AddChild("Args", nodes[2]);
 		}
-		
-			
+
+
 		protected override object DoEvaluate(ScriptThread thread)
 		{
-			thread.CurrentNode = this;  //standard prolog
+			thread.CurrentNode = this; //standard prolog
 			var pi = thread.GetPageInfo();
-			
+
 			var test = globalNode.AsString.ToLower();
-			if (test.Contains(":")) {
+			if (test.Contains(":"))
+			{
 				Console.WriteLine("");
 			}
-			if ( test == "pagenumber") {
+
+			if (test == "pagenumber")
+			{
 				return pi.PageNumber;
-			} else if (test == "pages") {
+			}
+			else if (test == "pages")
+			{
 				return pi.TotalPages;
-			} else if (test == "reportname") {
+			}
+			else if (test == "reportname")
+			{
 				return pi.ReportName;
-			} else if (test == "reportfolder") {
+			}
+			else if (test == "reportfolder")
+			{
 				return pi.ReportFolder;
-			} else if (test == "reportfilename") {
+			}
+			else if (test == "reportfilename")
+			{
 				return pi.ReportFileName;
-			} 
-			
-			else {
-				return String.Format(CultureInfo.CurrentCulture,"Syntaxerror in Globals <{0}>",globalNode.AsString);
+			}
+
+			else
+			{
+				return String.Format(CultureInfo.CurrentCulture, "Syntaxerror in Globals <{0}>", globalNode.AsString);
 			}
 		}
 	}

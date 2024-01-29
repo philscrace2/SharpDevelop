@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement
 	public class RecentPackagesViewModel : PackagesViewModel
 	{
 		IPackageRepository recentPackagesRepository;
-		
+
 		public RecentPackagesViewModel(
 			IPackageManagementSolution solution,
 			IPackageManagementEvents packageManagementEvents,
@@ -35,48 +35,52 @@ namespace ICSharpCode.PackageManagement
 			: base(
 				solution,
 				packageManagementEvents,
-				registeredPackageRepositories, 
-				packageViewModelFactory, 
+				registeredPackageRepositories,
+				packageViewModelFactory,
 				taskFactory)
 		{
 			this.packageManagementEvents = packageManagementEvents;
 			RegisterEvents();
 		}
-		
+
 		void RegisterEvents()
 		{
 			packageManagementEvents.ParentPackageInstalled += OnAddRecentPackage;
 			packageManagementEvents.ParentPackageUninstalled += OnPackageChanged;
 			packageManagementEvents.ParentPackagesUpdated += OnAddRecentPackage;
 		}
-		
+
 		protected override void UpdateRepositoryBeforeReadPackagesTaskStarts()
 		{
-			try {
+			try
+			{
 				recentPackagesRepository = RegisteredPackageRepositories.RecentPackageRepository;
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				errorMessage = ex.Message;
 			}
 		}
-		
+
 		protected override void OnDispose()
 		{
 			packageManagementEvents.ParentPackageInstalled -= OnAddRecentPackage;
 			packageManagementEvents.ParentPackageUninstalled -= OnPackageChanged;
 			packageManagementEvents.ParentPackagesUpdated -= OnAddRecentPackage;
 		}
-		
+
 		void OnAddRecentPackage(object sender, EventArgs e)
 		{
 			ReadPackages();
 		}
-		
+
 		protected override IQueryable<IPackage> GetAllPackages(string searchCriteria)
 		{
-			if (recentPackagesRepository == null) {
+			if (recentPackagesRepository == null)
+			{
 				throw new ApplicationException(errorMessage);
 			}
-			
+
 			return recentPackagesRepository.GetPackages();
 		}
 	}

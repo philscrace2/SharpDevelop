@@ -27,54 +27,62 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		Solution solution;
 		IProjectBuilder projectBuilder;
 		int lastBuildInfo;
-		
+
 		public SolutionBuild()
 		{
 		}
-		
+
 		public SolutionBuild(Solution solution, IProjectBuilder projectBuilder)
 		{
 			this.solution = solution;
 			this.projectBuilder = projectBuilder;
 		}
-		
-		public global::EnvDTE.SolutionConfiguration ActiveConfiguration {
+
+		public global::EnvDTE.SolutionConfiguration ActiveConfiguration
+		{
 			get { return solution.GetActiveConfiguration(); }
 		}
-		
+
 		/// <summary>
 		/// Returns the number of projects that failed to build.
 		/// </summary>
-		public int LastBuildInfo {
+		public int LastBuildInfo
+		{
 			get { return lastBuildInfo; }
 		}
-		
+
 		public void BuildProject(string solutionConfiguration, string projectUniqueName, bool waitForBuildToFinish)
 		{
 			Project project = solution.Projects.Item(projectUniqueName) as Project;
 			projectBuilder.Build(project.MSBuildProject);
 			UpdateLastBuildInfo(projectBuilder.BuildResults);
 		}
-		
+
 		void UpdateLastBuildInfo(BuildResults buildResults)
 		{
-			if (buildResults.ErrorCount > 0) {
+			if (buildResults.ErrorCount > 0)
+			{
 				lastBuildInfo = 1;
-			} else {
+			}
+			else
+			{
 				lastBuildInfo = 0;
 			}
 		}
-		
-		public object StartupProjects {
+
+		public object StartupProjects
+		{
 			get { return GetStartupProjects(); }
 		}
-		
+
 		object[] GetStartupProjects()
 		{
 			var project = solution.GetStartupProject();
-			if (project != null) {
+			if (project != null)
+			{
 				return new string[] { project.UniqueName };
 			}
+
 			return new string[0];
 		}
 	}

@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using ICSharpCode.Reporting.DataSource;
 using Irony.Interpreter;
 using Irony.Interpreter.Ast;
@@ -31,92 +30,117 @@ namespace ICSharpCode.Reporting.Expressions.Irony.Imports
 	/// </summary>
 	public static class ImportExtensions
 	{
-		public static IEnumerable<object> GetDataSource (this ScriptThread thread){
+		public static IEnumerable<object> GetDataSource(this ScriptThread thread)
+		{
 			return (IEnumerable<object>)thread.App.Globals["DataSource"];
 		}
 	}
-	
-	static class ImportAggregateHelper {
-		
-		public static bool  FieldExist (object current,string fieldName) {
+
+	static class ImportAggregateHelper
+	{
+		public static bool FieldExist(object current, string fieldName)
+		{
 			var property1 = current.ParsePropertyPath(fieldName);
-			if (property1 == null) {
+			if (property1 == null)
+			{
 				return false;
 			}
+
 			return true;
 		}
-		
-		public static IEnumerable<IGrouping<object, object>> IsGrouped (IEnumerable<object> listToConvert) {
+
+		public static IEnumerable<IGrouping<object, object>> IsGrouped(IEnumerable<object> listToConvert)
+		{
 			var grouped = listToConvert as IEnumerable<IGrouping<object, object>>;
-			if (grouped != null) {
+			if (grouped != null)
+			{
 				return grouped;
 			}
+
 			return null;
 		}
 	}
-	
-	
+
+
 	public static class ImportAggregates
 	{
-		public static object Sum(ScriptThread thread, AstNode[] childNodes) {
-			double sum =  0;
+		public static object Sum(ScriptThread thread, AstNode[] childNodes)
+		{
+			double sum = 0;
 			object firstItem = null;
 			bool isTimeSpan;
-			
+
 			var fieldName = childNodes[0].Evaluate(thread).ToString();
 			var dataSource = thread.GetDataSource();
 			var grouped = ImportAggregateHelper.IsGrouped(dataSource);
-			
-			if (grouped != null) {
+
+			if (grouped != null)
+			{
 				var firstGroupElement = dataSource.FirstOrDefault() as IGrouping<object, object>;
 				firstItem = firstGroupElement.FirstOrDefault();
-				isTimeSpan = HandleTimeSpan(firstItem,fieldName);
+				isTimeSpan = HandleTimeSpan(firstItem, fieldName);
 				double groupSum = 0;
-				foreach (var element in grouped) {
-					if (isTimeSpan) {
-						groupSum = element.Sum(o => {return TimeSpanSum(fieldName,o);}); 
-					} else {
-						groupSum = element.Sum(o => {return SimpleSum(fieldName,o);});                    	                    
+				foreach (var element in grouped)
+				{
+					if (isTimeSpan)
+					{
+						groupSum = element.Sum(o => { return TimeSpanSum(fieldName, o); });
 					}
+					else
+					{
+						groupSum = element.Sum(o => { return SimpleSum(fieldName, o); });
+					}
+
 					sum = sum + groupSum;
 				}
-			} else {
+			}
+			else
+			{
 				firstItem = dataSource.FirstOrDefault();
-				isTimeSpan = HandleTimeSpan(firstItem,fieldName);
-				
-				if (ImportAggregateHelper.FieldExist(dataSource.FirstOrDefault(),fieldName)) {
-					if (isTimeSpan) {
-						sum = dataSource.Sum(o => {return TimeSpanSum(fieldName,o); });                   
-					} else {
-						sum = dataSource.Sum(o => {return SimpleSum(fieldName,o); });                     	                  
+				isTimeSpan = HandleTimeSpan(firstItem, fieldName);
+
+				if (ImportAggregateHelper.FieldExist(dataSource.FirstOrDefault(), fieldName))
+				{
+					if (isTimeSpan)
+					{
+						sum = dataSource.Sum(o => { return TimeSpanSum(fieldName, o); });
+					}
+					else
+					{
+						sum = dataSource.Sum(o => { return SimpleSum(fieldName, o); });
 					}
 				}
 			}
+
 			return sum.ToString();
 		}
-		
-		
-		static double SimpleSum(string fromField,object current){
+
+
+		static double SimpleSum(string fromField, object current)
+		{
 			var value = ReadValueFromObject(fromField, current);
 			return TypeNormalizer.EnsureType<double>(value);
 		}
-		
-		
-		static double TimeSpanSum(string fromField,object current){
+
+
+		static double TimeSpanSum(string fromField, object current)
+		{
 			var value = ReadValueFromObject(fromField, current);
 			var timeSpan = (TimeSpan)value;
 			return TypeNormalizer.EnsureType<double>(timeSpan.Ticks);
 		}
-		
-		
-		static bool HandleTimeSpan(object firstItem,string fieldName){
+
+
+		static bool HandleTimeSpan(object firstItem, string fieldName)
+		{
 			var t = ReadValueFromObject(fieldName, firstItem);
 			var timeSpan = t is TimeSpan;
 			return t is TimeSpan;
 		}
-		
-		
-		static object ReadValueFromObject(string fieldName, object currentObject){
+
+
+		static object ReadValueFromObject(string fieldName, object currentObject)
+		{
 			var propertyPath = currentObject.ParsePropertyPath(fieldName);
 			var evaluated = propertyPath.Evaluate(currentObject);
 			return evaluated;

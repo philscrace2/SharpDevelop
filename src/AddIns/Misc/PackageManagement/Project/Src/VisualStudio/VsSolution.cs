@@ -30,41 +30,43 @@ namespace ICSharpCode.PackageManagement.VisualStudio
 	public class VsSolution : MarshalByRefObject, IVsSolution
 	{
 		IPackageManagementProjectService projectService;
-		
+
 		public VsSolution()
 			: this(new PackageManagementProjectService())
 		{
 		}
-		
+
 		public VsSolution(IPackageManagementProjectService projectService)
 		{
 			this.projectService = projectService;
 		}
-		
+
 		public int GetProjectOfUniqueName(string uniqueName, out IVsHierarchy hierarchy)
 		{
 			hierarchy = null;
 			MSBuildBasedProject project = FindProject(uniqueName);
-			if (project != null) {
+			if (project != null)
+			{
 				hierarchy = new FlavoredProject(project);
 				return VsConstants.S_OK;
 			}
+
 			return VsConstants.E_FAIL;
 		}
-		
+
 		MSBuildBasedProject FindProject(string uniqueName)
 		{
 			return projectService
 				.AllProjects
 				.SingleOrDefault(project => ProjectUniqueNameMatches(project, uniqueName)) as MSBuildBasedProject;
 		}
-		
+
 		bool ProjectUniqueNameMatches(IProject msbuildProject, string uniqueName)
 		{
 			var project = new Project(msbuildProject as MSBuildBasedProject);
 			return IsCaseInsensitiveMatch(project.UniqueName, uniqueName);
 		}
-		
+
 		bool IsCaseInsensitiveMatch(string a, string b)
 		{
 			return String.Equals(a, b, StringComparison.OrdinalIgnoreCase);

@@ -27,23 +27,23 @@ namespace ICSharpCode.PackageManagement.Design
 			: this(null)
 		{
 		}
-		
+
 		public FakeInstallPackageAction(IPackageManagementProject project)
 			: base(project, null)
 		{
 		}
-		
+
 		public bool IsExecuteCalled;
-		
+
 		protected override void ExecuteCore()
 		{
 			IsExecuteCalled = true;
 		}
-		
+
 		protected override void BeforeExecute()
 		{
 		}
-		
+
 		protected override RunPackageScriptsAction CreateRunPackageScriptsAction(
 			IPackageScriptRunner scriptRunner,
 			IPackageManagementProject project)

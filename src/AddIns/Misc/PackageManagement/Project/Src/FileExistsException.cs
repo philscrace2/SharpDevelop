@@ -28,7 +28,7 @@ namespace ICSharpCode.PackageManagement
 			: base(GetErrorMessage(fileName))
 		{
 		}
-		
+
 		static string GetErrorMessage(string fileName)
 		{
 			fileName = Path.GetFileName(fileName);

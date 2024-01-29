@@ -29,23 +29,28 @@ namespace ICSharpCode.PackageManagement
 	{
 		public static string GetCodeModelLanguage(this IProject project)
 		{
-			if (project != null && project.Language == "VB") {
+			if (project != null && project.Language == "VB")
+			{
 				return global::EnvDTE.CodeModelLanguageConstants.vsCMLanguageVB;
 			}
+
 			return global::EnvDTE.CodeModelLanguageConstants.vsCMLanguageCSharp;
 		}
-		
+
 		public static global::EnvDTE.vsCMAccess ToAccess(this Accessibility accessiblity)
 		{
-			if (accessiblity == Accessibility.Public) {
+			if (accessiblity == Accessibility.Public)
+			{
 				return global::EnvDTE.vsCMAccess.vsCMAccessPublic;
 			}
+
 			return global::EnvDTE.vsCMAccess.vsCMAccessPrivate;
 		}
-		
+
 		public static Accessibility ToAccessibility(this global::EnvDTE.vsCMAccess access)
 		{
-			switch (access) {
+			switch (access)
+			{
 				case global::EnvDTE.vsCMAccess.vsCMAccessPublic:
 					return Accessibility.Public;
 				case global::EnvDTE.vsCMAccess.vsCMAccessPrivate:

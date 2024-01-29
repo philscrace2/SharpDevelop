@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement
 		Task<TResult> task;
 		Action<ITask<TResult>> continueWith;
 		CancellationTokenSource cancellationTokenSource;
-		
+
 		public PackageManagementTask(
 			Func<TResult> function,
 			Action<ITask<TResult>> continueWith)
@@ -43,35 +43,39 @@ namespace ICSharpCode.PackageManagement
 			task = new Task<TResult>(function, cancellationTokenSource.Token);
 			task.ContinueWith(result => OnContinueWith(result), scheduler);
 		}
-		
+
 		void OnContinueWith(Task<TResult> task)
 		{
 			continueWith(this);
 		}
-		
+
 		public void Start()
 		{
 			task.Start();
 		}
-		
-		public TResult Result {
+
+		public TResult Result
+		{
 			get { return task.Result; }
 		}
-		
+
 		public void Cancel()
 		{
 			cancellationTokenSource.Cancel();
 		}
-		
-		public bool IsCancelled {
+
+		public bool IsCancelled
+		{
 			get { return task.IsCanceled; }
 		}
-		
-		public bool IsFaulted {
+
+		public bool IsFaulted
+		{
 			get { return task.IsFaulted; }
 		}
-		
-		public AggregateException Exception {
+
+		public AggregateException Exception
+		{
 			get { return task.Exception; }
 		}
 	}

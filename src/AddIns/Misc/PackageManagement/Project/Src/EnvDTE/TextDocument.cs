@@ -25,8 +25,9 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		public TextDocument()
 		{
 		}
-		
-		public global::EnvDTE.TextPoint StartPoint {
+
+		public global::EnvDTE.TextPoint StartPoint
+		{
 			get { throw new NotImplementedException(); }
 		}
 	}

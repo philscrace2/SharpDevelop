@@ -25,9 +25,10 @@ namespace ICSharpCode.Reporting.Factories
 	/// <summary>
 	/// Description of ExportColumnFactory.
 	/// </summary>
-	static class ExportColumnFactory{
-	
-		public static IExportColumn CreateItem (IPrintableObject item) {
+	static class ExportColumnFactory
+	{
+		public static IExportColumn CreateItem(IPrintableObject item)
+		{
 			var export = item.CreateExportColumn();
 			return export;
 		}

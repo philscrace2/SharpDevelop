@@ -32,7 +32,7 @@ namespace ICSharpCode.AddInManager2.Model
 			this.TotalPackagesOnPage = packages.Count();
 			this.TotalPackages = totalPackages;
 		}
-		
+
 		public IEnumerable<IPackage> Packages { get; set; }
 		public int TotalPackagesOnPage { get; set; }
 		public int TotalPackages { get; set; }

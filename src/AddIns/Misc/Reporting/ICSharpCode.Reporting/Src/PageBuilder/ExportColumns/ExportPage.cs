@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-
 using ICSharpCode.Reporting.Exporter.Visitors;
 using ICSharpCode.Reporting.Interfaces.Export;
 
@@ -29,39 +28,41 @@ namespace ICSharpCode.Reporting.PageBuilder.ExportColumns
 	/// Description of Page.
 	/// </summary>
 	///
-	
-	public class ExportPage:ExportColumn,IPage,IAcceptor
+	public class ExportPage : ExportColumn, IPage, IAcceptor
 	{
-		public ExportPage(IPageInfo pageInfo,Size pageSize):base()
+		public ExportPage(IPageInfo pageInfo, Size pageSize) : base()
 		{
-			if (pageInfo == null) {
+			if (pageInfo == null)
+			{
 				throw new ArgumentNullException("pageInfo");
 			}
+
 			PageInfo = pageInfo;
 			Name = "Page";
 			Size = pageSize;
 			exportedItems = new List<IExportColumn>();
 		}
-		
-		
-		public bool IsFirstPage {get;set;}
-		
-		
-		public IPageInfo PageInfo {get;private set;}
-	
-		
-		public bool CanShrink {get;set;}
-		
-		
+
+
+		public bool IsFirstPage { get; set; }
+
+
+		public IPageInfo PageInfo { get; private set; }
+
+
+		public bool CanShrink { get; set; }
+
+
 		public void Accept(IVisitor visitor)
 		{
 			visitor.Visit(this as ExportPage);
 		}
-		
-		
+
+
 		List<IExportColumn> exportedItems;
-		
-		public List<IExportColumn> ExportedItems {
+
+		public List<IExportColumn> ExportedItems
+		{
 			get { return exportedItems; }
 		}
 	}

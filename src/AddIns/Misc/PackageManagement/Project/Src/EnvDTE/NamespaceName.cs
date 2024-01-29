@@ -26,30 +26,32 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: this(GetQualifiedNamespaceName(parentNamespace, name))
 		{
 		}
-		
+
 		static string GetQualifiedNamespaceName(string parentNamespace, string name)
 		{
-			if (String.IsNullOrEmpty(parentNamespace)) {
+			if (String.IsNullOrEmpty(parentNamespace))
+			{
 				return name;
 			}
+
 			return String.Format("{0}.{1}", parentNamespace, name);
 		}
-		
+
 		public NamespaceName(string qualifiedName)
 		{
 			this.QualifiedName = qualifiedName;
 			LastPart = GetLastPartOfNamespace();
 		}
-		
+
 		string GetLastPartOfNamespace()
 		{
 			int index = QualifiedName.LastIndexOf('.');
 			return QualifiedName.Substring(index + 1);
 		}
-		
+
 		public string LastPart { get; private set; }
 		public string QualifiedName { get; private set; }
-		
+
 		public NamespaceName CreateChildNamespaceName(string name)
 		{
 			return new NamespaceName(QualifiedName, name);

@@ -37,15 +37,15 @@ namespace ICSharpCode.UsageDataCollector
 		public StartPageMessage()
 		{
 			InitializeComponent();
-			
+
 			this.SetValueToExtension(HeaderProperty, new LocalizeExtension("AddIns.UsageDataCollector.Title"));
 		}
-		
+
 		void Radio_Checked(object sender, RoutedEventArgs e)
 		{
 			saveButton.IsEnabled = true;
 		}
-		
+
 		void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
 			bool accepted = acceptRadio.IsChecked == true;
@@ -55,10 +55,12 @@ namespace ICSharpCode.UsageDataCollector
 			declinedMessage.IsCollapsed = accepted;
 			Core.PropertyService.Save();
 		}
-		
-		public static readonly DependencyProperty HeaderProperty = HeaderedContentControl.HeaderProperty.AddOwner(typeof(StartPageMessage));
-		
-		public object Header {
+
+		public static readonly DependencyProperty HeaderProperty =
+			HeaderedContentControl.HeaderProperty.AddOwner(typeof(StartPageMessage));
+
+		public object Header
+		{
 			get { return GetValue(HeaderProperty); }
 			set { SetValue(HeaderProperty, value); }
 		}

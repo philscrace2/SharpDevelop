@@ -26,7 +26,7 @@ namespace ICSharpCode.AddInManager2.Model
 		Offline,
 		NuGetRepository
 	}
-	
+
 	/// <summary>
 	/// Extension of AddIn class used in AddInManager internally.
 	/// </summary>
@@ -34,47 +34,28 @@ namespace ICSharpCode.AddInManager2.Model
 	{
 		public const string NuGetPackageIDManifestAttribute = "__nuGetPackageID";
 		public const string NuGetPackageVersionManifestAttribute = "__nuGetPackageVersion";
-		
+
 		private AddIn _addIn;
-		
+
 		public ManagedAddIn(AddIn addIn)
 		{
 			_addIn = addIn;
 			InstallationSource = AddInInstallationSource.Offline;
 		}
-		
-		public bool IsTemporary
-		{
-			get;
-			set;
-		}
-		
-		public bool IsUpdate
-		{
-			get;
-			set;
-		}
-		
-		public Version OldVersion
-		{
-			get;
-			set;
-		}
-		
-		public AddInInstallationSource InstallationSource
-		{
-			get;
-			set;
-		}
-		
+
+		public bool IsTemporary { get; set; }
+
+		public bool IsUpdate { get; set; }
+
+		public Version OldVersion { get; set; }
+
+		public AddInInstallationSource InstallationSource { get; set; }
+
 		public AddIn AddIn
 		{
-			get
-			{
-				return _addIn;
-			}
+			get { return _addIn; }
 		}
-		
+
 		public string LinkedNuGetPackageID
 		{
 			get
@@ -86,11 +67,11 @@ namespace ICSharpCode.AddInManager2.Model
 						return _addIn.Properties[NuGetPackageIDManifestAttribute];
 					}
 				}
-				
+
 				return null;
 			}
 		}
-		
+
 		public string LinkedNuGetPackageVersion
 		{
 			get
@@ -102,7 +83,7 @@ namespace ICSharpCode.AddInManager2.Model
 						return _addIn.Properties[NuGetPackageVersionManifestAttribute];
 					}
 				}
-				
+
 				return null;
 			}
 		}

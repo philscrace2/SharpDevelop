@@ -38,23 +38,23 @@ namespace ICSharpCode.AddInManager2.Model
 		public class PackageMessageLogger : ILogger
 		{
 			IAddInManagerEvents _events = null;
-			
+
 			public PackageMessageLogger(IAddInManagerEvents events)
 			{
 				_events = events;
 			}
-			
+
 			public void Log(MessageLevel level, string message, params object[] args)
 			{
 				_events.OnPackageMessageLogged(new PackageMessageLoggedEventArgs(level, message, args));
 			}
-			
+
 			public FileConflictResolution ResolveFileConflict(string message)
 			{
 				return FileConflictResolution.IgnoreAll;
 			}
 		}
-		
+
 		private NuGetPackageManagerImplementation _packageManager = null;
 		private IPackageRepositories _repositories = null;
 		private IAddInManagerEvents _events = null;
@@ -62,15 +62,16 @@ namespace ICSharpCode.AddInManager2.Model
 		private ILogger _logger = null;
 		private string _packageOutputDirectory;
 
-		public NuGetPackageManager(IPackageRepositories repositories, IAddInManagerEvents events, ISDAddInManagement sdAddInManagement)
+		public NuGetPackageManager(IPackageRepositories repositories, IAddInManagerEvents events,
+			ISDAddInManagement sdAddInManagement)
 		{
 			_repositories = repositories;
 			_events = events;
 			_sdAddInManagement = sdAddInManagement;
 			_packageOutputDirectory = Path.Combine(_sdAddInManagement.ConfigDirectory, "NuGet");
-			
+
 			_logger = new PackageMessageLogger(_events);
-			
+
 			_events.PackageMessageLogged += Events_PackageMessageLogged;
 		}
 
@@ -85,24 +86,18 @@ namespace ICSharpCode.AddInManager2.Model
 
 		public ILogger Logger
 		{
-			get
-			{
-				return _logger;
-			}
+			get { return _logger; }
 		}
-		
+
 		public string PackageOutputDirectory
 		{
-			get
-			{
-				return _packageOutputDirectory;
-			}
+			get { return _packageOutputDirectory; }
 		}
-		
+
 		public IPackageOperationResolver CreateInstallPackageOperationResolver(bool allowPrereleaseVersions)
 		{
 			EnsurePackageManagerInstance();
-			
+
 			return new InstallWalker(
 				_packageManager.LocalRepository,
 				_packageManager.SourceRepository,
@@ -112,25 +107,25 @@ namespace ICSharpCode.AddInManager2.Model
 				allowPrereleaseVersions,
 				DependencyVersion.Lowest);
 		}
-		
+
 		public void ExecuteOperation(PackageOperation operation)
 		{
 			EnsurePackageManagerInstance();
 			_packageManager.ExecuteOperation(operation);
 		}
-		
+
 		public string GetLocalPackageDirectory(IPackage package)
 		{
 			return Path.Combine(PackageOutputDirectory, package.Id + "." + package.Version.ToString());
 		}
-		
+
 		private IPackageManager EnsurePackageManagerInstance()
 		{
 			if (_packageManager != null)
 			{
 				return _packageManager;
 			}
-			
+
 			// Ensure that package directory exists
 			if (!Directory.Exists(_packageOutputDirectory))
 			{
@@ -138,7 +133,8 @@ namespace ICSharpCode.AddInManager2.Model
 			}
 
 			// Create new package manager instance
-			_packageManager = new NuGetPackageManagerImplementation(_repositories.AllRegistered, _packageOutputDirectory, this);
+			_packageManager =
+				new NuGetPackageManagerImplementation(_repositories.AllRegistered, _packageOutputDirectory, this);
 			_packageManager.PackageInstalled += _packageEvents_NuGetPackageInstalled;
 			_packageManager.PackageUninstalled += _packageEvents_NuGetPackageUninstalled;
 			return _packageManager;
@@ -161,23 +157,24 @@ namespace ICSharpCode.AddInManager2.Model
 		{
 			LoggingService.InfoFormatted("[NuGetPackageManager] {0}", e.Message);
 		}
-		
+
 		private class NuGetPackageManagerImplementation : PackageManager
 		{
 			private INuGetPackageManager _internalPackageManager;
-			
-			public NuGetPackageManagerImplementation(IPackageRepository sourceRepository, string path, INuGetPackageManager internalPackageManager)
+
+			public NuGetPackageManagerImplementation(IPackageRepository sourceRepository, string path,
+				INuGetPackageManager internalPackageManager)
 				: base(sourceRepository, path)
 			{
 				_internalPackageManager = internalPackageManager;
 			}
-			
+
 			public void ExecuteOperation(PackageOperation operation)
 			{
 				// Allow to call this method from outside of the class
 				base.Execute(operation);
 			}
-			
+
 			public override void UninstallPackage(IPackage package, bool forceRemove, bool removeDependencies)
 			{
 				base.UninstallPackage(package, forceRemove, removeDependencies);

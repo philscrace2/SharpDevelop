@@ -24,17 +24,17 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class PackageManagementThread : IThread
 	{
 		Thread thread;
-		
+
 		public PackageManagementThread(ThreadStart threadStart)
 		{
 			thread = new Thread(threadStart);
 		}
-		
+
 		public void Start()
 		{
 			thread.Start();
 		}
-		
+
 		public bool Join(int milliescondsTimeout)
 		{
 			return thread.Join(milliescondsTimeout);

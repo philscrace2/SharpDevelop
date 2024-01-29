@@ -27,17 +27,17 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		IDocument document;
 		IDocumentView documentView;
-		
+
 		internal EditPoint(string fileName, TextLocation location, IDocumentLoader documentLoader)
 			: base(fileName, location, documentLoader)
 		{
 		}
-		
+
 		public void ReplaceText(object pointOrCount, string text, int flags)
 		{
 			ReplaceText((TextPoint)pointOrCount, text, (global::EnvDTE.vsEPReplaceTextOptions)flags);
 		}
-		
+
 		void ReplaceText(TextPoint endPoint, string text, global::EnvDTE.vsEPReplaceTextOptions textFormatOptions)
 		{
 			OpenDocument();
@@ -46,23 +46,23 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			document.Replace(offset, endOffset - offset, text);
 			IndentReplacedText(text);
 		}
-		
+
 		void OpenDocument()
 		{
 			documentView = documentLoader.LoadDocumentView(fileName);
 			document = documentView.Document;
 		}
-		
+
 		int GetStartOffset()
 		{
 			return document.PositionToOffset(Line, LineCharOffset);
 		}
-		
+
 		int GetEndOffset(TextPoint endPoint)
 		{
 			return document.PositionToOffset(endPoint.Line, endPoint.LineCharOffset);
 		}
-		
+
 		/// <summary>
 		/// Indents all lines apart from the first one since it is assumed
 		/// that the first line had the correct indentation.
@@ -70,16 +70,17 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		void IndentReplacedText(string text)
 		{
 			int lineCount = GetLineCount(text);
-			if (lineCount > 1) {
+			if (lineCount > 1)
+			{
 				documentView.IndentLines(Line + 1, Line + lineCount);
 			}
 		}
-		
+
 		int GetLineCount(string text)
 		{
 			return text.Split('\n').Length;
 		}
-		
+
 		public void Insert(string text)
 		{
 			throw new NotImplementedException();

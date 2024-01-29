@@ -25,6 +25,6 @@ namespace ICSharpCode.Reporting.Exporter.Visitors
 	/// </summary>
 	public interface IAcceptor
 	{
-		 void Accept(IVisitor visitor);
+		void Accept(IVisitor visitor);
 	}
 }

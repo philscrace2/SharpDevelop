@@ -32,26 +32,27 @@ namespace ICSharpCode.PackageManagement.Design
 			AddUnselectedProject("ICSharpCode.SharpDevelop.Widgets");
 			AddSelectedProject("NRefactory");
 		}
-		
+
 		void AddSelectedProject(string name)
 		{
 			AddProject(name, selected: true);
 		}
-		
+
 		void AddUnselectedProject(string name)
 		{
 			AddProject(name, selected: false);
 		}
-		
+
 		void AddProject(string name, bool selected)
 		{
-			var project = new FakeSelectedProject() {
+			var project = new FakeSelectedProject()
+			{
 				Name = name,
 				IsSelected = selected
 			};
 			Projects.Add(project);
 		}
-		
+
 		public ObservableCollection<IPackageManagementSelectedProject> Projects { get; private set; }
 	}
 }

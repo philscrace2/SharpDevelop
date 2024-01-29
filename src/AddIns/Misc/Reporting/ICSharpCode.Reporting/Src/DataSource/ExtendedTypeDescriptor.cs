@@ -42,9 +42,9 @@ namespace ICSharpCode.Reporting.DataSource
 				return PropertyDescriptorCollection.Empty;
 
 			PropertyDescriptorCollection pdc;
-			if ((pdc = (PropertyDescriptorCollection) collections[memberType]) != null)
+			if ((pdc = (PropertyDescriptorCollection)collections[memberType]) != null)
 				return (pdc);
- 
+
 			PropertyInfo[] allProps = memberType.GetProperties();
 			int l = allProps.Length;
 			for (int i = 0; i < allProps.Length; i++)
@@ -58,18 +58,19 @@ namespace ICSharpCode.Reporting.DataSource
 			}
 
 			var descriptors = new PropertyDescriptor[l];
-			
+
 			int j = 0;
-			foreach(PropertyInfo pinfo in allProps)
+			foreach (PropertyInfo pinfo in allProps)
 			{
 				if (pinfo != null)
 				{
 					descriptors[j++] = new ExtendedPropertyDescriptor(pinfo.Name, memberType, pinfo.PropertyType);
-				}		
-			}								 
+				}
+			}
+
 			var result = new PropertyDescriptorCollection(descriptors);
 			collections.Add(memberType, result);
-			return result;			
+			return result;
 		}
 	}
 }

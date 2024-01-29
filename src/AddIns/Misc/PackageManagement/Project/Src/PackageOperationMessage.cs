@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement
 	{
 		string message;
 		object[] args;
-		
+
 		public PackageOperationMessage(
 			MessageLevel level,
 			string message,
@@ -35,9 +35,9 @@ namespace ICSharpCode.PackageManagement
 			this.message = message;
 			this.args = args;
 		}
-		
+
 		public MessageLevel Level { get; private set; }
-		
+
 		public override string ToString()
 		{
 			return String.Format(message, args);

@@ -26,20 +26,21 @@ namespace ICSharpCode.Reporting.Interfaces
 	/// <summary>
 	/// Description of IPrintObject.
 	/// </summary>
-	public interface IReportObject {
-		string Name{get;set;}
-		Size Size {get;set;}
-		Point Location {get;set;}
-		Color ForeColor {get;set;}
-		Color BackColor {get;set;}
-		Color FrameColor{get;set;}
-		bool DrawBorder {get;set;}
-		bool CanGrow {get;set;}
+	public interface IReportObject
+	{
+		string Name { get; set; }
+		Size Size { get; set; }
+		Point Location { get; set; }
+		Color ForeColor { get; set; }
+		Color BackColor { get; set; }
+		Color FrameColor { get; set; }
+		bool DrawBorder { get; set; }
+		bool CanGrow { get; set; }
 	}
-	
-	
-	public interface IPrintableObject:IReportObject {
+
+
+	public interface IPrintableObject : IReportObject
+	{
 		IExportColumn CreateExportColumn();
 	}
-	
 }

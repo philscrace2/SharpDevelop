@@ -38,7 +38,7 @@ namespace ICSharpCode.PackageManagement
 			: base(project, packageManagementEvents)
 		{
 		}
-		
+
 		public bool UpdateDependencies { get; set; }
 
 		protected override void ExecuteCore()
@@ -67,4 +67,3 @@ namespace ICSharpCode.PackageManagement
 		}
 	}
 }
-

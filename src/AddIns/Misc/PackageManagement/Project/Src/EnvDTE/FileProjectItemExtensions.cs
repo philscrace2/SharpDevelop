@@ -29,17 +29,17 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		{
 			return !String.IsNullOrEmpty(projectItem.DependentUpon);
 		}
-		
+
 		public static bool IsDependentUpon(this FileProjectItem projectItem, FileProjectItem otherProjectItem)
 		{
 			return projectItem.DependentUpon == otherProjectItem.Include;
 		}
-		
+
 		public static bool IsDependentUponFileName(this FileProjectItem projectItem, string fileName)
 		{
 			return FileUtility.IsEqualFileName(projectItem.GetDependentUponFileName(), fileName);
 		}
-		
+
 		public static string GetDependentUponFileName(this FileProjectItem projectItem)
 		{
 			string directory = Path.GetDirectoryName(projectItem.FileName);

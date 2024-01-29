@@ -28,38 +28,40 @@ namespace ICSharpCode.PackageManagement
 	{
 		readonly CodeGenerator codeGenerator;
 		readonly IMessageLoop mainThread;
-		
+
 		public ThreadSafeCodeGenerator(CodeGenerator codeGenerator)
 		{
 			this.codeGenerator = codeGenerator;
 			this.mainThread = SD.MainThread;
 		}
-		
+
 		public void AddImport(FileName fileName, string name)
 		{
 			InvokeIfRequired(() => codeGenerator.AddImport(fileName, name));
 		}
-		
+
 		public void MakePartial(ITypeDefinition typeDefinition)
 		{
 			InvokeIfRequired(() => codeGenerator.MakePartial(typeDefinition));
 		}
-		
+
 		void InvokeIfRequired(Action action)
 		{
 			mainThread.InvokeIfRequired(action);
 		}
-		
-		public void AddFieldAtStart(ITypeDefinition typeDefinition, Accessibility accessibility, IType fieldType, string name)
+
+		public void AddFieldAtStart(ITypeDefinition typeDefinition, Accessibility accessibility, IType fieldType,
+			string name)
 		{
 			InvokeIfRequired(() => codeGenerator.AddFieldAtStart(typeDefinition, accessibility, fieldType, name));
 		}
-		
-		public void AddMethodAtStart(ITypeDefinition typeDefinition, Accessibility accessibility, IType returnType, string name)
+
+		public void AddMethodAtStart(ITypeDefinition typeDefinition, Accessibility accessibility, IType returnType,
+			string name)
 		{
 			InvokeIfRequired(() => codeGenerator.AddMethodAtStart(typeDefinition, accessibility, returnType, name));
 		}
-		
+
 		public void MakeVirtual(IMember member)
 		{
 			InvokeIfRequired(() => codeGenerator.MakeVirtual(member));

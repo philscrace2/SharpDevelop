@@ -22,7 +22,6 @@ using System.ComponentModel.Design.Serialization;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
-
 using ICSharpCode.Core;
 using ICSharpCode.Reporting.Items;
 using ICSharpCode.SharpDevelop;
@@ -38,28 +37,33 @@ namespace ICSharpCode.Reporting.Addin.DesignerBinding
 		readonly IDesignerLoaderHost host;
 		readonly Stream stream;
 		readonly IDesignerGenerator generator;
-		
-		public InternalReportLoader(IDesignerLoaderHost host,IDesignerGenerator generator, Stream stream)
+
+		public InternalReportLoader(IDesignerLoaderHost host, IDesignerGenerator generator, Stream stream)
 		{
-			if (host == null) {
+			if (host == null)
+			{
 				throw new ArgumentNullException("host");
 			}
-		
-			if (generator == null) {
+
+			if (generator == null)
+			{
 				throw new ArgumentNullException("generator");
 			}
-			if (stream == null) {
+
+			if (stream == null)
+			{
 				throw new ArgumentNullException("stream");
 			}
+
 			this.host = host;
 			this.generator = generator;
 			this.stream = stream;
 		}
-		
+
 		public ReportModel LoadOrCreateReport()
 		{
 			Application.UseWaitCursor = true;
-			var rootComponent = host.CreateComponent(typeof(RootReportModel),"RootReportModel");
+			var rootComponent = host.CreateComponent(typeof(RootReportModel), "RootReportModel");
 			var rootControl = rootComponent as RootReportModel;
 			UpdateStatusbar();
 			var reportModel = CreateNamedSurface();
@@ -67,25 +71,31 @@ namespace ICSharpCode.Reporting.Addin.DesignerBinding
 			Application.UseWaitCursor = false;
 			return reportModel;
 		}
-		
-		
-		void UpdateStatusbar ()
+
+
+		void UpdateStatusbar()
 		{
 			string message;
-			if (generator.ViewContent.PrimaryFile.IsDirty) {
-				message = String.Format(CultureInfo.CurrentCulture,"Create Report <{0}> ...",Path.GetFileName(generator.ViewContent.PrimaryFile.FileName));
-			} else {
-				message = String.Format(CultureInfo.CurrentCulture,"Load  Report <{0}> ...",Path.GetFileName(generator.ViewContent.PrimaryFile.FileName));
+			if (generator.ViewContent.PrimaryFile.IsDirty)
+			{
+				message = String.Format(CultureInfo.CurrentCulture, "Create Report <{0}> ...",
+					Path.GetFileName(generator.ViewContent.PrimaryFile.FileName));
 			}
+			else
+			{
+				message = String.Format(CultureInfo.CurrentCulture, "Load  Report <{0}> ...",
+					Path.GetFileName(generator.ViewContent.PrimaryFile.FileName));
+			}
+
 			SD.StatusBar.SetMessage(message);
 		}
-		
-		
-		ReportModel CreateNamedSurface ()
+
+
+		ReportModel CreateNamedSurface()
 		{
 			var deserializer = new ReportDefinitionDeserializer();
 			var document = ReportDefinitionDeserializer.LoadXmlFromStream(stream);
-			var reportModel = deserializer.CreateModelFromXml(document.DocumentElement,host);
+			var reportModel = deserializer.CreateModelFromXml(document.DocumentElement, host);
 			return reportModel;
 		}
 	}

@@ -24,21 +24,23 @@ namespace ICSharpCode.PackageManagement
 	public partial class FileConflictView : Window
 	{
 		FileConflictViewModel viewModel;
-		
+
 		public FileConflictView()
 		{
 			InitializeComponent();
 		}
-		
-		public FileConflictViewModel ViewModel {
+
+		public FileConflictViewModel ViewModel
+		{
 			get { return viewModel; }
-			set {
+			set
+			{
 				viewModel = value;
 				viewModel.Close += CloseView;
 				DataContext = viewModel;
 			}
 		}
-		
+
 		void CloseView(object sender, EventArgs e)
 		{
 			DialogResult = true;

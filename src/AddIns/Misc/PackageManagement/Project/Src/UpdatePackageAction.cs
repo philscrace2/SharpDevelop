@@ -32,10 +32,10 @@ namespace ICSharpCode.PackageManagement
 			UpdateDependencies = true;
 			UpdateIfPackageDoesNotExistInProject = true;
 		}
-		
+
 		public bool UpdateDependencies { get; set; }
 		public bool UpdateIfPackageDoesNotExistInProject { get; set; }
-		
+
 		protected override IEnumerable<PackageOperation> GetPackageOperations()
 		{
 			var installAction = Project.CreateInstallPackageAction();
@@ -43,23 +43,27 @@ namespace ICSharpCode.PackageManagement
 			installAction.IgnoreDependencies = !UpdateDependencies;
 			return Project.GetInstallPackageOperations(Package, installAction);
 		}
-		
+
 		protected override void ExecuteCore()
 		{
-			if (ShouldUpdatePackage()) {
-				using (IOpenPackageReadMeMonitor monitor = CreateOpenPackageReadMeMonitor(Package.Id)) {
+			if (ShouldUpdatePackage())
+			{
+				using (IOpenPackageReadMeMonitor monitor = CreateOpenPackageReadMeMonitor(Package.Id))
+				{
 					Project.UpdatePackage(Package, this);
 					monitor.OpenReadMeFile();
 					OnParentPackageInstalled();
 				}
 			}
 		}
-		
+
 		bool ShouldUpdatePackage()
 		{
-			if (!UpdateIfPackageDoesNotExistInProject) {
+			if (!UpdateIfPackageDoesNotExistInProject)
+			{
 				return PackageIdExistsInProject();
 			}
+
 			return true;
 		}
 	}

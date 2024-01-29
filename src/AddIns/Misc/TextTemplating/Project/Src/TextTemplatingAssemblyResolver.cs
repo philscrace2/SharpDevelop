@@ -26,14 +26,14 @@ namespace ICSharpCode.TextTemplating
 	{
 		ITextTemplatingAssemblyPathResolver assemblyPathResolver;
 		ITextTemplatingHostAppDomainAssemblyResolver appDomainAssemblyResolver;
-		
+
 		public TextTemplatingAssemblyResolver(IProject project)
 			: this(
 				new TextTemplatingAssemblyPathResolver(project),
 				new TextTemplatingHostAppDomainAssemblyResolver())
 		{
 		}
-		
+
 		public TextTemplatingAssemblyResolver(
 			ITextTemplatingAssemblyPathResolver assemblyPathResolver,
 			ITextTemplatingHostAppDomainAssemblyResolver appDomainAssemblyResolver)
@@ -41,12 +41,12 @@ namespace ICSharpCode.TextTemplating
 			this.assemblyPathResolver = assemblyPathResolver;
 			this.appDomainAssemblyResolver = appDomainAssemblyResolver;
 		}
-		
+
 		public string ResolvePath(string assemblyReference)
 		{
 			return assemblyPathResolver.ResolvePath(assemblyReference);
 		}
-		
+
 		public void Dispose()
 		{
 			appDomainAssemblyResolver.Dispose();

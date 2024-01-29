@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.Generic;
-
 using NuGet;
 
 namespace ICSharpCode.PackageManagement.Scripting
@@ -28,7 +27,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 		ISolutionPackageRepository solutionPackageRepository;
 		IPackageScriptFactory scriptFactory;
 		List<IPackageScript> scripts;
-		
+
 		public PackageInitializationScripts(
 			ISolutionPackageRepository solutionPackageRepository,
 			IPackageScriptFactory scriptFactory)
@@ -36,44 +35,49 @@ namespace ICSharpCode.PackageManagement.Scripting
 			this.solutionPackageRepository = solutionPackageRepository;
 			this.scriptFactory = scriptFactory;
 		}
-		
+
 		public void Run(IPackageScriptSession session)
 		{
-			foreach (IPackageScript script in GetScripts()) {
+			foreach (IPackageScript script in GetScripts())
+			{
 				script.Run(session);
 			}
 		}
-		
+
 		List<IPackageScript> GetScripts()
 		{
-			if (scripts == null) {
+			if (scripts == null)
+			{
 				CreatePackageInitializationScripts();
 			}
+
 			return scripts;
 		}
-		
+
 		void CreatePackageInitializationScripts()
 		{
 			scripts = new List<IPackageScript>();
-			foreach (IPackage package in GetPackages()) {
+			foreach (IPackage package in GetPackages())
+			{
 				IPackageScript script = CreateInitializeScript(package);
-				if (script.Exists()) {
+				if (script.Exists())
+				{
 					scripts.Add(script);
 				}
 			}
 		}
-		
+
 		IEnumerable<IPackage> GetPackages()
 		{
 			return solutionPackageRepository.GetPackagesByDependencyOrder();
 		}
-		
+
 		IPackageScript CreateInitializeScript(IPackage package)
 		{
 			string packageInstallDirectory = solutionPackageRepository.GetInstallPath(package);
 			return scriptFactory.CreatePackageInitializeScript(package, packageInstallDirectory);
 		}
-		
+
 		public bool Any()
 		{
 			List<IPackageScript> scripts = GetScripts();

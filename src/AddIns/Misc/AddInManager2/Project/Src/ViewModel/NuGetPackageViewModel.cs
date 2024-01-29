@@ -35,13 +35,13 @@ namespace ICSharpCode.AddInManager2.ViewModel
 	{
 		private IPackage _package;
 		private IEnumerable<PackageOperation> _packageOperations = new PackageOperation[0];
-		
+
 		public NuGetPackageViewModel(IPackage package)
 			: base()
 		{
 			this._package = package;
 		}
-		
+
 		public NuGetPackageViewModel(IAddInManagerServices services, IPackage package)
 			: base(services)
 		{
@@ -50,58 +50,37 @@ namespace ICSharpCode.AddInManager2.ViewModel
 
 		public IPackage Package
 		{
-			get
-			{
-				return _package;
-			}
+			get { return _package; }
 		}
-		
+
 		public override string Name
 		{
-			get
-			{
-				return _package.Id;
-			}
+			get { return _package.Id; }
 		}
 
 		public override Uri LicenseUrl
 		{
-			get
-			{
-				return _package.LicenseUrl;
-			}
+			get { return _package.LicenseUrl; }
 		}
 
 		public override Uri ProjectUrl
 		{
-			get
-			{
-				return _package.ProjectUrl;
-			}
+			get { return _package.ProjectUrl; }
 		}
 
 		public override Uri ReportAbuseUrl
 		{
-			get
-			{
-				return _package.ReportAbuseUrl;
-			}
+			get { return _package.ReportAbuseUrl; }
 		}
-		
+
 		public override bool IsOffline
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
-		
+
 		public override bool IsPreinstalled
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
 
 		public override bool IsAdded
@@ -109,33 +88,34 @@ namespace ICSharpCode.AddInManager2.ViewModel
 			get
 			{
 				AddIn installedAddIn = AddInManager.Setup.GetAddInForNuGetPackage(_package, true);
-				
+
 //				if (installedAddIn != null)
 //					LoggingService.DebugFormatted("isAdded: installedAddIn.Action = {0}", installedAddIn.Action);
 //				else
 //					LoggingService.DebugFormatted("isAdded: installedAddIn for {0} is null", _package.Id);
-				
-				return (installedAddIn != null) && ((installedAddIn.Action == AddInAction.Install) || (installedAddIn.Action == AddInAction.Update));
+
+				return (installedAddIn != null) && ((installedAddIn.Action == AddInAction.Install) ||
+				                                    (installedAddIn.Action == AddInAction.Update));
 			}
 		}
-		
+
 		public override bool IsUpdate
 		{
 			get
 			{
 				AddIn installedAddIn = AddInManager.Setup.GetAddInForNuGetPackage(_package);
-				
+
 //				if (installedAddIn != null)
 //					LoggingService.DebugFormatted("isUpdate: installed {0}, package {1}", installedAddIn.Version.ToString(), _package.Version.Version.ToString());
 //				else
 //					LoggingService.DebugFormatted("isUpdate: installedAddIn for {0} is null", _package.Id);
-				
+
 				return (installedAddIn != null)
-					&& AddInManager.Setup.IsAddInInstalled(installedAddIn)
-					&& (AddInManager.Setup.CompareAddInToPackageVersion(installedAddIn, _package) < 0);
+				       && AddInManager.Setup.IsAddInInstalled(installedAddIn)
+				       && (AddInManager.Setup.CompareAddInToPackageVersion(installedAddIn, _package) < 0);
 			}
 		}
-		
+
 		public override bool IsInstalled
 		{
 			get
@@ -144,39 +124,27 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				return (installedAddIn != null) && AddInManager.Setup.IsAddInInstalled(installedAddIn);
 			}
 		}
-		
+
 		public override bool IsInstallable
 		{
-			get
-			{
-				return true;
-			}
+			get { return true; }
 		}
-		
+
 		public override bool IsUninstallable
 		{
-			get
-			{
-				return true;
-			}
+			get { return true; }
 		}
-		
+
 		public override bool IsDisablingPossible
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
-		
+
 		public override bool IsEnabled
 		{
-			get
-			{
-				return true;
-			}
+			get { return true; }
 		}
-		
+
 		public override bool IsRemoved
 		{
 			get
@@ -203,40 +171,29 @@ namespace ICSharpCode.AddInManager2.ViewModel
 						return firstSet.Dependencies.Select(d => new AddInDependency(d));
 					}
 				}
+
 				return null;
 			}
 		}
 
 		public override IEnumerable<string> Authors
 		{
-			get
-			{
-				return _package.Authors;
-			}
+			get { return _package.Authors; }
 		}
 
 		public override bool HasDownloadCount
 		{
-			get
-			{
-				return _package.DownloadCount >= 0;
-			}
+			get { return _package.DownloadCount >= 0; }
 		}
 
 		public override string Id
 		{
-			get
-			{
-				return _package.Id;
-			}
+			get { return _package.Id; }
 		}
 
 		public override Uri IconUrl
 		{
-			get
-			{
-				return _package.IconUrl;
-			}
+			get { return _package.IconUrl; }
 		}
 
 		public override string Summary
@@ -283,7 +240,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override Version OldVersion
 		{
 			get
@@ -293,7 +250,8 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				{
 					if (installedAddIn.Properties.Contains(ManagedAddIn.NuGetPackageVersionManifestAttribute))
 					{
-						return new Version(installedAddIn.Properties[ManagedAddIn.NuGetPackageVersionManifestAttribute]);
+						return new Version(
+							installedAddIn.Properties[ManagedAddIn.NuGetPackageVersionManifestAttribute]);
 					}
 					else
 					{
@@ -306,29 +264,20 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override bool ShowSplittedVersions
 		{
-			get
-			{
-				return IsUpdate;
-			}
+			get { return IsUpdate; }
 		}
 
 		public override int DownloadCount
 		{
-			get
-			{
-				return _package.DownloadCount;
-			}
+			get { return _package.DownloadCount; }
 		}
 
 		public override string Description
 		{
-			get
-			{
-				return _package.Description;
-			}
+			get { return _package.Description; }
 		}
 
 		public override DateTime? LastUpdated
@@ -340,13 +289,10 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				return null;
 			}
 		}
-		
+
 		public override bool HasDependencyConflicts
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
 
 		public override void AddPackage()
@@ -354,7 +300,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 			ClearReportedMessages();
 			TryInstallingPackage();
 		}
-		
+
 		public override void UpdatePackage()
 		{
 			ClearReportedMessages();
@@ -385,16 +331,19 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					foreach (var packageOperation in operationsForDependencies)
 					{
 						addInNames += "\t " +
-							packageOperation.Package.Id + " " + packageOperation.Package.Version.ToString() + Environment.NewLine;
+						              packageOperation.Package.Id + " " + packageOperation.Package.Version.ToString() +
+						              Environment.NewLine;
 					}
+
 					if (!MessageService.AskQuestionFormatted(
-						"${res:AddInManager.Title}", "${res:AddInManager2.InstallDependentMessage}", _package.Id, addInNames))
+						    "${res:AddInManager.Title}", "${res:AddInManager2.InstallDependentMessage}", _package.Id,
+						    addInNames))
 					{
 						return false;
 					}
 				}
 			}
-			
+
 			// Ask for license acceptance
 			IEnumerable<IPackage> packages = GetPackagesRequiringLicenseAcceptance();
 			if (packages.Any())
@@ -404,6 +353,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				AddInManager.Events.OnAcceptLicenses(acceptLicenses);
 				return acceptLicenses.IsAccepted;
 			}
+
 			return true;
 		}
 
@@ -428,6 +378,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					packages.Add(operation.Package);
 				}
 			}
+
 			return packages;
 		}
 
@@ -493,44 +444,44 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				LoggingService.Error("Error when trying to uninstall package.", ex);
 			}
 		}
-		
+
 		public void UninstallPackage()
 		{
 			ClearReportedMessages();
-			
+
 			AddIn installedAddIn = AddInManager.Setup.GetAddInForNuGetPackage(_package);
 			if (installedAddIn != null)
 			{
 				AddInManager.Setup.UninstallAddIn(installedAddIn);
 			}
 		}
-		
+
 		public override void CancelInstallation()
 		{
 			ClearReportedMessages();
-			
+
 			AddIn addIn = AddInManager.Setup.GetAddInForNuGetPackage(_package, true);
 			if (addIn != null)
 			{
 				AddInManager.Setup.CancelInstallation(addIn);
 			}
 		}
-		
+
 		public override void CancelUpdate()
 		{
 			ClearReportedMessages();
-			
+
 			AddIn addIn = AddInManager.Setup.GetAddInForNuGetPackage(_package, true);
 			if (addIn != null)
 			{
 				AddInManager.Setup.CancelUpdate(addIn);
 			}
 		}
-		
+
 		public override void CancelUninstallation()
 		{
 			ClearReportedMessages();
-			
+
 			AddIn addIn = AddInManager.Setup.GetAddInForNuGetPackage(_package);
 			if (addIn != null)
 			{

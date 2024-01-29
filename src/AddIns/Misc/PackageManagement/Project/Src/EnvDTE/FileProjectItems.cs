@@ -33,28 +33,30 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		ProjectItem projectItem;
 		IPackageManagementFileService fileService;
-		
+
 		public FileProjectItems(ProjectItem projectItem)
 			: base((Project)projectItem.ContainingProject, projectItem)
 		{
 			this.projectItem = projectItem;
 			this.fileService = Project.FileService;
 		}
-		
+
 		protected override IEnumerable<global::EnvDTE.ProjectItem> GetProjectItems()
 		{
 			return GetChildDependentProjectItems().ToList();
 		}
-		
+
 		IEnumerable<ProjectItem> GetChildDependentProjectItems()
 		{
-			foreach (SD.FileProjectItem fileProjectItem in GetFileProjectItems()) {
-				if (fileProjectItem.IsDependentUpon(projectItem.MSBuildProjectItem)) {
+			foreach (SD.FileProjectItem fileProjectItem in GetFileProjectItems())
+			{
+				if (fileProjectItem.IsDependentUpon(projectItem.MSBuildProjectItem))
+				{
 					yield return new ProjectItem(Project, fileProjectItem);
 				}
 			}
 		}
-		
+
 		IEnumerable<SD.FileProjectItem> GetFileProjectItems()
 		{
 			return Project
@@ -63,18 +65,19 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 				.Where(item => item is SD.FileProjectItem)
 				.Select(item => (SD.FileProjectItem)item);
 		}
-		
+
 		protected override ProjectItem AddFileProjectItemToProject(string fileName)
 		{
 			return AddFileProjectItemWithDependent(fileName);
 		}
-		
+
 		ProjectItem AddFileProjectItemWithDependent(string fileName)
 		{
 			return Project.AddFileProjectItemWithDependentUsingFullPath(fileName, projectItem.Name);
 		}
-		
-		public override string Kind {
+
+		public override string Kind
+		{
 			get { return global::EnvDTE.Constants.vsProjectItemKindPhysicalFile; }
 		}
 	}

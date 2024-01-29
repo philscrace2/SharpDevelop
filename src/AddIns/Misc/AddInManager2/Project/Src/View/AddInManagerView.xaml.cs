@@ -28,10 +28,10 @@ namespace ICSharpCode.AddInManager2.View
 		public AddInManagerView()
 		{
 			InitializeComponent();
-			
+
 			ICSharpCode.SharpDevelop.Gui.FormLocationHelper.ApplyWindow(this, "AddInManager2.WindowBounds", true);
 		}
-		
+
 		/// <summary>
 		/// Creates a new <see cref="ICSharpCode.AddInManager2.View.AddInManagerView"/> instance.
 		/// </summary>
@@ -43,15 +43,12 @@ namespace ICSharpCode.AddInManager2.View
 				Owner = SD.Workbench.MainWindow
 			};
 		}
-		
+
 		public AddInManagerViewModel ViewModel
 		{
-			get
-			{
-				return DataContext as AddInManagerViewModel;
-			}
+			get { return DataContext as AddInManagerViewModel; }
 		}
-		
+
 		public void Dispose()
 		{
 			var viewModel = DataContext as AddInManagerViewModel;

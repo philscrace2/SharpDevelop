@@ -30,26 +30,32 @@ namespace MSHelpSystem.Core
 		Help3Environment()
 		{
 		}
-		
+
 		public static bool IsHelp3ProtocolRegistered
 		{
-			get {
-				try {
-					RegistryKey hkcr = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry64).OpenSubKey(@"MS-XHelp\shell\open\command", false);
+			get
+			{
+				try
+				{
+					RegistryKey hkcr = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry64)
+						.OpenSubKey(@"MS-XHelp\shell\open\command", false);
 					string helpLibAgent = (string)hkcr.GetValue("", string.Empty);
 					hkcr.Close();
 					return (!string.IsNullOrEmpty(helpLibAgent));
 				}
-				catch (Exception ex) {
+				catch (Exception ex)
+				{
 					LoggingService.Error(string.Format("HelpViewer: {0}", ex.ToString()));
 				}
+
 				return false;
 			}
 		}
 
 		public static bool IsLocalStoreInitialized
 		{
-			get {
+			get
+			{
 				string localStore = LocalStore;
 				return (!string.IsNullOrEmpty(localStore) && Directory.Exists(localStore));
 			}
@@ -57,16 +63,21 @@ namespace MSHelpSystem.Core
 
 		public static string LocalStore
 		{
-			get {
-				try {
-					RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey(@"SOFTWARE\Microsoft\Help\v1.0", false);
+			get
+			{
+				try
+				{
+					RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+						.OpenSubKey(@"SOFTWARE\Microsoft\Help\v1.0", false);
 					string localStore = (string)hklm.GetValue("LocalStore", string.Empty);
 					hklm.Close();
 					return localStore;
 				}
-				catch (Exception ex) {
+				catch (Exception ex)
+				{
 					LoggingService.Error(string.Format("HelpViewer: {0}", ex.ToString()));
 				}
+
 				return string.Empty;
 			}
 		}
@@ -78,28 +89,34 @@ namespace MSHelpSystem.Core
 
 		public static string AppRoot
 		{
-			get {
-				try {
-					RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64).OpenSubKey(@"SOFTWARE\Microsoft\Help\v1.0", false);
+			get
+			{
+				try
+				{
+					RegistryKey hklm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64)
+						.OpenSubKey(@"SOFTWARE\Microsoft\Help\v1.0", false);
 					string appRoot = (string)hklm.GetValue("AppRoot", string.Empty);
 					hklm.Close();
 					return appRoot;
 				}
-				catch (Exception ex) {
+				catch (Exception ex)
+				{
 					LoggingService.Error(string.Format("HelpViewer: {0}", ex.ToString()));
 				}
+
 				return string.Empty;
 			}
 		}
 
 		public static string ManifestFolder
 		{
-			get {
+			get
+			{
 				string manifestFolder = LocalStore;
 				if (string.IsNullOrEmpty(manifestFolder)) return string.Empty;
 				manifestFolder = System.IO.Path.Combine(manifestFolder, "manifest");
 				if (Directory.Exists(manifestFolder)) return manifestFolder;
-					else return string.Empty;
+				else return string.Empty;
 			}
 		}
 
@@ -107,14 +124,23 @@ namespace MSHelpSystem.Core
 		{
 			get { return HelpClientWatcher.IsLocalHelp; }
 		}
-		
+
 		public static string GetHttpFromMsXHelp(string helpUrl)
 		{
-			if (!HelpLibraryAgent.Start()) { return helpUrl; }
-			if (!helpUrl.StartsWith("ms-xhelp://?")) { return helpUrl; }
+			if (!HelpLibraryAgent.Start())
+			{
+				return helpUrl;
+			}
+
+			if (!helpUrl.StartsWith("ms-xhelp://?"))
+			{
+				return helpUrl;
+			}
+
 			return string.Format(
 				@"http://127.0.0.1:{0}/help/{1}-{2}/ms.help?{3}",
-				HelpLibraryAgent.PortNumber, NativeMethods.GetSessionId(), HelpLibraryAgent.ProcessId, helpUrl.Replace("ms-xhelp://?", "")
+				HelpLibraryAgent.PortNumber, NativeMethods.GetSessionId(), HelpLibraryAgent.ProcessId,
+				helpUrl.Replace("ms-xhelp://?", "")
 			);
 		}
 	}

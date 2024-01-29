@@ -24,17 +24,17 @@ namespace ICSharpCode.PackageManagement
 	public class PackageManagementLogger : ILogger
 	{
 		IPackageManagementEvents packageManagementEvents;
-		
+
 		public PackageManagementLogger(IPackageManagementEvents packageManagementEvents)
 		{
 			this.packageManagementEvents = packageManagementEvents;
 		}
-		
+
 		public void Log(MessageLevel level, string message, params object[] args)
 		{
 			packageManagementEvents.OnPackageOperationMessageLogged(level, message, args);
 		}
-		
+
 		public FileConflictResolution ResolveFileConflict(string message)
 		{
 			return packageManagementEvents.OnResolveFileConflict(message);

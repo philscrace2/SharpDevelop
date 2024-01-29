@@ -19,7 +19,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-
 using ICSharpCode.PackageManagement.Scripting;
 using NuGet;
 
@@ -33,7 +32,7 @@ namespace ICSharpCode.PackageManagement
 		ManagePackagesViewTitle viewTitle;
 		string message;
 		bool hasError;
-		
+
 		public ManagePackagesViewModel(
 			PackagesViewModels packagesViewModels,
 			ManagePackagesViewTitle viewTitle,
@@ -44,75 +43,84 @@ namespace ICSharpCode.PackageManagement
 			this.viewTitle = viewTitle;
 			this.packageManagementEvents = packageManagementEvents;
 			this.userPrompts = userPrompts;
-			
+
 			packageManagementEvents.PackageOperationError += PackageOperationError;
 			packageManagementEvents.PackageOperationsStarting += PackageOperationsStarting;
-			
+
 			packagesViewModels.ReadPackages();
 		}
-		
-		public AvailablePackagesViewModel AvailablePackagesViewModel {
+
+		public AvailablePackagesViewModel AvailablePackagesViewModel
+		{
 			get { return packagesViewModels.AvailablePackagesViewModel; }
 		}
-		
-		public InstalledPackagesViewModel InstalledPackagesViewModel {
+
+		public InstalledPackagesViewModel InstalledPackagesViewModel
+		{
 			get { return packagesViewModels.InstalledPackagesViewModel; }
 		}
-		
-		public UpdatedPackagesViewModel UpdatedPackagesViewModel {
+
+		public UpdatedPackagesViewModel UpdatedPackagesViewModel
+		{
 			get { return packagesViewModels.UpdatedPackagesViewModel; }
 		}
-		
-		public RecentPackagesViewModel RecentPackagesViewModel {
+
+		public RecentPackagesViewModel RecentPackagesViewModel
+		{
 			get { return packagesViewModels.RecentPackagesViewModel; }
 		}
-		
-		public string Title {
+
+		public string Title
+		{
 			get { return viewTitle.Title; }
 		}
-		
+
 		public void Dispose()
 		{
 			packagesViewModels.Dispose();
 			userPrompts.Dispose();
-			
+
 			packageManagementEvents.PackageOperationError -= PackageOperationError;
 			packageManagementEvents.PackageOperationsStarting -= PackageOperationsStarting;
 			packageManagementEvents.Dispose();
 		}
-		
+
 		void PackageOperationError(object sender, PackageOperationExceptionEventArgs e)
 		{
 			ShowErrorMessage(e.Exception.Message);
 		}
-		
+
 		void ShowErrorMessage(string message)
 		{
 			this.Message = message;
 			this.HasError = true;
 		}
-		
-		public string Message {
+
+		public string Message
+		{
 			get { return message; }
-			set {
+			set
+			{
 				message = value;
 				OnPropertyChanged(model => model.Message);
 			}
 		}
-		
-		public bool HasError {
+
+		public bool HasError
+		{
 			get { return hasError; }
-			set {
+			set
+			{
 				hasError = value;
 				OnPropertyChanged(model => model.HasError);
 			}
 		}
-		
+
 		void PackageOperationsStarting(object sender, EventArgs e)
 		{
 			ClearMessage();
 		}
-		
+
 		void ClearMessage()
 		{
 			this.Message = null;

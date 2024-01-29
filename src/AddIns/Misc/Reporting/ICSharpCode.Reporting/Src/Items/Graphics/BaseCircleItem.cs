@@ -26,13 +26,13 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of BaseCircleItem.
 	/// </summary>
-	public class BaseCircleItem:BaseGraphics,IReportContainer
+	public class BaseCircleItem : BaseGraphics, IReportContainer
 	{
 		public BaseCircleItem()
 		{
 			Items = new List<IPrintableObject>();
 		}
-		
+
 		public override IExportColumn CreateExportColumn()
 		{
 			var ex = new ExportCircle();
@@ -45,7 +45,7 @@ namespace ICSharpCode.Reporting.Items
 			ex.DashStyle = DashStyle;
 			return ex;
 		}
-		
-		public List<IPrintableObject> Items {get;private set;}
+
+		public List<IPrintableObject> Items { get; private set; }
 	}
 }

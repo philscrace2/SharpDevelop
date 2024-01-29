@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using ICSharpCode.SharpDevelop.Project;
 using NuGet;
 
@@ -33,14 +32,14 @@ namespace ICSharpCode.PackageManagement
 		IPackageManagementProject GetProject(IPackageRepository sourceRepository, string projectName);
 		IPackageManagementProject GetProject(IPackageRepository sourceRepository, IProject project);
 		IEnumerable<IPackageManagementProject> GetProjects(IPackageRepository sourceRepository);
-		
+
 		IProject GetActiveMSBuildProject();
 		IEnumerable<IProject> GetMSBuildProjects();
 		bool HasMultipleProjects();
 		IEnumerable<IPackage> GetPackagesInReverseDependencyOrder();
 		string GetInstallPath(IPackage package);
 		ISolutionPackageRepository CreateSolutionPackageRepository();
-		
+
 		/// <summary>
 		/// Returns true if package is installed in the solution or a project.
 		/// </summary>
@@ -60,7 +59,7 @@ namespace ICSharpCode.PackageManagement
 		/// Returns installed solution level packages.
 		/// </summary>
 		IQueryable<IPackage> GetSolutionPackages();
-		
+
 		bool IsOpen { get; }
 		string FileName { get; }
 	}

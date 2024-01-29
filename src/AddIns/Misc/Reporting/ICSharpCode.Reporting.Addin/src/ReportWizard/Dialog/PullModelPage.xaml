@@ -4,8 +4,8 @@
                  xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
                  xmlns:System="clr-namespace:System;assembly=mscorlib"
                  xmlns:sdr="clr-namespace:ICSharpCode.Reporting.Globals;assembly=ICSharpCode.Reporting"
-                  xmlns:core="clr-namespace:ICSharpCode.Core.Presentation;assembly=ICSharpCode.Core.Presentation"
-               Description="{core:Localize SharpReport.Wizard.BaseSettings.ReportModel.Pull}"
+                 xmlns:core="clr-namespace:ICSharpCode.Core.Presentation;assembly=ICSharpCode.Core.Presentation"
+                 Description="{core:Localize SharpReport.Wizard.BaseSettings.ReportModel.Pull}"
                  CanSelectPreviousPage="true"
                  CanSelectNextPage="false"
                  CanCancel="true"
@@ -13,6 +13,7 @@
                  PageType="Interior">
 	<Grid>
 		<TextBlock Text="Pull Model not available at the moment" FontSize="16"
-		           HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+		           HorizontalAlignment="Center" VerticalAlignment="Center">
+		</TextBlock>
 	</Grid>
 </xctk:WizardPage>

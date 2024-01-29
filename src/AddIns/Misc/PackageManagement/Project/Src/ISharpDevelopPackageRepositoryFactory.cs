@@ -28,11 +28,11 @@ namespace ICSharpCode.PackageManagement
 			IPackagePathResolver pathResolver,
 			IFileSystem fileSystem,
 			IFileSystem configSettingsFileSystem);
-		
+
 		IRecentPackageRepository CreateRecentPackageRepository(
 			IList<RecentPackageInfo> recentPackages,
 			IPackageRepository aggregateRepository);
-		
+
 		IPackageRepository CreateAggregateRepository(IEnumerable<IPackageRepository> repositories);
 	}
 }

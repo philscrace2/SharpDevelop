@@ -30,74 +30,80 @@ namespace ICSharpCode.Reporting.Pdf
 	/// </summary>
 	public static class PdfHelper
 	{
-		
-		public static void WriteText(XTextFormatter textFormatter,Point columnLocation, ExportText exportColumn)
+		public static void WriteText(XTextFormatter textFormatter, Point columnLocation, ExportText exportColumn)
 		{
 			var font = PdfHelper.CreatePdfFont(exportColumn);
-			var rect = new Rectangle(columnLocation,exportColumn.DesiredSize).ToXRect();
+			var rect = new Rectangle(columnLocation, exportColumn.DesiredSize).ToXRect();
 			textFormatter.Alignment = XParagraphAlignment(exportColumn);
-		
+
 			textFormatter.DrawString(exportColumn.Text,
-			                         font,
-			                         CreateBrush(exportColumn.ForeColor),
-			                         rect, XStringFormats.TopLeft);
+				font,
+				CreateBrush(exportColumn.ForeColor),
+				rect, XStringFormats.TopLeft);
 		}
-		
-		
+
+
 		static XFont CreatePdfFont(IExportColumn exportColumn)
 		{
 			var textColumn = (ExportText)exportColumn;
 			return new XFont(textColumn.Font.FontFamily.Name, textColumn.Font.Size);
 		}
-		
-		
-		static XColor ToXColor (Color color){
-			return XColor.FromArgb(color.R,color.G,color.B);
+
+
+		static XColor ToXColor(Color color)
+		{
+			return XColor.FromArgb(color.R, color.G, color.B);
 		}
-		
-		
-		
+
+
 //		public static void DrawRectangle (IExportColumn column, XGraphics graphics) {
 //			FillRectangle(column.DisplayRectangle,column.FrameColor,graphics);
 //		}
-		
-		
-		public static void FillRectangle(XRect rect,Color color,XGraphics graphics) {
-			graphics.DrawRectangle(new XSolidBrush(ToXColor(color)),rect);
+
+
+		public static void FillRectangle(XRect rect, Color color, XGraphics graphics)
+		{
+			graphics.DrawRectangle(new XSolidBrush(ToXColor(color)), rect);
 		}
-		
-		public static void DrawBorder (XRect rect,IExportColumn column,XGraphics graphics) {
-			var pen = 	new XPen(ToXColor(column.ForeColor),1);
-			rect.Inflate(new XSize(2,2));
-			graphics.DrawRectangle(pen,rect);
+
+		public static void DrawBorder(XRect rect, IExportColumn column, XGraphics graphics)
+		{
+			var pen = new XPen(ToXColor(column.ForeColor), 1);
+			rect.Inflate(new XSize(2, 2));
+			graphics.DrawRectangle(pen, rect);
 		}
-		
-		
-		public static XPen PdfPen(IExportGraphics column) {
-			return new XPen(ToXColor(column.ForeColor),column.Thickness);
+
+
+		public static XPen PdfPen(IExportGraphics column)
+		{
+			return new XPen(ToXColor(column.ForeColor), column.Thickness);
 		}
-		
-		
+
+
 		public static XPen CreatePen(IExportGraphics exportRectangle)
 		{
 			var pen = PdfHelper.PdfPen(exportRectangle);
 			pen.DashStyle = PdfHelper.DashStyle(exportRectangle);
 			return pen;
 		}
-		
-		
-		public static XSolidBrush CreateBrush(Color color) {
+
+
+		public static XSolidBrush CreateBrush(Color color)
+		{
 			return new XSolidBrush(color);
 		}
-		
-		
-		public static XLineCap LineCap (IExportGraphics column) {
+
+
+		public static XLineCap LineCap(IExportGraphics column)
+		{
 			return XLineCap.Round;
 		}
-		
-		
-		public static XParagraphAlignment XParagraphAlignment (ExportText exportColumn) {
-			switch (exportColumn.TextAlignment) {
+
+
+		public static XParagraphAlignment XParagraphAlignment(ExportText exportColumn)
+		{
+			switch (exportColumn.TextAlignment)
+			{
 				case System.Windows.TextAlignment.Left:
 					return PdfSharp.Drawing.Layout.XParagraphAlignment.Left;
 				case System.Windows.TextAlignment.Center:
@@ -107,19 +113,22 @@ namespace ICSharpCode.Reporting.Pdf
 				case System.Windows.TextAlignment.Justify:
 					return PdfSharp.Drawing.Layout.XParagraphAlignment.Justify;
 			}
+
 			return PdfSharp.Drawing.Layout.XParagraphAlignment.Left;
 		}
-		
-		
-		public static XDashStyle DashStyle (IExportGraphics column) {
+
+
+		public static XDashStyle DashStyle(IExportGraphics column)
+		{
 			XDashStyle style = XDashStyle.Solid;
-			
-			switch (column.DashStyle) {
+
+			switch (column.DashStyle)
+			{
 				case System.Drawing.Drawing2D.DashStyle.Solid:
 					style = XDashStyle.Solid;
 					break;
 				case System.Drawing.Drawing2D.DashStyle.Dash:
-					style  = XDashStyle.Dash;
+					style = XDashStyle.Dash;
 					break;
 				case System.Drawing.Drawing2D.DashStyle.Dot:
 					style = XDashStyle.Dot;
@@ -131,18 +140,20 @@ namespace ICSharpCode.Reporting.Pdf
 					style = XDashStyle.DashDotDot;
 					break;
 				case System.Drawing.Drawing2D.DashStyle.Custom:
-					
+
 					break;
 				default:
 					throw new Exception("Invalid value for DashStyle");
 			}
+
 			return style;
 		}
-		
-		
-		public static Point LocationRelToParent (IExportColumn column) {
+
+
+		public static Point LocationRelToParent(IExportColumn column)
+		{
 			return new Point(column.Parent.Location.X + column.Location.X,
-			                 column.Parent.Location.Y + column.Location.Y);
+				column.Parent.Location.Y + column.Location.Y);
 		}
 	}
 }

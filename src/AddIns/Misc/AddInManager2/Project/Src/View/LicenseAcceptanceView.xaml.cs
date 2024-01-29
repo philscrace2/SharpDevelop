@@ -27,7 +27,7 @@ namespace ICSharpCode.AddInManager2.View
 		{
 			InitializeComponent();
 		}
-		
+
 		void AcceptButtonClick(object sender, RoutedEventArgs e)
 		{
 			DialogResult = true;

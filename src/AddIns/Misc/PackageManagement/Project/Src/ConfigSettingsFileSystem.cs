@@ -29,7 +29,7 @@ namespace ICSharpCode.PackageManagement
 			: base(root)
 		{
 		}
-		
+
 		public static ConfigSettingsFileSystem CreateConfigSettingsFileSystem(ISolution solution)
 		{
 			string configSettingsFolder = Path.Combine(solution.Directory, ".nuget");

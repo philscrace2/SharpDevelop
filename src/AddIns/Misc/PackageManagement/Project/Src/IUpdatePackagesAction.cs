@@ -26,7 +26,7 @@ namespace ICSharpCode.PackageManagement
 	{
 		IEnumerable<PackageOperation> Operations { get; }
 		ILogger Logger { get; set; }
-		
+
 		void AddPackages(IEnumerable<IPackageFromRepository> packages);
 		void AddOperations(IEnumerable<PackageOperation> operations);
 	}

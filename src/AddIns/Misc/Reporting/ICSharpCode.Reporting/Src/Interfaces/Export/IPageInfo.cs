@@ -25,10 +25,10 @@ namespace ICSharpCode.Reporting.Interfaces.Export
 	/// </summary>
 	public interface IPageInfo
 	{
-		int PageNumber {get;set;}
-		int TotalPages {get;set;}
-		string ReportName {get;set;}
-		string ReportFileName {get;set;}
-		string ReportFolder {get;}
+		int PageNumber { get; set; }
+		int TotalPages { get; set; }
+		string ReportName { get; set; }
+		string ReportFileName { get; set; }
+		string ReportFolder { get; }
 	}
 }

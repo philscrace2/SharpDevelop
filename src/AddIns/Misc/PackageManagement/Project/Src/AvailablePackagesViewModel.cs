@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using NuGet;
 
 namespace ICSharpCode.PackageManagement
@@ -27,7 +26,7 @@ namespace ICSharpCode.PackageManagement
 	public class AvailablePackagesViewModel : PackagesViewModel
 	{
 		IPackageRepository repository;
-		
+
 		public AvailablePackagesViewModel(
 			IPackageManagementSolution solution,
 			IPackageManagementEvents packageManagementEvents,
@@ -37,8 +36,8 @@ namespace ICSharpCode.PackageManagement
 			: base(
 				solution,
 				packageManagementEvents,
-				registeredPackageRepositories, 
-				packageViewModelFactory, 
+				registeredPackageRepositories,
+				packageViewModelFactory,
 				taskFactory)
 		{
 			IsSearchable = true;
@@ -48,47 +47,53 @@ namespace ICSharpCode.PackageManagement
 			this.packageManagementEvents = packageManagementEvents;
 			RegisterEvents();
 		}
-		
+
 		void RegisterEvents()
 		{
 			packageManagementEvents.ParentPackageInstalled += OnPackageChanged;
 			packageManagementEvents.ParentPackageUninstalled += OnPackageChanged;
 			packageManagementEvents.ParentPackagesUpdated += OnPackageChanged;
 		}
-		
+
 		protected override void OnDispose()
 		{
 			packageManagementEvents.ParentPackageInstalled -= OnPackageChanged;
 			packageManagementEvents.ParentPackageUninstalled -= OnPackageChanged;
 			packageManagementEvents.ParentPackagesUpdated -= OnPackageChanged;
 		}
-		
+
 		protected override void UpdateRepositoryBeforeReadPackagesTaskStarts()
 		{
-			try {
+			try
+			{
 				repository = RegisteredPackageRepositories.ActiveRepository;
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				repository = null;
 				errorMessage = ex.Message;
 			}
 		}
-		
+
 		protected override IQueryable<IPackage> GetAllPackages(string searchCriteria)
 		{
-			if (repository == null) {
+			if (repository == null)
+			{
 				throw new ApplicationException(errorMessage);
 			}
-			
-			if (IncludePrerelease) {
+
+			if (IncludePrerelease)
+			{
 				return repository
 					.Search(searchCriteria, IncludePrerelease)
 					.Where(package => package.IsAbsoluteLatestVersion);
 			}
+
 			return repository
 				.Search(searchCriteria, IncludePrerelease)
 				.Where(package => package.IsLatestVersion);
 		}
-		
+
 		/// <summary>
 		/// Order packages by most downloaded first.
 		/// </summary>
@@ -96,17 +101,19 @@ namespace ICSharpCode.PackageManagement
 		{
 			return packages.OrderByDescending(package => package.DownloadCount);
 		}
-		
-		protected override IEnumerable<IPackage> GetFilteredPackagesBeforePagingResults(IQueryable<IPackage> allPackages)
+
+		protected override IEnumerable<IPackage> GetFilteredPackagesBeforePagingResults(
+			IQueryable<IPackage> allPackages)
 		{
-			if (IncludePrerelease) {
+			if (IncludePrerelease)
+			{
 				return base.GetFilteredPackagesBeforePagingResults(allPackages)
 					.DistinctLast<IPackage>(PackageEqualityComparer.Id);
 			}
+
 			return base.GetFilteredPackagesBeforePagingResults(allPackages)
 				.Where(package => package.IsReleaseVersion())
 				.DistinctLast<IPackage>(PackageEqualityComparer.Id);
 		}
-
 	}
 }

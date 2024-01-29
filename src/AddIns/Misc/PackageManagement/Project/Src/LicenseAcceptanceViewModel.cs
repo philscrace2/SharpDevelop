@@ -26,23 +26,26 @@ namespace ICSharpCode.PackageManagement
 	public class LicenseAcceptanceViewModel : ViewModelBase<LicenseAcceptanceViewModel>
 	{
 		IList<PackageLicenseViewModel> packages;
-		
+
 		public LicenseAcceptanceViewModel(IEnumerable<IPackage> packages)
 		{
 			this.packages = packages
 				.Select(p => new PackageLicenseViewModel(p))
 				.ToList();
 		}
-		
-		public IEnumerable<PackageLicenseViewModel> Packages {
+
+		public IEnumerable<PackageLicenseViewModel> Packages
+		{
 			get { return packages; }
 		}
-		
-		public bool HasOnePackage {
+
+		public bool HasOnePackage
+		{
 			get { return packages.Count == 1; }
 		}
-		
-		public bool HasMultiplePackages {
+
+		public bool HasMultiplePackages
+		{
 			get { return packages.Count > 1; }
 		}
 	}

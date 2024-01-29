@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using ICSharpCode.SharpDevelop.Project;
 using NuGet;
 
@@ -30,7 +29,7 @@ namespace ICSharpCode.PackageManagement
 		IPackageRepository sourceRepository;
 		IQueryable<IPackage> installedPackages;
 		IPackageConstraintProvider constraintProvider;
-		
+
 		public UpdatedPackages(
 			IPackageManagementProject project,
 			IPackageRepository aggregateRepository)
@@ -40,7 +39,7 @@ namespace ICSharpCode.PackageManagement
 				project.ConstraintProvider)
 		{
 		}
-		
+
 		public UpdatedPackages(
 			IQueryable<IPackage> installedPackages,
 			IPackageRepository aggregrateRepository,
@@ -50,9 +49,9 @@ namespace ICSharpCode.PackageManagement
 			this.sourceRepository = aggregrateRepository;
 			this.constraintProvider = constraintProvider;
 		}
-		
+
 		public string SearchTerms { get; set; }
-		
+
 		public IEnumerable<IPackage> GetUpdatedPackages(bool includePrerelease = false)
 		{
 			IQueryable<IPackage> localPackages = installedPackages;
@@ -60,30 +59,32 @@ namespace ICSharpCode.PackageManagement
 			IEnumerable<IPackage> distinctLocalPackages = DistinctPackages(localPackages);
 			return GetUpdatedPackages(distinctLocalPackages, includePrerelease);
 		}
-		
+
 		IQueryable<IPackage> GetInstalledPackages()
 		{
 			return installedPackages;
 		}
-		
+
 		IQueryable<IPackage> FilterPackages(IQueryable<IPackage> localPackages)
 		{
 			return localPackages.Find(SearchTerms);
 		}
-		
+
 		/// <summary>
 		/// If we have jQuery 1.6 and 1.7 then return just jquery 1.6
 		/// </summary>
 		IEnumerable<IPackage> DistinctPackages(IQueryable<IPackage> localPackages)
 		{
 			List<IPackage> packages = localPackages.ToList();
-			if (packages.Any()) {
+			if (packages.Any())
+			{
 				packages.Sort(PackageComparer.Version);
 				return packages.Distinct<IPackage>(PackageEqualityComparer.Id).ToList();
 			}
+
 			return packages;
 		}
-		
+
 		IEnumerable<IPackage> GetUpdatedPackages(
 			IEnumerable<IPackage> localPackages,
 			bool includePrelease)

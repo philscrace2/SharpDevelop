@@ -24,19 +24,19 @@ namespace ICSharpCode.PackageManagement
 	{
 		IPackageManagementProjectService projectService;
 		IPackageManagementEvents packageManagementEvents;
-		
+
 		public ProjectBrowserRefresher(
 			IPackageManagementProjectService projectService,
 			IPackageManagementEvents packageManagementEvents)
 		{
 			this.projectService = projectService;
 			this.packageManagementEvents = packageManagementEvents;
-			
+
 			packageManagementEvents.ParentPackageInstalled += ProjectChanged;
 			packageManagementEvents.ParentPackageUninstalled += ProjectChanged;
 			packageManagementEvents.ParentPackagesUpdated += ProjectChanged;
 		}
-		
+
 		void ProjectChanged(object sender, EventArgs e)
 		{
 			projectService.RefreshProjectBrowser();

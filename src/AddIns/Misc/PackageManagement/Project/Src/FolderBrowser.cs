@@ -27,12 +27,15 @@ namespace ICSharpCode.PackageManagement
 	{
 		public string SelectFolder()
 		{
-			using (var dialog = new FolderBrowserDialog()) {
+			using (var dialog = new FolderBrowserDialog())
+			{
 				IWin32Window owner = SD.WinForms.MainWin32Window;
-				if (dialog.ShowDialog(owner) == DialogResult.OK) {
+				if (dialog.ShowDialog(owner) == DialogResult.OK)
+				{
 					return dialog.SelectedPath;
 				}
 			}
+
 			return null;
 		}
 	}

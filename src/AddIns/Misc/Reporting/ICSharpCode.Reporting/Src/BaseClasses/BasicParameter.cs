@@ -23,18 +23,20 @@ namespace ICSharpCode.Reporting
 	/// </summary>
 	public class BasicParameter
 	{
-		public BasicParameter (){
+		public BasicParameter()
+		{
 		}
-		
-		public BasicParameter(string parameterName,string parameterValue){
+
+		public BasicParameter(string parameterName, string parameterValue)
+		{
 			this.ParameterName = parameterName;
 			this.ParameterValue = parameterValue;
 		}
-		
-		public string ParameterName {get;set;}
-		
-		public string Type {get;set;}
-		
-		public string ParameterValue {get;set;}
+
+		public string ParameterName { get; set; }
+
+		public string Type { get; set; }
+
+		public string ParameterValue { get; set; }
 	}
 }

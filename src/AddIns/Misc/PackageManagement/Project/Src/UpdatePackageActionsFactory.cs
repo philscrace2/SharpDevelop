@@ -27,14 +27,14 @@ namespace ICSharpCode.PackageManagement
 		{
 			return new UpdateAllPackagesInProject(project);
 		}
-		
+
 		public IUpdatePackageActions CreateUpdateAllPackagesInSolution(
 			IPackageManagementSolution solution,
 			IPackageRepository sourceRepository)
 		{
 			return new UpdateAllPackagesInSolution(solution, sourceRepository);
 		}
-		
+
 		public IUpdatePackageActions CreateUpdatePackageInAllProjects(
 			PackageReference packageReference,
 			IPackageManagementSolution solution,

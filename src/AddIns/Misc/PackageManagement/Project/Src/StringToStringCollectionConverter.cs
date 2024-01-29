@@ -27,12 +27,14 @@ namespace ICSharpCode.PackageManagement
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is String) {
+			if (value is String)
+			{
 				return new string[] { (string)value };
 			}
+
 			return value;
 		}
-		
+
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
 			return DependencyProperty.UnsetValue;

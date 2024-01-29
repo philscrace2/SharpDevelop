@@ -30,7 +30,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			this.Message = new PackageOperationMessage(level, message, args);
 		}
-		
+
 		public PackageOperationMessage Message { get; private set; }
 	}
 }

@@ -28,7 +28,7 @@ namespace ICSharpCode.PackageManagement.Design
 			: base(CreatePackages())
 		{
 		}
-		
+
 		static IEnumerable<IPackage> CreatePackages()
 		{
 			var repositories = new DesignTimeRegisteredPackageRepositories();

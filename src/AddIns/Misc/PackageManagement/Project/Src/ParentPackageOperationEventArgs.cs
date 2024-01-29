@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			this.Package = package;
 		}
-		
+
 		public IPackage Package { get; private set; }
 	}
 }

@@ -3,9 +3,10 @@
  * User: Peter Forstmeier
  * Date: 23.03.2014
  * Time: 17:56
- * 
+ *
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,32 +19,37 @@ namespace ICSharpCode.Reporting.Addin.Designer
 	/// <summary>
 	/// Description of LineDesigner.
 	/// </summary>
-	class LineDesigner:AbstractDesigner
+	class LineDesigner : AbstractDesigner
 	{
 		BaseLineItem baseLine;
 		bool dragging;
 		bool overToPoint;
 		bool overFromPoint;
-		
-	
-		public override void Initialize(IComponent component){
-			if (component == null) {
+
+
+		public override void Initialize(IComponent component)
+		{
+			if (component == null)
+			{
 				throw new ArgumentNullException("component");
 			}
+
 			base.Initialize(component);
 			baseLine = (BaseLineItem)component;
 		}
-		
-		
-		protected override void PostFilterProperties(System.Collections.IDictionary properties){
+
+
+		protected override void PostFilterProperties(System.Collections.IDictionary properties)
+		{
 			TypeProviderHelper.RemoveProperties(properties);
 			base.PostFilterProperties(properties);
 		}
-		
-		
-		protected override void OnPaintAdornments(PaintEventArgs pe){
+
+
+		protected override void OnPaintAdornments(PaintEventArgs pe)
+		{
 			var label = Control as BaseLineItem;
-			
+
 			if (SelectionService != null)
 			{
 				if (SelectionService.GetComponentSelected(label))
@@ -53,26 +59,27 @@ namespace ICSharpCode.Reporting.Addin.Designer
 					ControlPaint.DrawGrabHandle(pe.Graphics, grapRectangle, true, true);
 					grapRectangle = GetHandle(label.ToPoint);
 					ControlPaint.DrawGrabHandle(pe.Graphics, grapRectangle, true, true);
-					
 				}
 			}
 		}
-	
-		
-		static Rectangle GetHandle(Point pt){
+
+
+		static Rectangle GetHandle(Point pt)
+		{
 			var handle = new Rectangle(pt, new Size(7, 7));
 			handle.Offset(-3, -3);
 			return handle;
 		}
-		
-		
-		protected override void OnSetCursor(){
+
+
+		protected override void OnSetCursor()
+		{
 			// Get mouse cursor position relative to
 			// the control's coordinate space.
-			
-			var label = (BaseLineItem) Control;
+
+			var label = (BaseLineItem)Control;
 			var p = label.PointToClient(Cursor.Position);
-			
+
 			// Display a resize cursor if the mouse is
 			// over a grab handle; otherwise show a
 			// normal arrow.
@@ -87,14 +94,15 @@ namespace ICSharpCode.Reporting.Addin.Designer
 			}
 		}
 
-		
+
 		#region Drag handling state and methods
-		
-		protected override void OnMouseDragBegin(int x, int y){
+
+		protected override void OnMouseDragBegin(int x, int y)
+		{
 			var point = this.baseLine.PointToClient(new Point(x, y));
 			overFromPoint = GetHandle(baseLine.FromPoint).Contains(point);
 			overToPoint = GetHandle(baseLine.ToPoint).Contains(point);
-			if (overFromPoint || overToPoint )
+			if (overFromPoint || overToPoint)
 			{
 				dragging = true;
 			}
@@ -104,18 +112,22 @@ namespace ICSharpCode.Reporting.Addin.Designer
 				base.OnMouseDragBegin(x, y);
 			}
 		}
-		
-		
-		protected override void OnMouseDragMove(int x, int y){
+
+
+		protected override void OnMouseDragMove(int x, int y)
+		{
 			if (dragging)
 			{
 				Point p = baseLine.PointToClient(new Point(x, y));
-				if (overToPoint) {
+				if (overToPoint)
+				{
 					baseLine.ToPoint = p;
-				} else {
+				}
+				else
+				{
 					baseLine.FromPoint = p;
 				}
-				
+
 //				this.baseLine.Invalidate();
 //				this.dragOffset = p;
 			}
@@ -124,14 +136,15 @@ namespace ICSharpCode.Reporting.Addin.Designer
 				base.OnMouseDragMove(x, y);
 			}
 		}
-		
-		
-		protected override void OnMouseDragEnd(bool cancel){
+
+
+		protected override void OnMouseDragEnd(bool cancel)
+		{
 			if (dragging)
 			{
 				// Update property via PropertyDescriptor to
 				// make sure that VS.NET notices.
-			
+
 //				PropertyDescriptor pd =
 //						TypeDescriptor.GetProperties(this.baseLine)["ToPoint"];
 //					pd.SetValue(this.baseLine, this.dragOffset);
@@ -151,16 +164,15 @@ namespace ICSharpCode.Reporting.Addin.Designer
 						TypeDescriptor.GetProperties(label)["Origin"];
 					pd.SetValue(label, o);
 				}
-				*/				
+				*/
 				dragging = false;
 				baseLine.Invalidate();
 			}
-			
+
 			// Always call base class.
 			base.OnMouseDragEnd(cancel);
-
 		}
-		
-		#endregion	
+
+		#endregion
 	}
 }

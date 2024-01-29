@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <UserControl
-	x:Class="ICSharpCode.StartPage.StartPageControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:gui="clr-namespace:ICSharpCode.SharpDevelop.Gui;assembly=ICSharpCode.SharpDevelop" xmlns:core="http://icsharpcode.net/sharpdevelop/core"
+	x:Class="ICSharpCode.StartPage.StartPageControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:gui="clr-namespace:ICSharpCode.SharpDevelop.Gui;assembly=ICSharpCode.SharpDevelop"
+	xmlns:core="http://icsharpcode.net/sharpdevelop/core"
 	Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}">
 	<ScrollViewer
 		VerticalScrollBarVisibility="Visible"
@@ -75,8 +79,8 @@
 				Grid.Row="2"
 				Padding="4,0,4,0"
 				TextWrapping="WrapWithOverflow">
-				Copyright ©<Run Name="copyrightText"/>
-				<Run Text="  "/>
+				Copyright ©<Run Name="copyrightText" />
+				<Run Text="  " />
 				<Run
 					Text="{x:Static gui:AboutSharpDevelopTabPage.LicenseSentence}" />
 			</TextBlock>

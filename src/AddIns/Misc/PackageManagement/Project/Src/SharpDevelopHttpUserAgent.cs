@@ -27,23 +27,23 @@ namespace ICSharpCode.PackageManagement
 		{
 			CreateUserAgent();
 		}
-		
+
 		public string Client { get; private set; }
 		public string Host { get; private set; }
 		public string UserAgent { get; private set; }
-		
+
 		void CreateUserAgent()
 		{
 			Client = "SharpDevelop";
 			Host = GetHost();
 			UserAgent = HttpUtility.CreateUserAgentString(Client, Host);
 		}
-		
+
 		string GetHost()
 		{
 			return String.Format("SharpDevelop/{0}", RevisionClass.FullVersion);
 		}
-		
+
 		public override string ToString()
 		{
 			return UserAgent;

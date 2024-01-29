@@ -22,11 +22,12 @@ using ICSharpCode.PackageManagement.Scripting;
 
 namespace ICSharpCode.PackageManagement.Cmdlets
 {
-	[Cmdlet(VerbsLifecycle.Invoke, "ProcessPackageActions", DefaultParameterSetName = ParameterAttribute.AllParameterSets)]
+	[Cmdlet(VerbsLifecycle.Invoke, "ProcessPackageActions",
+		DefaultParameterSetName = ParameterAttribute.AllParameterSets)]
 	public class InvokeProcessPackageActionsCmdlet : PackageManagementCmdlet
 	{
 		PackageActionsToRun actionsToRun;
-		
+
 		public InvokeProcessPackageActionsCmdlet()
 			: this(
 				PackageManagementServices.PackageActionsToRun,
@@ -34,7 +35,7 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 				null)
 		{
 		}
-		
+
 		public InvokeProcessPackageActionsCmdlet(
 			PackageActionsToRun actionsToRun,
 			IPackageManagementConsoleHost consoleHost,
@@ -43,25 +44,26 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 		{
 			this.actionsToRun = actionsToRun;
 		}
-		
+
 		protected override void ProcessRecord()
 		{
 			ExecutePackageActions();
 		}
-		
+
 		void ExecutePackageActions()
 		{
 			IPackageAction action = null;
-			while (GetNextAction(out action)) {
+			while (GetNextAction(out action))
+			{
 				Execute(action);
 			}
 		}
-		
+
 		bool GetNextAction(out IPackageAction action)
 		{
 			return actionsToRun.GetNextAction(out action);
 		}
-		
+
 		void Execute(IPackageAction action)
 		{
 			action.PackageScriptRunner = this;

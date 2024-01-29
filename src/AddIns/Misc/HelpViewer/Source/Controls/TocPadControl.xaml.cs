@@ -43,18 +43,23 @@ namespace MSHelpSystem.Controls
 		void LoadToc()
 		{
 			if (!Help3Environment.IsLocalHelp) DataContext = null;
-			else DataContext = new[] { new TocEntry("-1") { Title = StringParser.Parse("${res:AddIns.HelpViewer.HelpLibraryRootTitle}") } };
+			else
+				DataContext = new[]
+				{
+					new TocEntry("-1") { Title = StringParser.Parse("${res:AddIns.HelpViewer.HelpLibraryRootTitle}") }
+				};
 		}
 
 		void Help3TocItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
 		{
 			string topicId = (string)tocTreeView.SelectedValue;
-			if (!string.IsNullOrEmpty(topicId)) {
+			if (!string.IsNullOrEmpty(topicId))
+			{
 				LoggingService.Debug(string.Format("HelpViewer: TocItemChanged to ID \"{0}\"", topicId));
 				DisplayHelp.Page(topicId);
 			}
 		}
-		
+
 		void Help3ServiceConfigurationUpdated(object sender, EventArgs e)
 		{
 			LoadToc();

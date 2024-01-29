@@ -8,15 +8,15 @@
                  xmlns:aim="clr-namespace:ICSharpCode.AddInManager2"
                  xmlns:aimvm="clr-namespace:ICSharpCode.AddInManager2.ViewModel"
                  mc:Ignorable="d">
-	
+
 	<gui:OptionPanel.Resources>
-		<aimvm:PackageOptionsViewModel x:Key="ViewModel"/>
+		<aimvm:PackageOptionsViewModel x:Key="ViewModel" />
 	</gui:OptionPanel.Resources>
-	
+
 	<gui:OptionPanel.DataContext>
 		<Binding Source="{StaticResource ViewModel}" />
 	</gui:OptionPanel.DataContext>
-	
+
 	<Grid Margin="5,5,5,5">
 		<CheckBox
 			IsChecked="{Binding AutoSearchForUpdates}"

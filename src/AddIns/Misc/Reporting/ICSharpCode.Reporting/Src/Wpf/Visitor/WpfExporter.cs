@@ -20,44 +20,50 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using System.Windows.Markup;
-
 using ICSharpCode.Reporting.Exporter;
 using ICSharpCode.Reporting.Exporter.Visitors;
 using ICSharpCode.Reporting.PageBuilder.ExportColumns;
 
-namespace ICSharpCode.Reporting.WpfReportViewer.Visitor {
+namespace ICSharpCode.Reporting.WpfReportViewer.Visitor
+{
 	/// <summary>
 	/// Description of PrintExporter.
 	/// </summary>
 	/// 
-	class WpfExporter:BaseExporter {
-		
+	class WpfExporter : BaseExporter
+	{
 		readonly WpfVisitor visitor;
-		
-		public WpfExporter(Collection<ExportPage> pages):base(pages){
+
+		public WpfExporter(Collection<ExportPage> pages) : base(pages)
+		{
 			visitor = new WpfVisitor();
 		}
-		
-		
-		public override void Run () {
+
+
+		public override void Run()
+		{
 			Document = new FixedDocument();
-			foreach (var page in Pages) {
+			foreach (var page in Pages)
+			{
 				IAcceptor acceptor = page as IAcceptor;
-				if (acceptor != null) {
+				if (acceptor != null)
+				{
 					visitor.Visit(page);
 				}
-				AddPageToDocument(Document,visitor.FixedPage);
+
+				AddPageToDocument(Document, visitor.FixedPage);
 			}
 		}
-		
-		
-		static void AddPageToDocument(FixedDocument fixedDocument,FixedPage page){
+
+
+		static void AddPageToDocument(FixedDocument fixedDocument, FixedPage page)
+		{
 			PageContent pageContent = new PageContent();
 			((IAddChild)pageContent).AddChild(page);
-			
+
 			fixedDocument.Pages.Add(pageContent);
 		}
-		
-		public FixedDocument Document {get;private set;}
+
+		public FixedDocument Document { get; private set; }
 	}
 }

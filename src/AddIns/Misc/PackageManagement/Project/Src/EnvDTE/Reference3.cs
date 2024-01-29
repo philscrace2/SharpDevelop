@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: base(project, referenceProjectItem)
 		{
 		}
-		
+
 		public bool AutoReferenced { get; private set; }
 	}
 }

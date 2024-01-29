@@ -30,7 +30,7 @@ namespace ICSharpCode.PackageManagement
 		RegisteredPackageSources registeredPackageSources;
 		PackageSource activePackageSource;
 		IPackageRepository activePackageRepository;
-		
+
 		public RegisteredPackageRepositories(
 			IPackageRepositoryCache repositoryCache,
 			PackageManagementOptions options)
@@ -39,102 +39,126 @@ namespace ICSharpCode.PackageManagement
 			this.options = options;
 			registeredPackageSources = options.PackageSources;
 		}
-		
-		public IRecentPackageRepository RecentPackageRepository {
+
+		public IRecentPackageRepository RecentPackageRepository
+		{
 			get { return repositoryCache.RecentPackageRepository; }
 		}
-		
+
 		public IPackageRepository CreateRepository(PackageSource source)
 		{
 			return repositoryCache.CreateRepository(source.Source);
 		}
-		
+
 		public IPackageRepository CreateAggregateRepository()
 		{
 			return repositoryCache.CreateAggregateRepository();
 		}
-		
-		public RegisteredPackageSources PackageSources {
+
+		public RegisteredPackageSources PackageSources
+		{
 			get { return options.PackageSources; }
 		}
-		
-		public bool HasMultiplePackageSources {
+
+		public bool HasMultiplePackageSources
+		{
 			get { return registeredPackageSources.HasMultipleEnabledPackageSources; }
 		}
-		
-		public PackageSource ActivePackageSource {
-			get {
+
+		public PackageSource ActivePackageSource
+		{
+			get
+			{
 				activePackageSource = options.ActivePackageSource;
-				if (activePackageSource == null) {
-					List<PackageSource> enabledPackageSources = 
+				if (activePackageSource == null)
+				{
+					List<PackageSource> enabledPackageSources =
 						options.PackageSources.GetEnabledPackageSources().ToList();
-					if (enabledPackageSources.Any()) {
+					if (enabledPackageSources.Any())
+					{
 						ActivePackageSource = enabledPackageSources[0];
 					}
 				}
+
 				return activePackageSource;
 			}
-			set {
-				if (activePackageSource != value) {
+			set
+			{
+				if (activePackageSource != value)
+				{
 					activePackageSource = value;
 					options.ActivePackageSource = value;
 					activePackageRepository = null;
 				}
 			}
 		}
-		
-		public IPackageRepository ActiveRepository {
-			get {
-				if (activePackageRepository == null) {
+
+		public IPackageRepository ActiveRepository
+		{
+			get
+			{
+				if (activePackageRepository == null)
+				{
 					CreateActiveRepository();
 				}
+
 				return activePackageRepository;
 			}
 		}
-		
+
 		void CreateActiveRepository()
 		{
 			EnsureActivePackageSourceIsConfigured();
-			
-			if (ActivePackageSource.IsAggregate()) {
+
+			if (ActivePackageSource.IsAggregate())
+			{
 				activePackageRepository = CreateAggregateRepository();
-			} else {
+			}
+			else
+			{
 				activePackageRepository = repositoryCache.CreateRepository(ActivePackageSource.Source);
 			}
 		}
-		
+
 		void EnsureActivePackageSourceIsConfigured()
 		{
-			if (ActivePackageSource == null) {
+			if (ActivePackageSource == null)
+			{
 				throw new NoPackageSourcesConfiguredException();
 			}
 		}
-		
+
 		public void UpdatePackageSources(IEnumerable<PackageSource> updatedPackageSources)
 		{
 			PackageSources.Clear();
- 			foreach (PackageSource updatedPackageSource in updatedPackageSources) {
- 				PackageSources.Add(updatedPackageSource);
- 			}
-			
+			foreach (PackageSource updatedPackageSource in updatedPackageSources)
+			{
+				PackageSources.Add(updatedPackageSource);
+			}
+
 			UpdateActivePackageSource();
 		}
-		
+
 		void UpdateActivePackageSource()
 		{
 			if (activePackageSource == null)
 				return;
-			
-			if (activePackageSource.IsAggregate()) {
-				if (!HasMultiplePackageSources) {
+
+			if (activePackageSource.IsAggregate())
+			{
+				if (!HasMultiplePackageSources)
+				{
 					ActivePackageSource = null;
 				}
-			} else {
+			}
+			else
+			{
 				PackageSource matchedPackageSource = PackageSources
 					.GetEnabledPackageSources()
 					.FirstOrDefault(packageSource => packageSource.Equals(activePackageSource));
-				
-				if (matchedPackageSource == null) {
+
+				if (matchedPackageSource == null)
+				{
 					ActivePackageSource = null;
 				}
 			}

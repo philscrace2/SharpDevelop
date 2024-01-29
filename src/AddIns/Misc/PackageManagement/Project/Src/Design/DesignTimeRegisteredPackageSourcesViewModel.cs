@@ -29,7 +29,7 @@ namespace ICSharpCode.PackageManagement.Design
 			: this(new DesignTimeRegisteredPackageRepositories())
 		{
 		}
-		
+
 		public DesignTimeRegisteredPackageSourcesViewModel(IRegisteredPackageRepositories registeredPackageRepositories)
 			: base(registeredPackageRepositories)
 		{

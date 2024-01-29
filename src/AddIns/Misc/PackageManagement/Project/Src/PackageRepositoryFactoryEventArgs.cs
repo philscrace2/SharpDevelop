@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			this.Repository = repository;
 		}
-		
+
 		public IPackageRepository Repository { get; private set; }
 	}
 }

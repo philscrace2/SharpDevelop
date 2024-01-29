@@ -28,103 +28,126 @@ namespace ICSharpCode.Reporting.Arrange
 	/// Description of ArrangeStrategy.
 	/// </summary>
 	/// 
-	public interface IArrangeStrategy{
+	public interface IArrangeStrategy
+	{
 		void Arrange(IExportColumn exportColumn);
 	}
-	
-	
-	class ContainerArrangeStrategy:IArrangeStrategy{
-		
-		public void Arrange(IExportColumn exportColumn){
+
+
+	class ContainerArrangeStrategy : IArrangeStrategy
+	{
+		public void Arrange(IExportColumn exportColumn)
+		{
 			if (exportColumn == null)
 				throw new ArgumentNullException("exportColumn");
 			var container = exportColumn as IExportContainer;
-			if ((container != null) && (container.ExportedItems.Any())) {
+			if ((container != null) && (container.ExportedItems.Any()))
+			{
 				List<IExportColumn> canGrowItems = CreateCanGrowList(container);
-				if (canGrowItems.Any()) {
+				if (canGrowItems.Any())
+				{
 					var containerSize = ArrangeInternal(container);
-					if (containerSize.Height > container.DesiredSize.Height) {
-						container.DesiredSize = new Size(containerSize.Width,containerSize.Height + 15);
-					} 
+					if (containerSize.Height > container.DesiredSize.Height)
+					{
+						container.DesiredSize = new Size(containerSize.Width, containerSize.Height + 15);
+					}
 				}
 			}
-			
-			
+
+
 			var fixedElements = container.ExportedItems.Where(x => !x.CanGrow);
 			var growables = container.ExportedItems.Where(x => x.CanGrow);
-			
-			foreach (var growable in growables) {
-				var r = new Rectangle(growable.Location,growable.DesiredSize);
-				foreach (var x in fixedElements) {
-					var xr = new Rectangle(x.Location,x.DesiredSize);
-					if (r.IntersectsWith(xr)) {
+
+			foreach (var growable in growables)
+			{
+				var r = new Rectangle(growable.Location, growable.DesiredSize);
+				foreach (var x in fixedElements)
+				{
+					var xr = new Rectangle(x.Location, x.DesiredSize);
+					if (r.IntersectsWith(xr))
+					{
 						x.Location = new Point(x.Location.X, r.Bottom + 5);
 					}
 				}
 			}
 		}
 
-	
-		static Size ArrangeInternal(IExportContainer container){
-		
+
+		static Size ArrangeInternal(IExportContainer container)
+		{
 			var containerRectangle = container.DisplayRectangle;
 			Rectangle elementRectangle = Rectangle.Empty;
-			foreach (var element in container.ExportedItems) {
+			foreach (var element in container.ExportedItems)
+			{
 				var con = element as IExportContainer;
-				if (con != null) {
+				if (con != null)
+				{
 					var keep = containerRectangle;
 					con.DesiredSize = ArrangeInternal(con);
-					elementRectangle  = AdujstRectangles(keep,con.DisplayRectangle);
+					elementRectangle = AdujstRectangles(keep, con.DisplayRectangle);
 					containerRectangle = keep;
-					
-				} else {
-					elementRectangle = AdujstRectangles(containerRectangle,element.DisplayRectangle);
 				}
-				
-				if (!containerRectangle.Contains(elementRectangle)) {
-					
+				else
+				{
+					elementRectangle = AdujstRectangles(containerRectangle, element.DisplayRectangle);
+				}
+
+				if (!containerRectangle.Contains(elementRectangle))
+				{
 					containerRectangle = new Rectangle(containerRectangle.Left,
-					                                   containerRectangle.Top ,
-					                                   containerRectangle.Width,
-					                                   element.Location.Y + elementRectangle.Size.Height + 5);					                            
+						containerRectangle.Top,
+						containerRectangle.Width,
+						element.Location.Y + elementRectangle.Size.Height + 5);
 				}
 			}
+
 			return containerRectangle.Size;
 		}
-		
-		
-		static Rectangle AdujstRectangles (Rectangle container,Rectangle element) {
+
+
+		static Rectangle AdujstRectangles(Rectangle container, Rectangle element)
+		{
 			return new Rectangle(container.Left + element.Left,
-			                     container.Top + element.Top,
-			                     element.Size.Width,
-			                     element.Size.Height);
+				container.Top + element.Top,
+				element.Size.Width,
+				element.Size.Height);
 		}
-		
-		
-		static List<IExportColumn> CreateCanGrowList(IExportContainer container){
+
+
+		static List<IExportColumn> CreateCanGrowList(IExportContainer container)
+		{
 			var canGrowList = new List<IExportColumn>();
-			foreach (var element in container.Descendents()) {
-				if (element.CanGrow) {
+			foreach (var element in container.Descendents())
+			{
+				if (element.CanGrow)
+				{
 					canGrowList.Add(element);
 				}
 			}
+
 			return canGrowList;
 		}
 	}
-	
-	
-	static class Extensions {
-		
-		public static IEnumerable<IExportColumn> Descendents(this IExportContainer node) {
+
+
+	static class Extensions
+	{
+		public static IEnumerable<IExportColumn> Descendents(this IExportContainer node)
+		{
 			if (node == null) throw new ArgumentNullException("node");
-			if(node.ExportedItems.Count > 0) {
-				foreach (var child in node.ExportedItems) {
+			if (node.ExportedItems.Count > 0)
+			{
+				foreach (var child in node.ExportedItems)
+				{
 					var cont = child as IExportContainer;
-					if (cont != null) {
-						foreach (var desc in Descendents(cont)) {
+					if (cont != null)
+					{
+						foreach (var desc in Descendents(cont))
+						{
 							yield return desc;
 						}
 					}
+
 					yield return child;
 				}
 			}

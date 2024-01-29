@@ -24,29 +24,32 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class TextEditorOptions : ITextEditorOptions
 	{
 		IPackageManagementWorkbench workbench;
-		
+
 		public TextEditorOptions()
 		{
 			workbench = new PackageManagementWorkbench();
 		}
-		
-		public double FontSize {
+
+		public double FontSize
+		{
 			get { return CodeEditorOptions.FontSize; }
-			set {
-				SetFontSize(value);
-			}
+			set { SetFontSize(value); }
 		}
-		
-		CodeEditorOptions CodeEditorOptions {
+
+		CodeEditorOptions CodeEditorOptions
+		{
 			get { return CodeEditorOptions.Instance; }
 		}
-		
+
 		void SetFontSize(double value)
 		{
-			if (workbench.InvokeRequired) {
+			if (workbench.InvokeRequired)
+			{
 				Action<double> action = SetFontSize;
 				workbench.SafeThreadAsyncCall(action, value);
-			} else {
+			}
+			else
+			{
 				CodeEditorOptions.FontSize = value;
 			}
 		}

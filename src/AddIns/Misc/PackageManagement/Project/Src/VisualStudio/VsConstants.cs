@@ -23,7 +23,7 @@ namespace Microsoft.VisualStudio
 	public class VsConstants
 	{
 		public const int S_OK = 0;
-		
+
 		public const int E_FAIL = -2147467259;
 	}
 }

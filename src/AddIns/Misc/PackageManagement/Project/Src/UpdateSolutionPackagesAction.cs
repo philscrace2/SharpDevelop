@@ -30,7 +30,7 @@ namespace ICSharpCode.PackageManagement
 		List<PackageOperation> operations = new List<PackageOperation>();
 		List<IPackageManagementProject> projects;
 		IPackageManagementEvents packageManagementEvents;
-		
+
 		public UpdateSolutionPackagesAction(
 			IPackageManagementSolution solution,
 			IPackageManagementEvents packageManagementEvents)
@@ -39,97 +39,109 @@ namespace ICSharpCode.PackageManagement
 			this.UpdateDependencies = true;
 			this.packageManagementEvents = packageManagementEvents;
 		}
-		
+
 		public IPackageManagementSolution Solution { get; private set; }
 		public IPackageScriptRunner PackageScriptRunner { get; set; }
 		public bool UpdateDependencies { get; set; }
 		public bool AllowPrereleaseVersions { get; set; }
 		public ILogger Logger { get; set; }
-		
-		public IEnumerable<PackageOperation> Operations {
+
+		public IEnumerable<PackageOperation> Operations
+		{
 			get { return operations; }
 		}
-		
-		public IEnumerable<IPackageFromRepository> Packages {
+
+		public IEnumerable<IPackageFromRepository> Packages
+		{
 			get { return packages; }
 		}
-		
+
 		public bool HasPackageScriptsToRun()
 		{
 			var files = new PackageFilesForOperations(Operations);
 			return files.HasAnyPackageScripts();
 		}
-		
+
 		public void AddOperations(IEnumerable<PackageOperation> operations)
 		{
 			this.operations.AddRange(operations);
 		}
-		
+
 		public void AddPackages(IEnumerable<IPackageFromRepository> packages)
 		{
 			this.packages.AddRange(packages);
 		}
-		
+
 		public void Execute()
 		{
-			if (PackageScriptRunner != null) {
+			if (PackageScriptRunner != null)
+			{
 				ExecuteWithScriptRunner();
-			} else {
+			}
+			else
+			{
 				ExecuteCore();
 			}
 		}
-		
+
 		void ExecuteWithScriptRunner()
 		{
-			using (RunAllProjectPackageScriptsAction runScriptsAction = CreateRunPackageScriptsAction()) {
+			using (RunAllProjectPackageScriptsAction runScriptsAction = CreateRunPackageScriptsAction())
+			{
 				ExecuteCore();
 			}
 		}
-		
+
 		RunAllProjectPackageScriptsAction CreateRunPackageScriptsAction()
 		{
 			return CreateRunPackageScriptsAction(PackageScriptRunner, GetProjects());
 		}
-		
+
 		void ExecuteCore()
 		{
 			RunPackageOperations();
 			UpdatePackageReferences();
 			packageManagementEvents.OnParentPackagesUpdated(Packages);
 		}
-		
+
 		void RunPackageOperations()
 		{
 			IPackageManagementProject project = GetProjects().First();
 			project.RunPackageOperations(operations);
 		}
-		
+
 		IEnumerable<IPackageManagementProject> GetProjects()
 		{
-			if (projects == null) {
+			if (projects == null)
+			{
 				IPackageFromRepository package = packages.First();
 				projects = Solution
 					.GetProjects(package.Repository)
-					.Select(project => {
+					.Select(project =>
+					{
 						project.Logger = Logger;
 						return project;
 					})
 					.ToList();
 			}
+
 			return projects;
 		}
-		
+
 		void UpdatePackageReferences()
 		{
-			foreach (IPackageManagementProject project in GetProjects()) {
-				foreach (IPackageFromRepository package in packages) {
-					if (project.HasOlderPackageInstalled(package)) {
+			foreach (IPackageManagementProject project in GetProjects())
+			{
+				foreach (IPackageFromRepository package in packages)
+				{
+					if (project.HasOlderPackageInstalled(package))
+					{
 						project.UpdatePackageReference(package, this);
 					}
 				}
 			}
 		}
-		
+
 		protected virtual RunAllProjectPackageScriptsAction CreateRunPackageScriptsAction(
 			IPackageScriptRunner scriptRunner,
 			IEnumerable<IPackageManagementProject> projects)

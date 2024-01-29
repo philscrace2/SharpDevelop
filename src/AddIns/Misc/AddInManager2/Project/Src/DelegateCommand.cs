@@ -25,41 +25,36 @@ namespace ICSharpCode.AddInManager2
 	{
 		Action<object> execute;
 		Predicate<object> canExecute;
-		
+
 		public DelegateCommand(Action<object> execute, Predicate<object> canExecute)
 		{
 			this.execute = execute;
 			this.canExecute = canExecute;
 		}
-		
+
 		public DelegateCommand(Action<object> execute)
 			: this(execute, null)
 		{
 		}
-		
+
 		public event EventHandler CanExecuteChanged
 		{
-			add
-			{
-				CommandManager.RequerySuggested += value;
-			}
-			remove
-			{
-				CommandManager.RequerySuggested -= value;
-			}
+			add { CommandManager.RequerySuggested += value; }
+			remove { CommandManager.RequerySuggested -= value; }
 		}
-		
+
 		public void Execute(object parameter)
 		{
 			execute(parameter);
 		}
-		
+
 		public bool CanExecute(object parameter)
 		{
 			if (canExecute != null)
 			{
 				return canExecute(parameter);
 			}
+
 			return true;
 		}
 	}

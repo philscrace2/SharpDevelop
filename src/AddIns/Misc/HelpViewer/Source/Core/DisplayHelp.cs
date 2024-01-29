@@ -21,7 +21,6 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Forms;
-
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.BrowserDisplayBinding;
@@ -40,91 +39,124 @@ namespace MSHelpSystem.Core
 
 		public static bool Catalog()
 		{
-			if (!Help3Environment.IsLocalHelp) {
+			if (!Help3Environment.IsLocalHelp)
+			{
 				MessageBox.Show(StringParser.Parse("${res:AddIns.HelpViewer.OfflineFeatureRequestMsg}"),
-				                StringParser.Parse("${res:AddIns.HelpViewer.MicrosoftHelpViewerTitle}"),
-				                MessageBoxButtons.OK,
-				                MessageBoxIcon.Error);
+					StringParser.Parse("${res:AddIns.HelpViewer.MicrosoftHelpViewerTitle}"),
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error);
 				return false;
 			}
-			if (Help3Service.ActiveCatalog == null) {
+
+			if (Help3Service.ActiveCatalog == null)
+			{
 				return false;
 			}
-			string helpCatalogUrl = string.Concat("ms-xhelp://?method=page&id=-1&", Help3Service.ActiveCatalog.AsMsXHelpParam);
+
+			string helpCatalogUrl =
+				string.Concat("ms-xhelp://?method=page&id=-1&", Help3Service.ActiveCatalog.AsMsXHelpParam);
 			DisplayLocalHelp(helpCatalogUrl);
 			return true;
 		}
 
 		public static bool Page(string pageId)
 		{
-			if (string.IsNullOrEmpty(pageId)) {
+			if (string.IsNullOrEmpty(pageId))
+			{
 				return false;
 			}
-			if (!Help3Environment.IsLocalHelp) {
+
+			if (!Help3Environment.IsLocalHelp)
+			{
 				MessageBox.Show(StringParser.Parse("${res:AddIns.HelpViewer.OfflineFeatureRequestMsg}"),
-				                StringParser.Parse("${res:AddIns.HelpViewer.MicrosoftHelpViewerTitle}"),
-				                MessageBoxButtons.OK,
-				                MessageBoxIcon.Error);
+					StringParser.Parse("${res:AddIns.HelpViewer.MicrosoftHelpViewerTitle}"),
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error);
 				return false;
 			}
-			if (Help3Service.ActiveCatalog == null) {
+
+			if (Help3Service.ActiveCatalog == null)
+			{
 				return false;
 			}
-			string helpPageUrl = string.Concat("ms-xhelp://?method=page&id=", pageId, "&", Help3Service.ActiveCatalog.AsMsXHelpParam);
+
+			string helpPageUrl = string.Concat("ms-xhelp://?method=page&id=", pageId, "&",
+				Help3Service.ActiveCatalog.AsMsXHelpParam);
 			DisplayLocalHelp(helpPageUrl);
 			return true;
 		}
 
 		public static bool ContextualHelp(string contextual)
 		{
-			if (string.IsNullOrEmpty(contextual)) {
+			if (string.IsNullOrEmpty(contextual))
+			{
 				return false;
 			}
-			if (!Help3Environment.IsLocalHelp) {
+
+			if (!Help3Environment.IsLocalHelp)
+			{
 				DisplayHelpOnMSDN(contextual);
 				return true;
 			}
-			if (Help3Service.ActiveCatalog == null) {				
+
+			if (Help3Service.ActiveCatalog == null)
+			{
 				return false;
 			}
-			string helpContextualUrl = string.Concat("ms-xhelp://?method=f1&query=", contextual, "&", Help3Service.ActiveCatalog.AsMsXHelpParam);
+
+			string helpContextualUrl = string.Concat("ms-xhelp://?method=f1&query=", contextual, "&",
+				Help3Service.ActiveCatalog.AsMsXHelpParam);
 			DisplayLocalHelp(helpContextualUrl);
 			return true;
 		}
 
 		public static bool Search(string searchWords)
 		{
-			if (string.IsNullOrEmpty(searchWords)) {
+			if (string.IsNullOrEmpty(searchWords))
+			{
 				return false;
 			}
-			if (!Help3Environment.IsLocalHelp) {
+
+			if (!Help3Environment.IsLocalHelp)
+			{
 				DisplaySearchOnMSDN(searchWords);
 				return true;
 			}
-			if (Help3Service.ActiveCatalog == null) {
+
+			if (Help3Service.ActiveCatalog == null)
+			{
 				return false;
 			}
-			string helpSearchUrl = string.Concat("ms-xhelp://?method=search&query=", searchWords.Replace(" ", "+"), "&", Help3Service.ActiveCatalog.AsMsXHelpParam);
+
+			string helpSearchUrl = string.Concat("ms-xhelp://?method=search&query=", searchWords.Replace(" ", "+"), "&",
+				Help3Service.ActiveCatalog.AsMsXHelpParam);
 			DisplayLocalHelp(helpSearchUrl);
 			return true;
 		}
 
 		public static bool Keywords(string keywords)
 		{
-			if (string.IsNullOrEmpty(keywords)) {
+			if (string.IsNullOrEmpty(keywords))
+			{
 				return false;
 			}
-			if (!Help3Environment.IsLocalHelp) {
+
+			if (!Help3Environment.IsLocalHelp)
+			{
 				MessageBox.Show(StringParser.Parse("${res:AddIns.HelpViewer.OfflineFeatureRequestMsg}"),
-				                StringParser.Parse("${res:AddIns.HelpViewer.MicrosoftHelpViewerTitle}"),
-				                MessageBoxButtons.OK,
-				                MessageBoxIcon.Error);
+					StringParser.Parse("${res:AddIns.HelpViewer.MicrosoftHelpViewerTitle}"),
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error);
 				return false;
 			}
-			if (Help3Service.ActiveCatalog == null) {
+
+			if (Help3Service.ActiveCatalog == null)
+			{
 				return false;
 			}
-			string helpKeywordsUrl = string.Concat("ms-xhelp://?method=keywords&query=", keywords.Replace(" ", "+"), "&", Help3Service.ActiveCatalog.AsMsXHelpParam);
+
+			string helpKeywordsUrl = string.Concat("ms-xhelp://?method=keywords&query=", keywords.Replace(" ", "+"),
+				"&", Help3Service.ActiveCatalog.AsMsXHelpParam);
 			DisplayLocalHelp(helpKeywordsUrl);
 			return true;
 		}
@@ -137,22 +169,34 @@ namespace MSHelpSystem.Core
 
 		static void DisplayLocalHelp(string arguments, bool embedded)
 		{
-			if (string.IsNullOrEmpty(arguments)) {
+			if (string.IsNullOrEmpty(arguments))
+			{
 				throw new ArgumentNullException("arguments");
 			}
-			if (!Help3Environment.IsLocalHelp) { return; 	}
-			if (!HelpLibraryAgent.IsRunning) {
+
+			if (!Help3Environment.IsLocalHelp)
+			{
+				return;
+			}
+
+			if (!HelpLibraryAgent.IsRunning)
+			{
 				HelpLibraryAgent.Start();
 				Thread.Sleep(0x3e8);
 			}
-			string helpUrl = string.Concat(arguments, ProjectLanguages.CurrentLanguageAsHttpParam, (embedded)?"&embedded=true":string.Empty);
 
-			if (Help3Service.Config.ExternalHelp) {
+			string helpUrl = string.Concat(arguments, ProjectLanguages.CurrentLanguageAsHttpParam,
+				(embedded) ? "&embedded=true" : string.Empty);
+
+			if (Help3Service.Config.ExternalHelp)
+			{
 				DisplayHelpWithShellExecute(helpUrl);
 				return;
 			}
+
 			BrowserPane browser = ActiveHelp3Browser();
-			if (browser != null) {
+			if (browser != null)
+			{
 				LoggingService.Info(string.Format("HelpViewer: DisplayLocalHelp calls \"{0}\"", helpUrl));
 				browser.Navigate(Help3Environment.GetHttpFromMsXHelp(helpUrl));
 				browser.WorkbenchWindow.SelectWindow();
@@ -161,35 +205,44 @@ namespace MSHelpSystem.Core
 
 		static void DisplayHelpWithShellExecute(string arguments)
 		{
-			if (string.IsNullOrEmpty(arguments)) {
+			if (string.IsNullOrEmpty(arguments))
+			{
 				throw new ArgumentNullException("arguments");
 			}
+
 			ProcessStartInfo psi = new ProcessStartInfo();
 			psi.FileName = arguments;
 			psi.UseShellExecute = true;
 			psi.WindowStyle = ProcessWindowStyle.Normal;
-			try {
+			try
+			{
 				Process p = Process.Start(psi);
 				p.WaitForInputIdle();
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				LoggingService.Error(string.Format("HelpViewer: {0}", ex.ToString()));
 			}
 		}
 
 		static void DisplayHelpOnMSDN(string keyword)
 		{
-			if (string.IsNullOrEmpty(keyword)) {
+			if (string.IsNullOrEmpty(keyword))
+			{
 				throw new ArgumentNullException("keyword");
 			}
+
 			string msdnUrl = string.Concat("http://msdn.microsoft.com/library/", keyword, ".aspx");
 
-			if (Help3Service.Config.ExternalHelp) {
+			if (Help3Service.Config.ExternalHelp)
+			{
 				DisplayHelpWithShellExecute(msdnUrl);
 				return;
 			}
+
 			BrowserPane browser = ActiveHelp3Browser();
-			if (browser != null) {
+			if (browser != null)
+			{
 				LoggingService.Info(string.Format("HelpViewer: DisplayHelpOnMSDN calls \"{0}\"", msdnUrl));
 				browser.Navigate(msdnUrl);
 				browser.WorkbenchWindow.SelectWindow();
@@ -198,12 +251,16 @@ namespace MSHelpSystem.Core
 
 		static void DisplaySearchOnMSDN(string searchWords)
 		{
-			if (string.IsNullOrEmpty(searchWords)) {
+			if (string.IsNullOrEmpty(searchWords))
+			{
 				throw new ArgumentNullException("searchWords");
 			}
-			string msdnUrl = string.Concat("http://social.msdn.microsoft.com/Search/", CultureInfo.CurrentUICulture.ToString(), "/?query=", searchWords.Replace(" ", "+"), "&ac=3");
+
+			string msdnUrl = string.Concat("http://social.msdn.microsoft.com/Search/",
+				CultureInfo.CurrentUICulture.ToString(), "/?query=", searchWords.Replace(" ", "+"), "&ac=3");
 			BrowserPane browser = ActiveHelp3Browser();
-			if (browser != null) {
+			if (browser != null)
+			{
 				LoggingService.Info(string.Format("HelpViewer: DisplaySearchOnMSDN calls \"{0}\"", msdnUrl));
 				browser.Navigate(msdnUrl);
 				browser.WorkbenchWindow.SelectWindow();
@@ -218,11 +275,13 @@ namespace MSHelpSystem.Core
 				BrowserPane browser = window.ActiveViewContent as BrowserPane;
 				if (browser != null && browser.Url.Scheme == "http") return browser;
 			}
+
 			foreach (IViewContent view in SD.Workbench.ViewContentCollection)
 			{
 				BrowserPane browser = view as BrowserPane;
 				if (browser != null && browser.Url.Scheme == "http") return browser;
 			}
+
 			BrowserPane tmp = new BrowserPane();
 			SD.Workbench.ShowView(tmp);
 			return tmp;

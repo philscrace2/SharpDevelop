@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement
 	public abstract class ProcessPackageAction : IPackageAction
 	{
 		IPackageManagementEvents packageManagementEvents;
-		
+
 		public ProcessPackageAction(
 			IPackageManagementProject project,
 			IPackageManagementEvents packageManagementEvents)
@@ -35,7 +35,7 @@ namespace ICSharpCode.PackageManagement
 			this.Project = project;
 			this.packageManagementEvents = packageManagementEvents;
 		}
-		
+
 		public IPackageManagementProject Project { get; set; }
 		public ILogger Logger { get; set; }
 		public IPackage Package { get; set; }
@@ -43,105 +43,121 @@ namespace ICSharpCode.PackageManagement
 		public string PackageId { get; set; }
 		public IPackageScriptRunner PackageScriptRunner { get; set; }
 		public bool AllowPrereleaseVersions { get; set; }
-		
-		public FrameworkName ProjectTargetFramework {
-			get {
-				if (Project != null) {
+
+		public FrameworkName ProjectTargetFramework
+		{
+			get
+			{
+				if (Project != null)
+				{
 					return Project.TargetFramework;
 				}
+
 				return null;
 			}
 		}
-		
+
 		public virtual bool HasPackageScriptsToRun()
 		{
 			return false;
 		}
-		
+
 		protected void OnParentPackageInstalled()
 		{
 			packageManagementEvents.OnParentPackageInstalled(Package);
 		}
-		
+
 		protected void OnParentPackageUninstalled()
 		{
 			packageManagementEvents.OnParentPackageUninstalled(Package);
 		}
-		
+
 		public void Execute()
 		{
-			RunWithExceptionReporting(() => {
+			RunWithExceptionReporting(() =>
+			{
 				BeforeExecute();
-				if (PackageScriptRunner != null) {
+				if (PackageScriptRunner != null)
+				{
 					ExecuteWithScriptRunner();
-				} else {
+				}
+				else
+				{
 					ExecuteCore();
 				}
 			});
 		}
-		
+
 		void RunWithExceptionReporting(Action action)
 		{
-			try {
+			try
+			{
 				action();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				packageManagementEvents.OnPackageOperationError(ex);
 				throw;
 			}
 		}
-		
+
 		protected virtual void BeforeExecute()
 		{
 			GetLoggerIfMissing();
 			ConfigureProjectLogger();
 			GetPackageIfMissing();
 		}
-		
+
 		void ExecuteWithScriptRunner()
 		{
-			using (RunPackageScriptsAction runScriptsAction = CreateRunPackageScriptsAction()) {
+			using (RunPackageScriptsAction runScriptsAction = CreateRunPackageScriptsAction())
+			{
 				ExecuteCore();
 			}
 		}
-		
+
 		RunPackageScriptsAction CreateRunPackageScriptsAction()
 		{
 			return CreateRunPackageScriptsAction(PackageScriptRunner, Project);
 		}
-		
+
 		protected virtual RunPackageScriptsAction CreateRunPackageScriptsAction(
 			IPackageScriptRunner scriptRunner,
 			IPackageManagementProject project)
 		{
 			return new RunPackageScriptsAction(scriptRunner, project);
 		}
-		
+
 		protected virtual void ExecuteCore()
 		{
 		}
-		
+
 		void GetLoggerIfMissing()
 		{
-			if (Logger == null) {
+			if (Logger == null)
+			{
 				Logger = new PackageManagementLogger(packageManagementEvents);
 			}
 		}
-		
+
 		void ConfigureProjectLogger()
 		{
 			Project.Logger = Logger;
 		}
-		
+
 		void GetPackageIfMissing()
 		{
-			if (Package == null) {
+			if (Package == null)
+			{
 				Package = FindPackage();
 			}
-			if (Package == null) {
+
+			if (Package == null)
+			{
 				ThrowPackageNotFoundError(PackageId);
 			}
 		}
-		
+
 		protected virtual IPackage FindPackage()
 		{
 			return Project.SourceRepository.FindPackage(
@@ -151,27 +167,29 @@ namespace ICSharpCode.PackageManagement
 				AllowPrereleaseVersions,
 				allowUnlisted: false);
 		}
-		
+
 		void ThrowPackageNotFoundError(string packageId)
 		{
 			string message = String.Format("Unable to find package '{0}'.", packageId);
 			throw new ApplicationException(message);
 		}
-		
+
 		protected bool PackageIdExistsInProject()
 		{
 			string id = GetPackageId();
 			return Project.IsPackageInstalled(id);
 		}
-		
+
 		string GetPackageId()
 		{
-			if (Package != null) {
+			if (Package != null)
+			{
 				return Package.Id;
 			}
+
 			return PackageId;
 		}
-		
+
 		protected virtual IOpenPackageReadMeMonitor CreateOpenPackageReadMeMonitor(string packageId)
 		{
 			return new OpenPackageReadMeMonitor(packageId, Project);

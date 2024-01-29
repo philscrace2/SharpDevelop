@@ -22,11 +22,12 @@ using ICSharpCode.PackageManagement.Scripting;
 
 namespace ICSharpCode.PackageManagement.Cmdlets
 {
-	[Cmdlet(VerbsLifecycle.Invoke, "UpdateWorkingDirectory", DefaultParameterSetName = ParameterAttribute.AllParameterSets)]
+	[Cmdlet(VerbsLifecycle.Invoke, "UpdateWorkingDirectory",
+		DefaultParameterSetName = ParameterAttribute.AllParameterSets)]
 	public class InvokeUpdateWorkingDirectoryCmdlet : PackageManagementCmdlet
 	{
 		IPackageManagementProjectService projectService;
-		
+
 		public InvokeUpdateWorkingDirectoryCmdlet()
 			: this(
 				PackageManagementServices.ProjectService,
@@ -34,7 +35,7 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 				null)
 		{
 		}
-		
+
 		public InvokeUpdateWorkingDirectoryCmdlet(
 			IPackageManagementProjectService projectService,
 			IPackageManagementConsoleHost consoleHost,
@@ -43,24 +44,24 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 		{
 			this.projectService = projectService;
 		}
-		
+
 		protected override void ProcessRecord()
 		{
 			UpdateWorkingDirectory();
 		}
-		
+
 		void UpdateWorkingDirectory()
 		{
 			string directory = GetWorkingDirectory();
 			UpdateWorkingDirectory(directory);
 		}
-		
+
 		string GetWorkingDirectory()
 		{
 			var workingDirectory = new PowerShellWorkingDirectory(projectService);
 			return workingDirectory.GetWorkingDirectory();
 		}
-		
+
 		void UpdateWorkingDirectory(string directory)
 		{
 			string command = String.Format("Set-Location {0}", directory);

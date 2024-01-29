@@ -26,29 +26,32 @@ namespace ICSharpCode.Reporting.Exporter.Visitors
 	/// <summary>
 	/// Description of FormatVisitor.
 	/// </summary>
-	class FormatVisitor: AbstractVisitor
+	class FormatVisitor : AbstractVisitor
 	{
-
-		
-		public override void Visit(ExportContainer exportContainer){
-			foreach (var element in exportContainer.ExportedItems) {
+		public override void Visit(ExportContainer exportContainer)
+		{
+			foreach (var element in exportContainer.ExportedItems)
+			{
 				var container = element as ExportContainer;
-				if (container != null) {
+				if (container != null)
+				{
 					Visit(container);
 				}
-				
+
 				var te = element as ExportText;
-				if (te != null) {
+				if (te != null)
+				{
 					Visit(te);
 				}
 			}
 		}
-		
-		
+
+
 		public override void Visit(ExportText exportColumn)
 		{
 			Console.WriteLine(exportColumn.Text);
-			if (!String.IsNullOrEmpty(exportColumn.FormatString)) {
+			if (!String.IsNullOrEmpty(exportColumn.FormatString))
+			{
 				StandardFormatter.FormatOutput(exportColumn);
 			}
 		}

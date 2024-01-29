@@ -24,7 +24,7 @@ namespace ICSharpCode.Reporting.Expressions
 	/// <summary>
 	/// Description of TypeNormalizer.
 	/// </summary>
-	public  class TypeNormalizer
+	public class TypeNormalizer
 	{
 		/*
 		public static void NormalizeTypes(ref object left,ref object right)
@@ -58,14 +58,14 @@ namespace ICSharpCode.Reporting.Expressions
 				}
 			}
 		}
-		
+
 		public static void EnsureTypes(ref object[] values,Type targetType)
 		{
 			object nullValue = null;
 			if (targetType.IsValueType)
 				nullValue = Activator.CreateInstance(targetType);
 			EnsureTypes(ref values,targetType,nullValue);
-			
+
 		}
 
 		public static void EnsureTypes(ref object[] values,Type targetType,object nullValue)
@@ -81,9 +81,9 @@ namespace ICSharpCode.Reporting.Expressions
 			return EnsureType<T>(value, default(T));
 		}
 
-		public static T EnsureType<T>(object value,object nullValue)
+		public static T EnsureType<T>(object value, object nullValue)
 		{
-			return (T) EnsureType(value, typeof (T), nullValue);
+			return (T)EnsureType(value, typeof(T), nullValue);
 		}
 
 		public static object EnsureType(object value, Type targetType)
@@ -97,26 +97,27 @@ namespace ICSharpCode.Reporting.Expressions
 			return EnsureType(value, targetType, defaultValue);
 		}
 
-		public static object EnsureType(object value,Type targetType,object nullValue)
+		public static object EnsureType(object value, Type targetType, object nullValue)
 		{
 			if (value == null)
 				return nullValue;
-			
+
 			if (targetType == typeof(object))
 				return value;
 
 			if (value.GetType() == targetType)
 				return value;
 
-			try {
-				return Convert.ChangeType(value, targetType,CultureInfo.CurrentCulture);
-			} catch (Exception e) {
-				
-				Console.WriteLine("TypeNormalizer {0} - {1}",value.ToString(),e.Message);
+			try
+			{
+				return Convert.ChangeType(value, targetType, CultureInfo.CurrentCulture);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine("TypeNormalizer {0} - {1}", value.ToString(), e.Message);
 				return value.ToString();
 				//throw new Exception()String.Format("TypeNormalizer for  <{0}> - {1}",value.ToString(),e.Message));
 			}
 		}
-		
 	}
 }

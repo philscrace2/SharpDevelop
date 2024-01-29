@@ -21,7 +21,7 @@ using System;
 namespace ICSharpCode.TextTemplating
 {
 	public class TextTemplatingAppDomainFactory : ITextTemplatingAppDomainFactory
-	{		
+	{
 		public ITextTemplatingAppDomain CreateTextTemplatingAppDomain(string applicationBase)
 		{
 			return new TextTemplatingAppDomain(applicationBase);

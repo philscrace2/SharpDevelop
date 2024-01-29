@@ -43,7 +43,9 @@ namespace MSHelpSystem
 			HelpLibraryAgent.Start();
 			DataContext = Help3Service.Items;
 			if (Help3Service.Items.Count > 0)
-				groupBox1.Header = string.Format("{0} ({1})", StringParser.Parse("${res:AddIns.HelpViewer.InstalledHelpCatalogsLabel}"), Help3Service.Items.Count);
+				groupBox1.Header = string.Format("{0} ({1})",
+					StringParser.Parse("${res:AddIns.HelpViewer.InstalledHelpCatalogsLabel}"),
+					Help3Service.Items.Count);
 			if (Help3Service.ActiveCatalog != null)
 				help3Catalogs.SelectedValue = Help3Service.ActiveCatalog.ShortName;
 			help3Catalogs.IsEnabled = (Help3Service.Items.Count > 1 && Help3Service.Config.OfflineMode);
@@ -57,7 +59,8 @@ namespace MSHelpSystem
 		void Help3CatalogsSelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			string item = (string)help3Catalogs.SelectedValue;
-			if (!string.IsNullOrEmpty(item)) {
+			if (!string.IsNullOrEmpty(item))
+			{
 				Help3Service.ActiveCatalogId = item;
 			}
 		}
@@ -79,7 +82,8 @@ namespace MSHelpSystem
 		void Help3UseExternalHelpClicked(object sender, RoutedEventArgs e)
 		{
 			Help3Service.Config.ExternalHelp = (bool)externalHelp.IsChecked;
-			LoggingService.Info(string.Format("HelpViewer: External help viewer {0}", (Help3Service.Config.ExternalHelp)?"enabled":"disabled"));
+			LoggingService.Info(string.Format("HelpViewer: External help viewer {0}",
+				(Help3Service.Config.ExternalHelp) ? "enabled" : "disabled"));
 		}
 
 		public override bool SaveOptions()

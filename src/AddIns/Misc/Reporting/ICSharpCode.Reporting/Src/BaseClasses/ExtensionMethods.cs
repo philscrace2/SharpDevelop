@@ -30,45 +30,45 @@ namespace ICSharpCode.Reporting.BaseClasses
 	/// Copy from D:\git_Sharpdevelop_Reporting\src\AddIns\Misc\Reports\ICSharpCode.Reports.Core\Project\WPF\ExtensionMethodes.cs
 	/// </summary>
 	/// <see cref="D:\git_Sharpdevelop_Reporting\src\AddIns\Misc\Reports\ICSharpCode.Reports.Core\Project\WPF\ExtensionMethodes.cs"
-	
 	public static class ExtensionMethodes
 	{
-		#region Collections 
-		
+		#region Collections
+
 		public static void ForEach<T>(this IEnumerable<T> input, Action<T> action)
 		{
 			if (input == null)
 				throw new ArgumentNullException("input");
-			foreach (T element in input) {
+			foreach (T element in input)
+			{
 				action(element);
 			}
 		}
-		
+
 		#endregion
-		
+
 		#region system.drawing -> Wpf
-		
+
 		public static Point ToWpf(this System.Drawing.Point p)
 		{
 			return new Point(p.X, p.Y);
 		}
-		
+
 		public static Size ToWpf(this System.Drawing.Size s)
 		{
 			return new Size(s.Width, s.Height);
 		}
-		
+
 		public static Rect ToWpf(this System.Drawing.Rectangle rect)
 		{
 			return new Rect(rect.Location.ToWpf(), rect.Size.ToWpf());
 		}
-		
+
 		public static Color ToWpf(this System.Drawing.Color c)
 		{
 			return Color.FromArgb(c.A, c.R, c.G, c.B);
 		}
-		
-		
+
+
 		public static int FromPoints(double value)
 		{
 			return (int)Math.Round(value * 72.0 / 96.0);
@@ -78,53 +78,56 @@ namespace ICSharpCode.Reporting.BaseClasses
 		{
 			return Math.Round(value * 96.0 / 72.0);
 		}
-		
-		
+
 		#endregion
-		
+
 		#region DPI independence
+
 		public static Rect TransformToDevice(this Rect rect, Visual visual)
 		{
 			Matrix matrix = PresentationSource.FromVisual(visual).CompositionTarget.TransformToDevice;
 			return Rect.Transform(rect, matrix);
 		}
-		
+
 		public static Rect TransformFromDevice(this Rect rect, Visual visual)
 		{
 			Matrix matrix = PresentationSource.FromVisual(visual).CompositionTarget.TransformFromDevice;
 			return Rect.Transform(rect, matrix);
 		}
-		
+
 		public static Size TransformToDevice(this Size size, Visual visual)
 		{
 			Matrix matrix = PresentationSource.FromVisual(visual).CompositionTarget.TransformToDevice;
 			return new Size(size.Width * matrix.M11, size.Height * matrix.M22);
 		}
-		
+
 		public static Size TransformFromDevice(this Size size, Visual visual)
 		{
 			Matrix matrix = PresentationSource.FromVisual(visual).CompositionTarget.TransformFromDevice;
 			return new Size(size.Width * matrix.M11, size.Height * matrix.M22);
 		}
-		
+
 		public static Point TransformToDevice(this Point point, Visual visual)
 		{
 			Matrix matrix = PresentationSource.FromVisual(visual).CompositionTarget.TransformToDevice;
 			return new Point(point.X * matrix.M11, point.Y * matrix.M22);
 		}
-		
+
 		public static Point TransformFromDevice(this Point point, Visual visual)
 		{
 			Matrix matrix = PresentationSource.FromVisual(visual).CompositionTarget.TransformFromDevice;
 			return new Point(point.X * matrix.M11, point.Y * matrix.M22);
 		}
+
 		#endregion
-		
+
 		#region ReportSettings
-		
-		public static int PrintableWidth (this IReportSettings reportSettings) {
-				return reportSettings.PageSize.Width - reportSettings.LeftMargin - reportSettings.RightMargin;
+
+		public static int PrintableWidth(this IReportSettings reportSettings)
+		{
+			return reportSettings.PageSize.Width - reportSettings.LeftMargin - reportSettings.RightMargin;
 		}
+
 		#endregion
 	}
 }

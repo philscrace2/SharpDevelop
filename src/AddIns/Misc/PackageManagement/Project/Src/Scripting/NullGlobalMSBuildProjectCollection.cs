@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 		public void AddProject(IPackageManagementProject project)
 		{
 		}
-		
+
 		public void Dispose()
 		{
 		}

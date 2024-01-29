@@ -38,23 +38,26 @@ namespace ICSharpCode.TextTemplating
 			this.context = context;
 		}
 
-		protected ITextTemplatingHost Host {
+		protected ITextTemplatingHost Host
+		{
 			get { return host; }
 		}
-		
-		protected FileProjectItem TemplateFile {
+
+		protected FileProjectItem TemplateFile
+		{
 			get { return templateFile; }
 		}
-		
-		protected ITextTemplatingCustomToolContext Context {
+
+		protected ITextTemplatingCustomToolContext Context
+		{
 			get { return context; }
 		}
-		
+
 		protected void ClearTasksExceptCommentTasks()
 		{
 			context.ClearTasksExceptCommentTasks();
 		}
-		
+
 		protected void SetNamespaceHint(string namespaceHint)
 		{
 			context.SetLogicalCallContextData("NamespaceHint", namespaceHint);
@@ -62,30 +65,32 @@ namespace ICSharpCode.TextTemplating
 
 		protected void BringErrorsToFrontIfRequired()
 		{
-			if (host.Errors.HasErrors) { 
+			if (host.Errors.HasErrors)
+			{
 				context.BringErrorsPadToFront();
 			}
 		}
-		
+
 		protected void AddCompilerErrorToTemplatingHost(Exception ex, string fileName)
 		{
 			var error = new TemplatingHostProcessTemplateError(ex, fileName);
 			host.Errors.Add(error);
 		}
-		
+
 		protected void DebugLogException(Exception ex, string fileName)
 		{
 			string message = String.Format("Exception thrown when processing template '{0}'.", fileName);
 			context.DebugLog(message, ex);
 		}
-				
+
 		protected void AddAnyErrorsToTaskList()
 		{
-			foreach (CompilerError error in host.Errors) {
+			foreach (CompilerError error in host.Errors)
+			{
 				AddErrorToTaskList(error);
 			}
 		}
-		
+
 		void AddErrorToTaskList(CompilerError error)
 		{
 			var task = new CompilerErrorTask(error);

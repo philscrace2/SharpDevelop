@@ -26,18 +26,18 @@ namespace ICSharpCode.PackageManagement
 		public string Source { get; set; }
 		public string Name { get; set; }
 		public bool IsEnabled { get; set; }
-		
+
 		public RegisteredPackageSource()
 		{
 		}
-		
+
 		public RegisteredPackageSource(PackageSource packageSource)
 		{
 			Source = packageSource.Source;
 			Name = packageSource.Name;
 			IsEnabled = packageSource.IsEnabled;
 		}
-		
+
 		public PackageSource ToPackageSource()
 		{
 			return new PackageSource(Source, Name, IsEnabled);

@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement
 	public interface IUpdatePackageActions : IUpdatePackageSettings
 	{
 		IPackageScriptRunner PackageScriptRunner { get; set; }
-		
+
 		IEnumerable<UpdatePackageAction> CreateActions();
 	}
 }

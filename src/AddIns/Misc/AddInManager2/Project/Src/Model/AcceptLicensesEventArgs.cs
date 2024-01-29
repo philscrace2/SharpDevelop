@@ -28,17 +28,9 @@ namespace ICSharpCode.AddInManager2.Model
 		{
 			this.Packages = packages;
 		}
-		
-		public IEnumerable<IPackage> Packages
-		{
-			get;
-			private set;
-		}
-		
-		public bool IsAccepted
-		{
-			get;
-			set;
-		}
+
+		public IEnumerable<IPackage> Packages { get; private set; }
+
+		public bool IsAccepted { get; set; }
 	}
 }

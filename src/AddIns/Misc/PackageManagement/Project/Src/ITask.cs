@@ -24,9 +24,9 @@ namespace ICSharpCode.PackageManagement
 	{
 		void Start();
 		void Cancel();
-		
+
 		TResult Result { get; }
-		
+
 		bool IsCancelled { get; }
 		bool IsFaulted { get; }
 		AggregateException Exception { get; }

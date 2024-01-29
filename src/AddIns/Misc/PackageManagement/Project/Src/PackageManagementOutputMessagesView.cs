@@ -25,14 +25,14 @@ namespace ICSharpCode.PackageManagement
 	public class PackageManagementOutputMessagesView : IPackageManagementOutputMessagesView
 	{
 		public static readonly string CategoryName = "PackageManagement";
-		
+
 		IMessageViewCategory messageViewCategory;
-		
+
 		public PackageManagementOutputMessagesView(IPackageManagementEvents packageManagementEvents)
 			: this(new PackageManagementCompilerMessageView(), packageManagementEvents)
 		{
 		}
-		
+
 		public PackageManagementOutputMessagesView(
 			ICompilerMessageView compilerMessageView,
 			IPackageManagementEvents packageManagementEvents)
@@ -40,37 +40,39 @@ namespace ICSharpCode.PackageManagement
 			CreatePackageManagementMessageCategoryIfNoneExists(compilerMessageView);
 			packageManagementEvents.PackageOperationMessageLogged += PackageOperationMessageLogged;
 		}
-		
+
 		void CreatePackageManagementMessageCategoryIfNoneExists(ICompilerMessageView compilerMessageView)
 		{
 			messageViewCategory = compilerMessageView.GetExisting(CategoryName);
-			if (messageViewCategory == null) {
+			if (messageViewCategory == null)
+			{
 				CreatePackageManagementMessageCategory(compilerMessageView);
 			}
 		}
-		
+
 		void CreatePackageManagementMessageCategory(ICompilerMessageView compilerMessageView)
 		{
 			messageViewCategory = compilerMessageView.Create(CategoryName, "Packages");
 		}
-		
+
 		void PackageOperationMessageLogged(object sender, PackageOperationMessageLoggedEventArgs e)
 		{
 			string formattedMessage = e.Message.ToString();
 			AppendLine(formattedMessage);
 		}
-		
+
 		public void Clear()
 		{
 			messageViewCategory.Clear();
 		}
-		
+
 		public void AppendLine(string message)
 		{
 			messageViewCategory.AppendLine(message);
 		}
-		
-		public IOutputCategory OutputCategory {
+
+		public IOutputCategory OutputCategory
+		{
 			get { return messageViewCategory.OutputCategory; }
 		}
 	}

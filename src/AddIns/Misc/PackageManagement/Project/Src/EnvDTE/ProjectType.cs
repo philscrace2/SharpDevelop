@@ -25,12 +25,12 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		public static readonly string VB = "VB.NET";
 		public static readonly string CSharp = "C#";
-		
+
 		public static string GetProjectType(Project project)
 		{
 			return GetProjectType(project.MSBuildProject);
 		}
-		
+
 		public static string GetProjectType(IProject project)
 		{
 			if (project.Language == "VB")

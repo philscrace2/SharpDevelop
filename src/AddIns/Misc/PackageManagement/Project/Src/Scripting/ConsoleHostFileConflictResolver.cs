@@ -25,32 +25,33 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		IPackageManagementEvents packageEvents;
 		FileConflictResolution conflictResolution;
-		
+
 		public ConsoleHostFileConflictResolver(
 			IPackageManagementEvents packageEvents,
 			FileConflictAction fileConflictAction)
 		{
 			this.packageEvents = packageEvents;
-			
+
 			conflictResolution = GetFileConflictResolution(fileConflictAction);
 			packageEvents.ResolveFileConflict += ResolveFileConflict;
 		}
-		
+
 		void ResolveFileConflict(object sender, ResolveFileConflictEventArgs e)
 		{
 			e.Resolution = conflictResolution;
 		}
-		
+
 		FileConflictResolution GetFileConflictResolution(FileConflictAction fileConflictAction)
 		{
-			switch (fileConflictAction) {
+			switch (fileConflictAction)
+			{
 				case FileConflictAction.Overwrite:
 					return FileConflictResolution.Overwrite;
 				default:
 					return FileConflictResolution.Ignore;
 			}
 		}
-		
+
 		public void Dispose()
 		{
 			packageEvents.ResolveFileConflict -= ResolveFileConflict;

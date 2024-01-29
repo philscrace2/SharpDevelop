@@ -33,7 +33,7 @@ namespace ICSharpCode.PackageManagement
 				return package.Description;
 			return package.Summary;
 		}
-		
+
 		/// <summary>
 		/// Returns package Id if it has no title.
 		/// </summary>
@@ -47,7 +47,7 @@ namespace ICSharpCode.PackageManagement
 		public static bool IsProjectPackage(this IPackage package)
 		{
 			return package.HasProjectContent() ||
-				package.DependencySets.SelectMany(p => p.Dependencies).Any();
+			       package.DependencySets.SelectMany(p => p.Dependencies).Any();
 		}
 	}
 }

@@ -23,13 +23,14 @@ namespace ICSharpCode.TextTemplating
 	public class TextTemplatingHostAppDomain : IAppDomain
 	{
 		AppDomain appDomain;
-		
+
 		public TextTemplatingHostAppDomain()
 		{
 			this.appDomain = AppDomain.CurrentDomain;
 		}
-		
-		public event ResolveEventHandler AssemblyResolve {
+
+		public event ResolveEventHandler AssemblyResolve
+		{
 			add { appDomain.AssemblyResolve += value; }
 			remove { appDomain.AssemblyResolve -= value; }
 		}

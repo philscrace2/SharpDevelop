@@ -28,28 +28,35 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		public CodeProperty2()
 		{
 		}
-		
+
 		public CodeProperty2(CodeModelContext context, IProperty property)
 			: base(context, property)
 		{
 		}
-		
-		public global::EnvDTE.vsCMPropertyKind ReadWrite { 
+
+		public global::EnvDTE.vsCMPropertyKind ReadWrite
+		{
 			get { return GetPropertyKind(); }
 		}
-		
+
 		global::EnvDTE.vsCMPropertyKind GetPropertyKind()
 		{
-			if (property.CanSet && property.CanGet) {
+			if (property.CanSet && property.CanGet)
+			{
 				return global::EnvDTE.vsCMPropertyKind.vsCMPropertyKindReadWrite;
-			} else if (property.CanSet) {
+			}
+			else if (property.CanSet)
+			{
 				return global::EnvDTE.vsCMPropertyKind.vsCMPropertyKindWriteOnly;
 			}
+
 			return global::EnvDTE.vsCMPropertyKind.vsCMPropertyKindReadOnly;
 		}
-		
-		public global::EnvDTE.CodeElements Parameters {
-			get {
+
+		public global::EnvDTE.CodeElements Parameters
+		{
+			get
+			{
 				var parameters = new CodeElementsList<CodeElement>();
 				parameters.AddRange(property.Parameters.Select(parameter => new CodeParameter2(context, parameter)));
 				return parameters;

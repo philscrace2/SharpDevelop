@@ -28,42 +28,46 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		where T : global::EnvDTE.CodeElement
 	{
 		readonly List<T> elements = new List<T>();
-		
-		public int Count {
+
+		public int Count
+		{
 			get { return elements.Count; }
 		}
-		
+
 		public IEnumerator GetEnumerator()
 		{
 			return elements.GetEnumerator();
 		}
-		
+
 		global::EnvDTE.CodeElement global::EnvDTE.CodeElements.Item(object index)
 		{
-			if (index is int) {
+			if (index is int)
+			{
 				return GetItem((int)index);
 			}
+
 			return GetItem((string)index);
 		}
-		
+
 		global::EnvDTE.CodeElement GetItem(int index)
 		{
 			return elements[index - 1];
 		}
-		
+
 		global::EnvDTE.CodeElement GetItem(string name)
 		{
 			return elements.Single(item => item.Name == name);
 		}
-		
+
 		internal void Add(T element)
 		{
 			elements.Add(element);
 		}
-		
+
 		internal void AddRange(IEnumerable<T> items)
 		{
-			foreach (T element in items) {
+			foreach (T element in items)
+			{
 				Add(element);
 			}
 		}

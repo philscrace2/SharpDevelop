@@ -28,19 +28,21 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		List<string> projectImportsAdded = new List<string>();
 		List<string> projectImportsRemoved = new List<string>();
-		
+
 		public MSBuildProjectImportsMergeResult()
 		{
 		}
-		
-		public IEnumerable<string> ProjectImportsAdded {
+
+		public IEnumerable<string> ProjectImportsAdded
+		{
 			get { return projectImportsAdded; }
 		}
-		
-		public IEnumerable<string> ProjectImportsRemoved {
+
+		public IEnumerable<string> ProjectImportsRemoved
+		{
 			get { return projectImportsRemoved; }
 		}
-		
+
 		public override string ToString()
 		{
 			return String.Format(
@@ -48,21 +50,22 @@ namespace ICSharpCode.PackageManagement.Scripting
 				ImportsToString(projectImportsAdded),
 				ImportsToString(projectImportsRemoved));
 		}
-		
+
 		static string ImportsToString(IEnumerable<string> imports)
 		{
-			if (!imports.Any()) {
+			if (!imports.Any())
+			{
 				return String.Empty;
 			}
-			
+
 			return String.Join(",\r\n", imports.Select(import => String.Format("'{0}'", import)));
 		}
-		
+
 		public void AddProjectImportsRemoved(IEnumerable<ProjectImportElement> imports)
 		{
 			imports.ForEach(import => projectImportsRemoved.Add(import.Project));
 		}
-		
+
 		public void AddProjectImportsAdded(IEnumerable<ProjectImportElement> imports)
 		{
 			imports.ForEach(import => projectImportsAdded.Add(import.Project));

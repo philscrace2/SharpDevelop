@@ -34,56 +34,61 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			this.Project = (Project)parentProjectItem.ContainingProject;
 			GetRelationship();
 		}
-		
+
 		public ProjectItem ParentProjectItem { get; private set; }
 		public SD.ProjectItem MSBuildProjectItem { get; private set; }
 		public Project Project { get; private set; }
-		
+
 		string MSBuildProjectItemDirectory;
-		
+
 		void GetRelationship()
 		{
 			GetMSBuildProjectItemDirectory();
 		}
-		
+
 		void GetMSBuildProjectItemDirectory()
 		{
 			MSBuildProjectItemDirectory = Path.GetDirectoryName(MSBuildProjectItem.Include);
 		}
-		
+
 		public ProjectItem GetChild()
 		{
-			if (IsChildItem()) {
+			if (IsChildItem())
+			{
 				return CreateProjectItem();
-			} else {
-				if (IsInChildDirectory()) {
+			}
+			else
+			{
+				if (IsInChildDirectory())
+				{
 					return CreateDirectoryItem();
 				}
 			}
+
 			return null;
 		}
-		
+
 		bool IsChildItem()
 		{
 			return ParentProjectItem.IsChildItem(MSBuildProjectItem);
 		}
-		
+
 		ProjectItem CreateProjectItem()
 		{
 			return new ProjectItem(Project, MSBuildProjectItem as FileProjectItem);
 		}
-		
+
 		bool IsInChildDirectory()
 		{
 			return MSBuildProjectItemDirectory.StartsWith(ParentProjectItem.GetIncludePath());
 		}
-		
+
 		ProjectItem CreateDirectoryItem()
 		{
 			string relativePath = GetPathOneDirectoryBelowParentProjectItem();
 			return new DirectoryProjectItem(Project, relativePath);
 		}
-		
+
 		string GetPathOneDirectoryBelowParentProjectItem()
 		{
 			string[] parentDirectories = ParentProjectItem.GetIncludePath().Split('\\');

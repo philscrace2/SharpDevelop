@@ -45,31 +45,36 @@ namespace ICSharpCode.Reporting.PageBuilder.Converter
 			return exportContainer;
 		}
 
-		
-		public List<IExportColumn> CreateConvertedList(List<IPrintableObject> items){                                    
+
+		public List<IExportColumn> CreateConvertedList(List<IPrintableObject> items)
+		{
 			var itemsList = new List<IExportColumn>();
 
-			foreach (var element in items) {
+			foreach (var element in items)
+			{
 				var exportColumn = ExportColumnFactory.CreateItem(element);
 				var ec = element as IReportContainer;
-				if (ec != null) {
+				if (ec != null)
+				{
 					var l = CreateConvertedList(ec.Items);
 					((IExportContainer)exportColumn).ExportedItems.AddRange(l);
 				}
-				
+
 				itemsList.Add(exportColumn);
 			}
+
 			return itemsList;
 		}
 
-		
+
 		public void SetParent(IExportContainer parent, List<IExportColumn> convertedItems)
 		{
-			foreach (var item in convertedItems) {
+			foreach (var item in convertedItems)
+			{
 				item.Parent = parent;
 			}
 		}
-		
-		protected Point CurrentLocation { get;  set; }
+
+		protected Point CurrentLocation { get; set; }
 	}
 }

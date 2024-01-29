@@ -27,32 +27,34 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		{
 			this.Name = name;
 		}
-		
+
 		public Property()
 		{
 		}
-		
+
 		public virtual string Name { get; private set; }
-		
-		public virtual object Value {
+
+		public virtual object Value
+		{
 			get { return GetValue(); }
 			set { SetValue(value); }
 		}
-		
+
 		protected virtual object GetValue()
 		{
 			return null;
 		}
-		
+
 		protected virtual void SetValue(object value)
 		{
 		}
-		
-		public virtual object Object {
+
+		public virtual object Object
+		{
 			get { return GetObject(); }
 			set { }
 		}
-		
+
 		protected virtual object GetObject()
 		{
 			return null;

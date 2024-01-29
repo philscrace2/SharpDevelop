@@ -20,7 +20,7 @@ using System;
 using System.Collections;
 using System.ComponentModel.Design.Serialization;
 using System.ComponentModel.Design;
-	
+
 namespace ICSharpCode.Reporting.Addin.Services
 {
 	/// <summary>
@@ -32,14 +32,17 @@ namespace ICSharpCode.Reporting.Addin.Services
 	class DesignerSerializationService : IDesignerSerializationService
 	{
 		readonly IServiceProvider serviceProvider;
+
 		public DesignerSerializationService(IServiceProvider serviceProvider)
 		{
-			if (serviceProvider == null) {
+			if (serviceProvider == null)
+			{
 				throw new ArgumentNullException("serviceProvider");
 			}
+
 			this.serviceProvider = serviceProvider;
 		}
-		
+
 		/// <summary>
 		/// Deserializes the serialization data object and returns a 
 		/// collection of objects represented by that data. 
@@ -47,27 +50,35 @@ namespace ICSharpCode.Reporting.Addin.Services
 		public ICollection Deserialize(object serializationData)
 		{
 			var host = (IDesignerHost)this.serviceProvider.GetService(typeof(IDesignerHost));
-			if (host != null) {
-				var serializationService = (ComponentSerializationService)serviceProvider.GetService(typeof(ComponentSerializationService));
-				return serializationService.Deserialize((SerializationStore)serializationData,host.Container);
+			if (host != null)
+			{
+				var serializationService =
+					(ComponentSerializationService)serviceProvider.GetService(typeof(ComponentSerializationService));
+				return serializationService.Deserialize((SerializationStore)serializationData, host.Container);
 			}
+
 			return null;
 		}
-		
+
 		/// <summary>
 		/// Serializes a collection of objects and stores them in a 
 		/// serialization data object. 
 		/// </summary>
 		public object Serialize(ICollection objects)
 		{
-			if (objects == null) {
+			if (objects == null)
+			{
 				throw new ArgumentNullException("objects");
 			}
-			var serializationService = (ComponentSerializationService)serviceProvider.GetService(typeof(ComponentSerializationService));
+
+			var serializationService =
+				(ComponentSerializationService)serviceProvider.GetService(typeof(ComponentSerializationService));
 			SerializationStore store = serializationService.CreateStore();
-			foreach (object value in objects) {
+			foreach (object value in objects)
+			{
 				serializationService.Serialize(store, value);
 			}
+
 			store.Close();
 			return store;
 		}

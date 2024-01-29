@@ -25,36 +25,29 @@ namespace ICSharpCode.Reporting.BaseClasses
 	/// Description of PageInfo.
 	/// </summary>
 	/// 
-
-	
-	
-	public class PageInfo:IPageInfo
+	public class PageInfo : IPageInfo
 	{
 		public PageInfo()
 		{
 		}
-		
-		public int PageNumber {get;set;}
-		
-		
-		
-		public int TotalPages {get;set;}
-		
-		
-		
-		public string ReportName {get;set;}
-		
-		
-		public string ReportFileName {get;set;}
-		
-		
-		public string ReportFolder {
-			get{
-				return System.IO.Path.GetDirectoryName(this.ReportFileName);
-			}
+
+		public int PageNumber { get; set; }
+
+
+		public int TotalPages { get; set; }
+
+
+		public string ReportName { get; set; }
+
+
+		public string ReportFileName { get; set; }
+
+
+		public string ReportFolder
+		{
+			get { return System.IO.Path.GetDirectoryName(this.ReportFileName); }
 		}
-		
-		public DateTime ExecutionTime {get;set;}
-		
+
+		public DateTime ExecutionTime { get; set; }
 	}
 }

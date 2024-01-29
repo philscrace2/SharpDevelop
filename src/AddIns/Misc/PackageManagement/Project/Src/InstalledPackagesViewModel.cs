@@ -33,43 +33,47 @@ namespace ICSharpCode.PackageManagement
 			: base(
 				solution,
 				packageManagementEvents,
-				registeredPackageRepositories, 
-				packageViewModelFactory, 
+				registeredPackageRepositories,
+				packageViewModelFactory,
 				taskFactory)
 		{
 			RegisterEvents();
 		}
-		
+
 		void RegisterEvents()
 		{
 			packageManagementEvents.ParentPackageInstalled += InstalledPackagesChanged;
 			packageManagementEvents.ParentPackageUninstalled += InstalledPackagesChanged;
 			packageManagementEvents.ParentPackagesUpdated += InstalledPackagesChanged;
 		}
-		
+
 		protected override void OnDispose()
 		{
 			packageManagementEvents.ParentPackageInstalled -= InstalledPackagesChanged;
 			packageManagementEvents.ParentPackageUninstalled -= InstalledPackagesChanged;
 			packageManagementEvents.ParentPackagesUpdated -= InstalledPackagesChanged;
 		}
-		
+
 		void InstalledPackagesChanged(object sender, EventArgs e)
 		{
 			ReadPackages();
 		}
-		
+
 		protected override IQueryable<IPackage> GetAllPackages(string searchCriteria)
 		{
-			if (!string.IsNullOrEmpty(errorMessage)) {
+			if (!string.IsNullOrEmpty(errorMessage))
+			{
 				ThrowOriginalExceptionWhenTryingToGetProjectManager();
 			}
-			if (project != null) {
+
+			if (project != null)
+			{
 				return project.GetPackages();
 			}
+
 			return solution.GetPackages();
 		}
-		
+
 		void ThrowOriginalExceptionWhenTryingToGetProjectManager()
 		{
 			throw new ApplicationException(errorMessage);

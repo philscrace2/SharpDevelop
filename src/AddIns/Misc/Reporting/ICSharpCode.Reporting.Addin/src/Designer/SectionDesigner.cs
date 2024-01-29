@@ -3,9 +3,10 @@
  * User: Peter Forstmeier
  * Date: 15.03.2014
  * Time: 19:26
- * 
+ *
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design;
@@ -19,55 +20,60 @@ namespace ICSharpCode.Reporting.Addin.Designer
 	/// <summary>
 	/// Description of SectionDesigner.
 	/// </summary>
-	class SectionDesigner:ParentControlDesigner
+	class SectionDesigner : ParentControlDesigner
 	{
 		BaseSection section;
 		ISelectionService selectionService;
-		
+
 		public override void Initialize(IComponent component)
 		{
-			if (component == null) {
+			if (component == null)
+			{
 				throw new ArgumentNullException("component");
 			}
+
 			base.Initialize(component);
 			this.section = (BaseSection)component;
-			if (String.IsNullOrEmpty(component.Site.Name)) {
+			if (String.IsNullOrEmpty(component.Site.Name))
+			{
 				component.Site.Name = section.Name;
-			} else {
+			}
+			else
+			{
 				section.Name = component.Site.Name;
 			}
-			GetService ();
+
+			GetService();
 		}
-		
-		
-		public override SelectionRules SelectionRules {
-			get { 
-			return SelectionRules.BottomSizeable|SelectionRules.TopSizeable;
-			}
+
+
+		public override SelectionRules SelectionRules
+		{
+			get { return SelectionRules.BottomSizeable | SelectionRules.TopSizeable; }
 		}
-		
-		
+
+
 		protected override void OnDragDrop(DragEventArgs de)
 		{
 			base.OnDragDrop(de);
 			var it = (IToolboxService)this.GetService(typeof(IToolboxService));
 			it.SetSelectedToolboxItem(null);
 		}
-		
-		
+
+
 		public override bool CanBeParentedTo(System.ComponentModel.Design.IDesigner parentDesigner)
 		{
 			return false;
 		}
-		
-		
+
+
 		void OnSelectionChanged(object sender, EventArgs e)
 		{
-			Control.Invalidate( );
+			Control.Invalidate();
 		}
-		
-		
-		void GetService ()
+
+
+		void GetService()
 		{
 			selectionService = GetService(typeof(ISelectionService)) as ISelectionService;
 			if (selectionService != null)
@@ -75,13 +81,15 @@ namespace ICSharpCode.Reporting.Addin.Designer
 				selectionService.SelectionChanged += OnSelectionChanged;
 			}
 		}
-		
-		
+
+
 		protected override void Dispose(bool disposing)
 		{
-			if (this.selectionService != null) {
+			if (this.selectionService != null)
+			{
 				selectionService.SelectionChanged -= OnSelectionChanged;
 			}
+
 			base.Dispose(disposing);
 		}
 	}

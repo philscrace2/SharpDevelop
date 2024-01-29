@@ -19,20 +19,20 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
-
 using ICSharpCode.Reporting.PageBuilder.ExportColumns;
 
 namespace ICSharpCode.Reporting.WpfReportViewer.Visitor.Graphics
 {
-	class DrawingElement : FrameworkElement{
-		
+	class DrawingElement : FrameworkElement
+	{
 		private VisualCollection children;
-	
-		public DrawingElement(DrawingVisual visual) {
-				children = new VisualCollection(this);
-				children.Add(visual);
+
+		public DrawingElement(DrawingVisual visual)
+		{
+			children = new VisualCollection(this);
+			children.Add(visual);
 		}
-		
+
 		/*
 		public ExtendedLine(ExportLine exportGraphics,Pen pen){
 			children = new VisualCollection(this);
@@ -46,17 +46,19 @@ namespace ICSharpCode.Reporting.WpfReportViewer.Visitor.Graphics
 			}
 		}
 	*/
-	
-		protected override int VisualChildrenCount{
+
+		protected override int VisualChildrenCount
+		{
 			get { return children.Count; }
 		}
-	
-		protected override Visual GetVisualChild(int index){
+
+		protected override Visual GetVisualChild(int index)
+		{
 			if (index < 0 || index >= children.Count)
 			{
 				throw new ArgumentOutOfRangeException("index");
 			}
-	
+
 			return children[index];
 		}
 	}

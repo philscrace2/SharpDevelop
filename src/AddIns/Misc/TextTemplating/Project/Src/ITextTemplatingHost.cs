@@ -26,10 +26,10 @@ namespace ICSharpCode.TextTemplating
 	{
 		string OutputFile { get; }
 		CompilerErrorCollection Errors { get; }
-		
+
 		bool ProcessTemplate(string inputFile, string outputFile);
-		
-		bool PreprocessTemplate (
+
+		bool PreprocessTemplate(
 			string inputFile,
 			string className,
 			string classNamespace,

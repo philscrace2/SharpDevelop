@@ -30,38 +30,39 @@ namespace ICSharpCode.PackageManagement
 			PadDescriptor pad = GetConsolePad();
 			EnsurePackageManagementConsoleViewModelIsCreated(pad);
 		}
-		
+
 		PadDescriptor GetConsolePad()
 		{
 			return SD.Workbench.GetPad(typeof(PackageManagementConsolePad));
 		}
-		
+
 		void EnsurePackageManagementConsoleViewModelIsCreated(PadDescriptor pad)
 		{
 			// Force creation of view model.
 			object control = pad.PadContent.Control;
 		}
-		
+
 		public void ShowConsolePad()
 		{
 			PadDescriptor pad = GetConsolePad();
 			pad.BringPadToFront();
 		}
-		
-		public bool InvokeRequired {
+
+		public bool InvokeRequired
+		{
 			get { return SD.MainThread.InvokeRequired; }
 		}
-		
+
 		public void SafeThreadAsyncCall<A>(Action<A> method, A arg1)
 		{
 			SD.MainThread.InvokeAsyncAndForget(() => method(arg1));
 		}
-		
+
 		public void SafeThreadAsyncCall<A, B>(Action<A, B> method, A arg1, B arg2)
 		{
 			SD.MainThread.InvokeAsyncAndForget(() => method(arg1, arg2));
 		}
-		
+
 		public R SafeThreadFunction<R>(Func<R> method)
 		{
 			return SD.MainThread.InvokeIfRequired(method);

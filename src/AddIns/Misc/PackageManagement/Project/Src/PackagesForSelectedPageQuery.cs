@@ -3,14 +3,13 @@
 
 using System;
 using System.Collections.Generic;
-
 using NuGet;
 
 namespace ICSharpCode.PackageManagement
 {
 	public class PackagesForSelectedPageQuery
 	{
-		public PackagesForSelectedPageQuery (
+		public PackagesForSelectedPageQuery(
 			PackagesViewModel viewModel,
 			IEnumerable<IPackage> allPackages,
 			string searchCriteria)

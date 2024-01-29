@@ -25,18 +25,19 @@ namespace ICSharpCode.PackageManagement
 	public class NuGetPackageRestoreCommandLine
 	{
 		List<string> arguments = new List<string>();
-		
+
 		public NuGetPackageRestoreCommandLine(IPackageManagementSolution solution)
 		{
 			GenerateCommandLine(solution);
 		}
-		
+
 		public string Command { get; set; }
-		
-		public string[] Arguments {
+
+		public string[] Arguments
+		{
 			get { return arguments.ToArray(); }
 		}
-		
+
 		void GenerateCommandLine(IPackageManagementSolution solution)
 		{
 			arguments.Add("restore");

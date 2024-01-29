@@ -19,6 +19,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Printing;
+
 namespace ICSharpCode.Reporting.Globals
 {
 	/// <summary>
@@ -26,32 +27,52 @@ namespace ICSharpCode.Reporting.Globals
 	/// </summary>
 	public static class GlobalValues
 	{
-		public static string ReportExtension {get {return ".srd";}}
-		
-		public static string DefaultReportName {get { return "Report1";}}
-		
-		public static Size DefaultPageSize {get {return new Size(827,1169);}}
-		
+		public static string ReportExtension
+		{
+			get { return ".srd"; }
+		}
+
+		public static string DefaultReportName
+		{
+			get { return "Report1"; }
+		}
+
+		public static Size DefaultPageSize
+		{
+			get { return new Size(827, 1169); }
+		}
+
 		public static string PlainFileName
 		{
-			get {return DefaultReportName + ReportExtension;}
+			get { return DefaultReportName + ReportExtension; }
 		}
-		
-		
+
+
 		public static Font DefaultFont
 		{
-			get {return new Font("Microsoft Sans Serif",
-				               10,
-				               FontStyle.Regular,
-				               GraphicsUnit.Point);
+			get
+			{
+				return new Font("Microsoft Sans Serif",
+					10,
+					FontStyle.Regular,
+					GraphicsUnit.Point);
 			}
 		}
-		
-		
-		public static Size PreferedSize {get {return new Size(100,20);}}
-		
-		public static Margins DefaultPageMargin {get {return new Margins(50,50,50,50);}}
-		
-		public static int DefaultSectionHeight {get {return 60;}}
+
+
+		public static Size PreferedSize
+		{
+			get { return new Size(100, 20); }
+		}
+
+		public static Margins DefaultPageMargin
+		{
+			get { return new Margins(50, 50, 50, 50); }
+		}
+
+		public static int DefaultSectionHeight
+		{
+			get { return 60; }
+		}
 	}
 }

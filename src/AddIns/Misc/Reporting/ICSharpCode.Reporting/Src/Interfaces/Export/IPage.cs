@@ -23,9 +23,9 @@ namespace ICSharpCode.Reporting.Interfaces.Export
 	/// <summary>
 	/// Description of IPage.
 	/// </summary>
-	public interface IPage:IExportContainer
+	public interface IPage : IExportContainer
 	{
-		bool IsFirstPage {get;set;}
-		IPageInfo PageInfo {get;}
+		bool IsFirstPage { get; set; }
+		IPageInfo PageInfo { get; }
 	}
 }

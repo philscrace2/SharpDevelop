@@ -24,18 +24,18 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class ProjectItemProperty : Property
 	{
 		ProjectItem projectItem;
-		
+
 		public ProjectItemProperty(ProjectItem projectItem, string name)
 			: base(name)
 		{
 			this.projectItem = projectItem;
 		}
-		
+
 		protected override object GetValue()
 		{
 			return projectItem.GetProperty(Name);
 		}
-		
+
 		protected override void SetValue(object value)
 		{
 			projectItem.SetProperty(Name, value);

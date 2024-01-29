@@ -27,35 +27,37 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		string name;
 		string value;
-		
+
 		public CodeAttributeArgument()
 		{
 		}
-		
+
 		public CodeAttributeArgument(string name, string value)
 		{
 			this.name = name;
 			this.value = value;
 		}
-		
+
 		public CodeAttributeArgument(string name, ResolveResult value)
 		{
 			this.name = name;
 			this.value = GetValue(value);
 		}
-		
+
 		string GetValue(ResolveResult value)
 		{
 			var astBuilder = new TypeSystemAstBuilder();
 			Expression ast = astBuilder.ConvertConstantValue(value);
 			return ast.ToString();
 		}
-		
-		public override string Name {
+
+		public override string Name
+		{
 			get { return name; }
 		}
-		
-		public virtual string Value {
+
+		public virtual string Value
+		{
 			get { return value; }
 		}
 	}

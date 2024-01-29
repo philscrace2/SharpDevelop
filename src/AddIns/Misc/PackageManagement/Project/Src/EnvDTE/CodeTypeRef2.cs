@@ -28,8 +28,9 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: base(context, parent, type)
 		{
 		}
-		
-		public bool IsGeneric {
+
+		public bool IsGeneric
+		{
 			get { return type.IsParameterized; }
 		}
 	}

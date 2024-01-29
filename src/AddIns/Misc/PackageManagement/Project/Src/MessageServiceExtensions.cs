@@ -27,12 +27,12 @@ namespace ICSharpCode.PackageManagement
 		public static void ShowNuGetConfigFileSaveError(string message)
 		{
 			MessageService.ShowError(
-					String.Format("{0}{1}{1}{2}",
+				String.Format("{0}{1}{1}{2}",
 					message,
 					Environment.NewLine,
 					GetSaveNuGetConfigFileErrorMessage()));
 		}
-		
+
 		/// <summary>
 		/// Returns a non-Windows specific error message instead of the one NuGet returns.
 		/// 
@@ -43,7 +43,7 @@ namespace ICSharpCode.PackageManagement
 		/// </summary>
 		static string GetSaveNuGetConfigFileErrorMessage()
 		{
-			string path = Path.Combine (
+			string path = Path.Combine(
 				Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
 				"NuGet",
 				"NuGet.config");

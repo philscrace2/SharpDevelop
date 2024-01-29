@@ -25,23 +25,24 @@ namespace ICSharpCode.PackageManagement
 	public class PackageManagementMessageViewCategory : IMessageViewCategory
 	{
 		MessageViewCategory messageViewCategory;
-		
+
 		public PackageManagementMessageViewCategory(MessageViewCategory messageViewCategory)
 		{
 			this.messageViewCategory = messageViewCategory;
 		}
-		
+
 		public void AppendLine(string text)
 		{
 			messageViewCategory.AppendLine(text);
 		}
-		
+
 		public void Clear()
 		{
 			messageViewCategory.ClearText();
 		}
-		
-		public IOutputCategory OutputCategory {
+
+		public IOutputCategory OutputCategory
+		{
 			get { return messageViewCategory; }
 		}
 	}

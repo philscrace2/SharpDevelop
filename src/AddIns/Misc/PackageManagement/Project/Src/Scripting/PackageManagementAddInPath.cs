@@ -25,34 +25,41 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class PackageManagementAddInPath : IPackageManagementAddInPath
 	{
 		string cmdletsAssemblyFileName;
-		
-		public string CmdletsAssemblyFileName {
-			get {
-				if (cmdletsAssemblyFileName == null) {
+
+		public string CmdletsAssemblyFileName
+		{
+			get
+			{
+				if (cmdletsAssemblyFileName == null)
+				{
 					GetCmdletsAssemblyFileName();
 				}
+
 				return cmdletsAssemblyFileName;
 			}
 		}
-		
+
 		void GetCmdletsAssemblyFileName()
 		{
 			cmdletsAssemblyFileName = Path.Combine(AddInDirectory, "PackageManagement.Cmdlets.dll");
 		}
-		
-		string AddInDirectory {
-			get {
+
+		string AddInDirectory
+		{
+			get
+			{
 				string addinFilename = GetType().Assembly.Location;
 				return Path.GetDirectoryName(addinFilename);
 			}
 		}
-		
+
 		public IEnumerable<string> GetPowerShellFormattingFileNames()
 		{
 			return Directory.GetFiles(PowerShellScriptsDirectory, "*.ps1xml");
 		}
-		
-		string PowerShellScriptsDirectory {
+
+		string PowerShellScriptsDirectory
+		{
 			get { return Path.Combine(AddInDirectory, "Scripts"); }
 		}
 	}

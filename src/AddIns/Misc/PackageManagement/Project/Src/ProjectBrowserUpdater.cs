@@ -25,12 +25,12 @@ namespace ICSharpCode.PackageManagement
 	public class ProjectBrowserUpdater : IProjectBrowserUpdater
 	{
 		ProjectBrowserControl projectBrowser;
-		
+
 		public ProjectBrowserUpdater()
 			: this(ProjectBrowserPad.Instance.ProjectBrowserControl)
 		{
 		}
-		
+
 		public ProjectBrowserUpdater(ProjectBrowserControl projectBrowser)
 		{
 			this.projectBrowser = projectBrowser;
@@ -39,19 +39,21 @@ namespace ICSharpCode.PackageManagement
 
 		protected virtual void ProjectItemAdded(object sender, ProjectItemEventArgs e)
 		{
-			if (e.ProjectItem is FileProjectItem) {
+			if (e.ProjectItem is FileProjectItem)
+			{
 				AddFileProjectItemToProjectBrowser(e);
 			}
 		}
-		
+
 		void AddFileProjectItemToProjectBrowser(ProjectItemEventArgs e)
 		{
 			var visitor = new UpdateProjectBrowserFileNodesVisitor(e);
-			foreach (AbstractProjectBrowserTreeNode node in projectBrowser.TreeView.Nodes) {
+			foreach (AbstractProjectBrowserTreeNode node in projectBrowser.TreeView.Nodes)
+			{
 				node.AcceptVisitor(visitor, null);
 			}
 		}
-		
+
 		public void Dispose()
 		{
 			SD.ProjectService.ProjectItemAdded -= ProjectItemAdded;

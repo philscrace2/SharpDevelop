@@ -24,29 +24,29 @@ namespace ICSharpCode.PackageManagement.Design
 	public class FakeUpdatePackageAction : UpdatePackageAction
 	{
 		public bool IsExecuted;
-		
+
 		public FakePackageManagementProject FakeProject;
-		
+
 		public FakeUpdatePackageAction()
 			: this(new FakePackageManagementProject())
 		{
 		}
-		
+
 		public FakeUpdatePackageAction(IPackageManagementProject project)
 			: base(project, null)
 		{
 			FakeProject = project as FakePackageManagementProject;
 		}
-		
+
 		protected override void ExecuteCore()
 		{
 			IsExecuted = true;
 		}
-		
+
 		protected override void BeforeExecute()
 		{
 		}
-		
+
 		protected override RunPackageScriptsAction CreateRunPackageScriptsAction(
 			IPackageScriptRunner scriptRunner,
 			IPackageManagementProject project)

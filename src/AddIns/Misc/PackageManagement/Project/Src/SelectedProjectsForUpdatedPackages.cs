@@ -28,19 +28,19 @@ namespace ICSharpCode.PackageManagement
 			: base(solution)
 		{
 		}
-		
+
 		protected override bool IsProjectSelected(IPackageManagementProject project, IPackageFromRepository package)
 		{
 			return IsProjectEnabled(project, package);
 		}
-		
+
 		protected override bool IsProjectEnabled(IPackageManagementProject project, IPackageFromRepository package)
 		{
 			return project.GetPackages()
 				.Where(p => IsPackageIdMatch(p.Id, package.Id))
 				.Any(p => p.Version < package.Version);
 		}
-		
+
 		bool IsPackageIdMatch(string id1, string id2)
 		{
 			return String.Equals(id1, id2, StringComparison.InvariantCultureIgnoreCase);

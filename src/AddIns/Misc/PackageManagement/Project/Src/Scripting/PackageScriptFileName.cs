@@ -29,55 +29,59 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		IFileSystem fileSystem;
 		string relativeScriptFilePath;
-		
+
 		public PackageScriptFileName(string packageInstallDirectory)
 			: this(new PhysicalFileSystem(packageInstallDirectory))
 		{
 		}
-		
+
 		public PackageScriptFileName(IFileSystem fileSystem)
 		{
 			this.fileSystem = fileSystem;
 			GetRelativeScriptFilePath();
 		}
-		
+
 		void GetRelativeScriptFilePath()
 		{
 			relativeScriptFilePath = Path.Combine("tools", Name);
 		}
-		
+
 		public abstract string Name { get; }
-		
-		public string PackageInstallDirectory {
+
+		public string PackageInstallDirectory
+		{
 			get { return fileSystem.Root; }
 		}
-		
+
 		public override string ToString()
 		{
 			return fileSystem.GetFullPath(relativeScriptFilePath);
 		}
-		
+
 		public bool ScriptDirectoryExists()
 		{
 			return fileSystem.DirectoryExists("tools");
 		}
-		
+
 		public bool FileExists()
 		{
 			return fileSystem.FileExists(relativeScriptFilePath);
 		}
-		
+
 		public string GetScriptDirectory()
 		{
 			return fileSystem.GetFullPath("tools");
 		}
-		
+
 		public void UseTargetSpecificFileName(IPackage package, FrameworkName targetFramework)
 		{
 			IEnumerable<IPackageFile> files;
-			if (VersionUtility.TryGetCompatibleItems(targetFramework, package.GetToolFiles(), out files)) {
-				IPackageFile matchingScriptFile = files.FirstOrDefault(file => file.EffectivePath.Equals(Name, StringComparison.OrdinalIgnoreCase));
-				if (matchingScriptFile != null) {
+			if (VersionUtility.TryGetCompatibleItems(targetFramework, package.GetToolFiles(), out files))
+			{
+				IPackageFile matchingScriptFile = files.FirstOrDefault(file =>
+					file.EffectivePath.Equals(Name, StringComparison.OrdinalIgnoreCase));
+				if (matchingScriptFile != null)
+				{
 					relativeScriptFilePath = matchingScriptFile.Path;
 				}
 			}

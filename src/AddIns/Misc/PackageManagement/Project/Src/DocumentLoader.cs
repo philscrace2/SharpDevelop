@@ -25,9 +25,7 @@ namespace ICSharpCode.PackageManagement
 	{
 		public IDocumentView LoadDocumentView(string fileName)
 		{
-			return SD.MainThread.InvokeIfRequired(() => {
-				return new DocumentView(fileName);
-			});
+			return SD.MainThread.InvokeIfRequired(() => { return new DocumentView(fileName); });
 		}
 	}
 }

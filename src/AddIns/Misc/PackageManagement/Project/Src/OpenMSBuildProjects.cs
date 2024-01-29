@@ -26,28 +26,31 @@ namespace ICSharpCode.PackageManagement
 	public class OpenMSBuildProjects
 	{
 		IPackageManagementProjectService projectService;
-		
+
 		public OpenMSBuildProjects(IPackageManagementProjectService projectService)
 		{
 			this.projectService = projectService;
 		}
-		
+
 		public MSBuildBasedProject FindProject(string name)
 		{
-			foreach (IProject project in projectService.AllProjects) {
-				if (IsProjectNameMatch(project, name)) {
+			foreach (IProject project in projectService.AllProjects)
+			{
+				if (IsProjectNameMatch(project, name))
+				{
 					return project as MSBuildBasedProject;
 				}
 			}
+
 			return null;
 		}
-		
+
 		bool IsProjectNameMatch(IProject project, string name)
 		{
 			return IsMatchIgnoringCase(project.Name, name) ||
-				(project.FileName == new FileName(name));
+			       (project.FileName == new FileName(name));
 		}
-		
+
 		bool IsMatchIgnoringCase(string a, string b)
 		{
 			return String.Equals(a, b, StringComparison.OrdinalIgnoreCase);

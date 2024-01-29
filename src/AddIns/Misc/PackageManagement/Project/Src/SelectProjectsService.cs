@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
-
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Gui;
 
@@ -27,19 +26,18 @@ namespace ICSharpCode.PackageManagement
 {
 	public class SelectProjectsService : ServiceWithWorkbenchOwner, ISelectProjectsService
 	{
-		
 		public bool SelectProjects(IEnumerable<IPackageManagementSelectedProject> projects)
 		{
 			SelectProjectsView view = CreateSelectProjectsView(projects);
 			return view.ShowDialog() ?? false;
 		}
-		
+
 		SelectProjectsView CreateSelectProjectsView(IEnumerable<IPackageManagementSelectedProject> projects)
 		{
 			var viewModel = new SelectProjectsViewModel(projects);
 			return CreateSelectProjectsView(viewModel);
 		}
-		
+
 		SelectProjectsView CreateSelectProjectsView(SelectProjectsViewModel viewModel)
 		{
 			var view = new SelectProjectsView();

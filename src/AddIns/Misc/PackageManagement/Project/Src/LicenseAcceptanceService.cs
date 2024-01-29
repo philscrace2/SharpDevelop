@@ -27,19 +27,18 @@ namespace ICSharpCode.PackageManagement
 {
 	public class LicenseAcceptanceService : ServiceWithWorkbenchOwner, ILicenseAcceptanceService
 	{
-		
 		public bool AcceptLicenses(IEnumerable<IPackage> packages)
 		{
 			LicenseAcceptanceView view = CreateLicenseAcceptanceView(packages);
 			return view.ShowDialog() ?? false;
 		}
-		
+
 		LicenseAcceptanceView CreateLicenseAcceptanceView(IEnumerable<IPackage> packages)
 		{
 			var viewModel = new LicenseAcceptanceViewModel(packages);
 			return CreateLicenseAcceptanceView(viewModel);
 		}
-		
+
 		LicenseAcceptanceView CreateLicenseAcceptanceView(LicenseAcceptanceViewModel viewModel)
 		{
 			var view = new LicenseAcceptanceView();

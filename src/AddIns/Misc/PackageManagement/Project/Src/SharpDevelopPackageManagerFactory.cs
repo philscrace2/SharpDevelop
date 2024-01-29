@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement
 		PackageManagementOptions options;
 		ISharpDevelopPackageRepositoryFactory packageRepositoryFactory;
 		ISharpDevelopProjectSystemFactory projectSystemFactory;
-		
+
 		public SharpDevelopPackageManagerFactory()
 			: this(
 				new SharpDevelopPackageRepositoryFactory(),
@@ -35,37 +35,38 @@ namespace ICSharpCode.PackageManagement
 				PackageManagementServices.Options)
 		{
 		}
-		
+
 		public SharpDevelopPackageManagerFactory(
 			ISharpDevelopPackageRepositoryFactory packageRepositoryFactory,
-		    ISharpDevelopProjectSystemFactory projectSystemFactory,
-		    PackageManagementOptions options)
+			ISharpDevelopProjectSystemFactory projectSystemFactory,
+			PackageManagementOptions options)
 		{
 			this.packageRepositoryFactory = packageRepositoryFactory;
 			this.projectSystemFactory = projectSystemFactory;
 			this.options = options;
 		}
-		
+
 		public ISharpDevelopPackageManager CreatePackageManager(
 			IPackageRepository sourceRepository,
 			MSBuildBasedProject project)
 		{
-			SolutionPackageRepository solutionPackageRepository = CreateSolutionPackageRepository(project.ParentSolution);
+			SolutionPackageRepository solutionPackageRepository =
+				CreateSolutionPackageRepository(project.ParentSolution);
 			IProjectSystem projectSystem = CreateProjectSystem(project);
 			PackageOperationsResolverFactory packageOperationResolverFactory = new PackageOperationsResolverFactory();
-			
+
 			return new SharpDevelopPackageManager(
 				sourceRepository,
 				projectSystem,
 				solutionPackageRepository,
 				packageOperationResolverFactory);
 		}
-		
+
 		SolutionPackageRepository CreateSolutionPackageRepository(ISolution solution)
 		{
 			return new SolutionPackageRepository(solution, packageRepositoryFactory, options);
 		}
-		
+
 		IProjectSystem CreateProjectSystem(MSBuildBasedProject project)
 		{
 			return projectSystemFactory.CreateProjectSystem(project);

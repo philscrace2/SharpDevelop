@@ -27,11 +27,12 @@ namespace ICSharpCode.TextTemplating
 	{
 		public IEnumerable<IAddIn> GetAddIns()
 		{
-			foreach (AddIn addIn in SD.AddInTree.AddIns) {
+			foreach (AddIn addIn in SD.AddInTree.AddIns)
+			{
 				yield return new TextTemplatingAddIn(addIn);
 			}
 		}
-		
+
 		public List<IServiceProvider> BuildServiceProviders(string path)
 		{
 			return AddInTree.BuildItems<IServiceProvider>(path, null);

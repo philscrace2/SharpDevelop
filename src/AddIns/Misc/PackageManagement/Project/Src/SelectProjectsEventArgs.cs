@@ -27,9 +27,9 @@ namespace ICSharpCode.PackageManagement
 		{
 			this.SelectedProjects = selectedProjects;
 		}
-		
+
 		public IEnumerable<IPackageManagementSelectedProject> SelectedProjects { get; private set; }
-		
+
 		public bool IsAccepted { get; set; }
 	}
 }

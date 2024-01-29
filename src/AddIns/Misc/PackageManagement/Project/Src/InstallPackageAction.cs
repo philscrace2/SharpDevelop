@@ -34,30 +34,33 @@ namespace ICSharpCode.PackageManagement
 			DependencyVersion = DependencyVersion.Lowest;
 			OpenReadMeText = true;
 		}
-		
+
 		public bool IgnoreDependencies { get; set; }
 		public DependencyVersion DependencyVersion { get; set; }
 		public bool OpenReadMeText { get; set; }
-		
+
 		protected override IEnumerable<PackageOperation> GetPackageOperations()
 		{
 			return Project.GetInstallPackageOperations(Package, this);
 		}
-		
+
 		protected override void ExecuteCore()
 		{
-			using (IOpenPackageReadMeMonitor monitor = CreateOpenPackageReadMeMonitor(Package.Id)) {
+			using (IOpenPackageReadMeMonitor monitor = CreateOpenPackageReadMeMonitor(Package.Id))
+			{
 				Project.InstallPackage(Package, this);
 				monitor.OpenReadMeFile();
 				OnParentPackageInstalled();
 			}
 		}
-		
+
 		protected override IOpenPackageReadMeMonitor CreateOpenPackageReadMeMonitor(string packageId)
 		{
-			if (OpenReadMeText) {
+			if (OpenReadMeText)
+			{
 				return base.CreateOpenPackageReadMeMonitor(packageId);
 			}
+
 			return NullOpenPackageReadMeMonitor.Null;
 		}
 	}

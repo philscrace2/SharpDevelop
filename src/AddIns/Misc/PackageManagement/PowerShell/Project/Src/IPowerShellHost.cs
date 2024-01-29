@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		IList<string> ModulesToImport { get; }
 		Version Version { get; }
-		
+
 		void SetRemoteSignedExecutionPolicy();
 		void UpdateFormatting(IEnumerable<string> formattingFiles);
 		void ExecuteCommand(string command);

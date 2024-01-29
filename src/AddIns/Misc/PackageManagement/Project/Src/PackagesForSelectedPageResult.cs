@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using NuGet;
 
 namespace ICSharpCode.PackageManagement
@@ -34,7 +33,7 @@ namespace ICSharpCode.PackageManagement
 			this.AllPackages = query.AllPackages;
 			this.Query = query;
 		}
-		
+
 		public PackagesForSelectedPageQuery Query { get; set; }
 		public IEnumerable<IPackage> Packages { get; set; }
 		public int TotalPackagesOnPage { get; set; }

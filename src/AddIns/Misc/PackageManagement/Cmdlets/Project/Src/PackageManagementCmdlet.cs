@@ -25,11 +25,12 @@ using NuGet;
 
 namespace ICSharpCode.PackageManagement.Cmdlets
 {
-	public abstract class PackageManagementCmdlet : PSCmdlet, ITerminatingCmdlet, IPackageScriptSession, IPackageScriptRunner, ICmdletLogger
+	public abstract class PackageManagementCmdlet : PSCmdlet, ITerminatingCmdlet, IPackageScriptSession,
+		IPackageScriptRunner, ICmdletLogger
 	{
 		IPackageManagementConsoleHost consoleHost;
 		ICmdletTerminatingError terminatingError;
-		
+
 		public PackageManagementCmdlet(
 			IPackageManagementConsoleHost consoleHost,
 			ICmdletTerminatingError terminatingError)
@@ -37,84 +38,92 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 			this.consoleHost = consoleHost;
 			this.terminatingError = terminatingError;
 		}
-		
-		protected IPackageManagementConsoleHost ConsoleHost {
+
+		protected IPackageManagementConsoleHost ConsoleHost
+		{
 			get { return consoleHost; }
 		}
-		
-		protected MSBuildBasedProject DefaultProject {
+
+		protected MSBuildBasedProject DefaultProject
+		{
 			get { return consoleHost.DefaultProject as MSBuildBasedProject; }
 		}
 
-		protected ICmdletTerminatingError TerminatingError {
-			get {
-				if (terminatingError == null) {
+		protected ICmdletTerminatingError TerminatingError
+		{
+			get
+			{
+				if (terminatingError == null)
+				{
 					terminatingError = new CmdletTerminatingError(this);
 				}
+
 				return terminatingError;
 			}
 		}
-		
+
 		protected void ThrowErrorIfProjectNotOpen()
 		{
-			if (DefaultProject == null) {
+			if (DefaultProject == null)
+			{
 				ThrowProjectNotOpenTerminatingError();
 			}
 		}
-			
+
 		protected void ThrowProjectNotOpenTerminatingError()
 		{
 			TerminatingError.ThrowNoProjectOpenError();
 		}
-		
+
 		public void SetEnvironmentPath(string path)
 		{
 			SetSessionVariable("env:path", path);
 		}
-		
+
 		protected virtual void SetSessionVariable(string name, object value)
 		{
 			SessionState.PSVariable.Set(name, value);
 		}
-		
+
 		public string GetEnvironmentPath()
 		{
 			return (string)GetSessionVariable("env:path");
 		}
-		
+
 		protected virtual object GetSessionVariable(string name)
 		{
 			return GetVariableValue(name);
 		}
-		
+
 		public void AddVariable(string name, object value)
 		{
 			SetSessionVariable(name, value);
 		}
-		
+
 		public void RemoveVariable(string name)
 		{
 			RemoveSessionVariable(name);
 		}
-		
+
 		protected virtual void RemoveSessionVariable(string name)
 		{
 			SessionState.PSVariable.Remove(name);
 		}
-		
+
 		public virtual void InvokeScript(string script)
 		{
 			var resultTypes = PipelineResultTypes.Error | PipelineResultTypes.Output;
 			InvokeCommand.InvokeScript(script, false, resultTypes, null, null);
 		}
-		
+
 		public void Run(IPackageScript script)
 		{
-			if (script.Exists()) {
+			if (script.Exists())
+			{
 				script.Run(this);
 			}
 		}
-		
+
 		void ICmdletLogger.WriteLine(string message)
 		{
 			Host.UI.WriteLine(message);

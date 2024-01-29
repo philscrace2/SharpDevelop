@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			InitializeComponent();
 		}
-		
+
 		void AcceptButtonClick(object sender, RoutedEventArgs e)
 		{
 			DialogResult = true;

@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		IPackageManagementProject Project { get; set; }
 		IPackage Package { get; set; }
-	
+
 		bool Exists();
 		void Run(IPackageScriptSession session);
 	}

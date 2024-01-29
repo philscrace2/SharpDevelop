@@ -23,21 +23,21 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of BaseGraphics.
 	/// </summary>
-	public class BaseGraphics:PrintableItem
+	public class BaseGraphics : PrintableItem
 	{
 		public BaseGraphics()
 		{
 			this.Thickness = 1;
 			DashStyle = DashStyle.Solid;
 		}
-		
-		
-		public virtual int Thickness {get;set;}
-		
-		public virtual DashStyle DashStyle {get;set;}	
-		
-		public virtual LineCap StartLineCap {get;set;}
-		
-		public virtual LineCap EndLineCap {get;set;}
+
+
+		public virtual int Thickness { get; set; }
+
+		public virtual DashStyle DashStyle { get; set; }
+
+		public virtual LineCap StartLineCap { get; set; }
+
+		public virtual LineCap EndLineCap { get; set; }
 	}
 }

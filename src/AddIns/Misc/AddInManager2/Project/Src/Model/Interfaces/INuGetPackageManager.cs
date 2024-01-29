@@ -24,14 +24,8 @@ namespace ICSharpCode.AddInManager2.Model
 {
 	public interface INuGetPackageManager
 	{
-		IPackageManager Packages
-		{
-			get;
-		}
-		string PackageOutputDirectory
-		{
-			get;
-		}
+		IPackageManager Packages { get; }
+		string PackageOutputDirectory { get; }
 		IPackageOperationResolver CreateInstallPackageOperationResolver(bool allowPrereleaseVersions);
 		void ExecuteOperation(PackageOperation operation);
 		string GetLocalPackageDirectory(IPackage package);

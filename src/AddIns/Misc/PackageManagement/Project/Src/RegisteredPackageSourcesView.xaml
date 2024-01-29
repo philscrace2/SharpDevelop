@@ -14,13 +14,13 @@
 
 	<Grid x:Name="MainGrid">
 		<Grid.Resources>
-			<pm:PackageManagementViewModels x:Key="ViewModels"/>	
+			<pm:PackageManagementViewModels x:Key="ViewModels" />
 		</Grid.Resources>
-		
+
 		<Grid.DataContext>
-			<Binding Source="{StaticResource ViewModels}" Path="RegisteredPackageSourcesViewModel"/>
+			<Binding Source="{StaticResource ViewModels}" Path="RegisteredPackageSourcesViewModel" />
 		</Grid.DataContext>
 
-		<pm:RegisteredPackageSourcesUserControl/>
+		<pm:RegisteredPackageSourcesUserControl />
 	</Grid>
 </gui:OptionPanel>

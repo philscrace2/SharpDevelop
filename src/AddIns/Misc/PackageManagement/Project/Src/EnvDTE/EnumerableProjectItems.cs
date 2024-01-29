@@ -28,20 +28,21 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		public EnumerableProjectItems()
 		{
 		}
-		
+
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
 		}
-		
+
 		public IEnumerator<global::EnvDTE.ProjectItem> GetEnumerator()
 		{
 			return GetProjectItems().ToList().GetEnumerator();
 		}
-		
+
 		protected abstract IEnumerable<global::EnvDTE.ProjectItem> GetProjectItems();
-		
-		internal virtual int Count {
+
+		internal virtual int Count
+		{
 			get { return GetProjectItems().Count(); }
 		}
 	}

@@ -30,24 +30,30 @@ namespace ICSharpCode.StartPage
 	{
 		static ShowStartPageCommand()
 		{
-			SD.ProjectService.SolutionOpened += delegate {
+			SD.ProjectService.SolutionOpened += delegate
+			{
 				// close all start pages when loading a solution
-				foreach (IViewContent v in SD.Workbench.ViewContentCollection.ToArray()) {
-					if (v is StartPageViewContent) {
+				foreach (IViewContent v in SD.Workbench.ViewContentCollection.ToArray())
+				{
+					if (v is StartPageViewContent)
+					{
 						v.WorkbenchWindow.CloseWindow(true);
 					}
 				}
 			};
 		}
-		
+
 		public override void Run()
 		{
-			foreach (IViewContent view in SD.Workbench.ViewContentCollection) {
-				if (view is StartPageViewContent) {
+			foreach (IViewContent view in SD.Workbench.ViewContentCollection)
+			{
+				if (view is StartPageViewContent)
+				{
 					view.WorkbenchWindow.SelectWindow();
 					return;
 				}
 			}
+
 			SD.Workbench.ShowView(new StartPageViewContent());
 		}
 	}

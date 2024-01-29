@@ -24,7 +24,7 @@ namespace ICSharpCode.PackageManagement
 	public interface IProjectBuilder
 	{
 		BuildResults BuildResults { get; }
-		
+
 		/// <summary>
 		/// Builds the project and waits for the build to complete.
 		/// </summary>

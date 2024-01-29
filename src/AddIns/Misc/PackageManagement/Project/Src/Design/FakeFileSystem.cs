@@ -32,119 +32,124 @@ namespace ICSharpCode.PackageManagement.Design
 		public string PathToReturnFromGetFullPath;
 		public bool DirectoryExistsReturnValue;
 		public string PathPassedToDirectoryExists;
-		
+
 		public ILogger Logger { get; set; }
-		
+
 		public string Root { get; set; }
-		
+
 		public void DeleteDirectory(string path, bool recursive)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public IEnumerable<string> GetFiles(string path)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public IEnumerable<string> GetFiles(string path, string filter)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public IEnumerable<string> GetDirectories(string path)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public string GetFullPath(string path)
 		{
-			if (PathToReturnFromGetFullPath != null) {
+			if (PathToReturnFromGetFullPath != null)
+			{
 				return PathToReturnFromGetFullPath;
-			} else if (Root == null) {
+			}
+			else if (Root == null)
+			{
 				return null;
 			}
+
 			return Path.Combine(Root, path);
 		}
-		
+
 		public void DeleteFile(string path)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public bool FileExists(string path)
 		{
 			PathPassedToFileExists = path;
-			
-			if (ExistingFiles.Contains(path)) {
+
+			if (ExistingFiles.Contains(path))
+			{
 				return true;
 			}
-			
+
 			return FileExistsReturnValue;
 		}
-		
+
 		public List<string> ExistingFiles = new List<string>();
-		
+
 		public bool DirectoryExists(string path)
 		{
 			PathPassedToDirectoryExists = path;
 			return DirectoryExistsReturnValue;
 		}
-		
+
 		public void AddFile(string path, Stream stream)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public Stream OpenFile(string path)
 		{
 			byte[] bytes = UTF8Encoding.UTF8.GetBytes(FileToReturnFromOpenFile);
 			return new MemoryStream(bytes);
 		}
-		
+
 		public DateTimeOffset GetLastModified(string path)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public DateTimeOffset GetCreated(string path)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public IEnumerable<string> GetFiles(string path, string filter, bool recursive)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public DateTimeOffset GetLastAccessed(string path)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public void AddFile(string path, Action<Stream> writeToStream)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public void MakeFileWritable(string path)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public Stream CreateFile(string path)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public void DeleteFiles(IEnumerable<IPackageFile> files, string rootDir)
 		{
 		}
-		
+
 		public void AddFiles(IEnumerable<IPackageFile> files, string rootDir)
 		{
 		}
-		
+
 		public void MoveFile(string source, string destination)
 		{
 			throw new NotImplementedException();

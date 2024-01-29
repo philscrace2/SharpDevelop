@@ -26,17 +26,18 @@ namespace ICSharpCode.Reporting.Exporter
 	/// <summary>
 	/// Description of DebugExporter.
 	/// </summary>
-	class DebugExporter:BaseExporter
+	class DebugExporter : BaseExporter
 	{
 		private DebugVisitor visitor;
-		
-		public DebugExporter(Collection<ExportPage> pages):base(pages)
+
+		public DebugExporter(Collection<ExportPage> pages) : base(pages)
 		{
 			visitor = new DebugVisitor();
 		}
-		
-		
-		public override void Run () {
+
+
+		public override void Run()
+		{
 			visitor.Run(Pages);
 		}
 	}

@@ -20,7 +20,6 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Xml;
-
 using ICSharpCode.Reporting.Interfaces;
 using ICSharpCode.Reporting.Items;
 using ICSharpCode.Reporting.PageBuilder;
@@ -31,59 +30,63 @@ namespace ICSharpCode.Reporting
 	/// <summary>
 	/// Description of Reporting.
 	/// </summary>
-	
-	
 	public class ReportingFactory
 	{
-		
-		public  IReportCreator ReportCreator (string fileName,IEnumerable list) {
-			if (String.IsNullOrEmpty(fileName)) {
+		public IReportCreator ReportCreator(string fileName, IEnumerable list)
+		{
+			if (String.IsNullOrEmpty(fileName))
+			{
 				throw new ArgumentNullException("fileName");
 			}
+
 			var doc = new XmlDocument();
-			try {
+			try
+			{
 				doc.Load(fileName);
-			} catch (Exception e) {
+			}
+			catch (Exception e)
+			{
 				throw e;
 			}
-			
+
 			ReportModel = LoadModel(doc);
-			var builder = new DataPageBuilder(ReportModel,list);
+			var builder = new DataPageBuilder(ReportModel, list);
 			return builder;
 		}
-		
-		public IReportCreator ReportCreator (Stream stream,IEnumerable list)
+
+		public IReportCreator ReportCreator(Stream stream, IEnumerable list)
 		{
-			ReportModel = LoadReportModel (stream);
-			var builder = new DataPageBuilder(ReportModel,list );
+			ReportModel = LoadReportModel(stream);
+			var builder = new DataPageBuilder(ReportModel, list);
 			return builder;
 		}
-		
-		
-		public IReportCreator ReportCreator (Stream stream)
+
+
+		public IReportCreator ReportCreator(Stream stream)
 		{
-			ReportModel = LoadReportModel (stream);
+			ReportModel = LoadReportModel(stream);
 			var builder = new FormPageBuilder(ReportModel);
 			return builder;
 		}
-		
 
-		public IReportCreator ReportCreator (IReportModel reportModel) {
+
+		public IReportCreator ReportCreator(IReportModel reportModel)
+		{
 			ReportModel = reportModel;
 			var builder = new FormPageBuilder(ReportModel);
 			return builder;
 		}
-		
-		
-		internal IReportModel LoadReportModel (Stream stream)
+
+
+		internal IReportModel LoadReportModel(Stream stream)
 		{
 			var doc = new XmlDocument();
 			doc.Load(stream);
 			ReportModel = LoadModel(doc);
 			return ReportModel;
 		}
-		
-		
+
+
 		static IReportModel LoadModel(XmlDocument doc)
 		{
 			var loader = new ModelLoader();
@@ -91,8 +94,8 @@ namespace ICSharpCode.Reporting
 			var model = root as ReportModel;
 			return model;
 		}
-		
-		
-		public IReportModel ReportModel {get;private set;}
+
+
+		public IReportModel ReportModel { get; private set; }
 	}
 }

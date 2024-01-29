@@ -30,7 +30,7 @@ namespace ICSharpCode.PackageManagement
 				packageViewModelFactory.PackageActionRunner)
 		{
 		}
-		
+
 		public PackageViewModelFactory(
 			IPackageManagementSolution solution,
 			IPackageManagementEvents packageManagementEvents,
@@ -42,8 +42,9 @@ namespace ICSharpCode.PackageManagement
 			this.PackageActionRunner = actionRunner;
 			this.Logger = new PackageManagementLogger(packageManagementEvents);
 		}
-		
-		public virtual PackageViewModel CreatePackageViewModel(IPackageViewModelParent parent, IPackageFromRepository package)
+
+		public virtual PackageViewModel CreatePackageViewModel(IPackageViewModelParent parent,
+			IPackageFromRepository package)
 		{
 			return new PackageViewModel(
 				parent,
@@ -53,7 +54,7 @@ namespace ICSharpCode.PackageManagement
 				PackageActionRunner,
 				Logger);
 		}
-		
+
 		public IPackageManagementSolution Solution { get; private set; }
 		public PackageManagementSelectedProjects SelectedProjects { get; protected set; }
 		public IPackageManagementEvents PackageManagementEvents { get; private set; }

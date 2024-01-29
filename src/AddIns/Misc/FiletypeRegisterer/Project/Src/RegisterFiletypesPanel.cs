@@ -27,63 +27,71 @@ using ICSharpCode.SharpDevelop.Gui;
 
 namespace ICSharpCode.FiletypeRegisterer
 {
-	#pragma warning disable 618
+#pragma warning disable 618
 	public partial class RegisterFiletypesPanel : XmlFormsOptionPanel
 	{
 		sealed class ListEntry
 		{
 			internal readonly FiletypeAssociation Association;
 			internal readonly bool InitiallyChecked;
-			
+
 			public ListEntry(FiletypeAssociation association)
 			{
 				this.Association = association;
 				this.InitiallyChecked = RegisterFiletypesCommand.IsRegisteredToSharpDevelop(association.Extension);
 			}
-			
+
 			public override string ToString()
 			{
 				return Association.Text + " (." + Association.Extension + ")";
 			}
 		}
-		
+
 		public RegisterFiletypesPanel()
 		{
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			
+
 			captionLabel.Text = StringParser.Parse(captionLabel.Text);
 		}
-		
+
 		public override void LoadPanelContents()
 		{
-			foreach (FiletypeAssociation assoc in FiletypeAssociationDoozer.GetList()) {
+			foreach (FiletypeAssociation assoc in FiletypeAssociationDoozer.GetList())
+			{
 				ListEntry entry = new ListEntry(assoc);
 				fileTypesListBox.Items.Add(entry, entry.InitiallyChecked);
 			}
 		}
-		
+
 		public override bool StorePanelContents()
 		{
-			for (int i = 0; i < fileTypesListBox.Items.Count; i++) {
+			for (int i = 0; i < fileTypesListBox.Items.Count; i++)
+			{
 				bool newChecked = fileTypesListBox.GetItemChecked(i);
 				ListEntry entry = (ListEntry)fileTypesListBox.Items[i];
-				if (entry.InitiallyChecked != newChecked) {
-					if (newChecked) {
+				if (entry.InitiallyChecked != newChecked)
+				{
+					if (newChecked)
+					{
 						RegisterFiletypesCommand.RegisterToSharpDevelop(entry.Association);
-					} else {
+					}
+					else
+					{
 						RegisterFiletypesCommand.UnRegisterFiletype(entry.Association.Extension);
 					}
 				}
 			}
+
 			return true;
 		}
-		
+
 		void fileTypesListBox_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
 		{
-			if (fileTypesListBox.IndexFromPoint(e.X, e.Y) == ListBox.NoMatches) {
+			if (fileTypesListBox.IndexFromPoint(e.X, e.Y) == ListBox.NoMatches)
+			{
 				fileTypesListBox.SelectedIndex = -1;
 			}
 		}

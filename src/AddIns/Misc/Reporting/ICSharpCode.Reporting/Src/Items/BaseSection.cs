@@ -23,21 +23,19 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of BaseSection.
 	/// </summary>
-	
-	public class BaseSection:ReportContainer
+	public class BaseSection : ReportContainer
 	{
-		
-
 		#region Constructors
-		
+
 		public BaseSection()
 		{
 		}
-		
+
 		public BaseSection(string name)
 		{
 			Name = name;
 		}
+
 		#endregion
 	}
 }

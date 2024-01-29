@@ -19,7 +19,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ICSharpCode.Reporting.WpfReportViewer.Visitor 
+namespace ICSharpCode.Reporting.WpfReportViewer.Visitor
 {
 	/// <summary>
 	/// Description of CanvasExtension.
@@ -27,7 +27,6 @@ namespace ICSharpCode.Reporting.WpfReportViewer.Visitor
 	/// </summary>
 	public static class CanvasExtension
 	{
-		
 		public static void AddChild<T>(this Panel panel, T element)
 		{
 			var uiElement = element as UIElement;
@@ -35,7 +34,7 @@ namespace ICSharpCode.Reporting.WpfReportViewer.Visitor
 				panel.Children.Add(uiElement);
 		}
 
-		
+
 		public static void RemoveChild<T>(this Panel panel, T element)
 		{
 			var uiElement = element as UIElement;
@@ -43,7 +42,7 @@ namespace ICSharpCode.Reporting.WpfReportViewer.Visitor
 				panel.Children.Remove(uiElement);
 		}
 
-		
+
 		public static void InsertChild<T>(this Panel panel, int index, T element)
 		{
 			var uiElement = element as UIElement;
@@ -51,5 +50,4 @@ namespace ICSharpCode.Reporting.WpfReportViewer.Visitor
 				panel.Children.Insert(index, uiElement);
 		}
 	}
-
 }

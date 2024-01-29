@@ -28,13 +28,13 @@ namespace MSHelpSystem.Controls
 		public Help3TocPad()
 		{
 		}
-		
+
 		TocPadControl toc = new TocPadControl();
-		
+
 		public override object Control
 		{
 			get { return toc; }
-		}		
+		}
 	}
 
 	public class Help3SearchPad : AbstractPadContent

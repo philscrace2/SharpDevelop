@@ -27,15 +27,17 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: base(context, method)
 		{
 		}
-		
-		public virtual bool IsGeneric {
+
+		public virtual bool IsGeneric
+		{
 			get { return method.TypeParameters.Count > 0; }
 		}
-		
-		public virtual global::EnvDTE.vsCMOverrideKind OverrideKind {
+
+		public virtual global::EnvDTE.vsCMOverrideKind OverrideKind
+		{
 			get { return GetOverrideKind(); }
 		}
-		
+
 		global::EnvDTE.vsCMOverrideKind GetOverrideKind()
 		{
 			global::EnvDTE.vsCMOverrideKind kind = 0;

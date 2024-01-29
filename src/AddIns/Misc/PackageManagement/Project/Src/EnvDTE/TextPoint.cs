@@ -27,32 +27,34 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		protected readonly string fileName;
 		protected readonly TextLocation location;
 		protected readonly IDocumentLoader documentLoader;
-		
+
 		internal TextPoint(string fileName, TextLocation location, IDocumentLoader documentLoader)
 		{
 			this.fileName = fileName;
 			this.location = location;
 			this.documentLoader = documentLoader;
 		}
-		
-		public int LineCharOffset {
+
+		public int LineCharOffset
+		{
 			get { return location.Column; }
 		}
-		
-		public int Line {
+
+		public int Line
+		{
 			get { return location.Line; }
 		}
-		
+
 		public global::EnvDTE.EditPoint CreateEditPoint()
 		{
 			return new EditPoint(fileName, location, documentLoader);
 		}
-		
+
 		internal static TextPoint CreateStartPoint(CodeModelContext context, DomRegion region)
 		{
 			return new TextPoint(region.FileName, region.Begin, context.DocumentLoader);
 		}
-		
+
 		internal static TextPoint CreateEndPoint(CodeModelContext context, DomRegion region)
 		{
 			return new TextPoint(region.FileName, region.End, context.DocumentLoader);

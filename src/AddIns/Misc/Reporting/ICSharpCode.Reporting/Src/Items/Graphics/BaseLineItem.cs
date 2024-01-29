@@ -20,16 +20,17 @@ using System.Drawing;
 using ICSharpCode.Reporting.Interfaces.Export;
 using ICSharpCode.Reporting.PageBuilder.ExportColumns;
 
-namespace ICSharpCode.Reporting.Items{
+namespace ICSharpCode.Reporting.Items
+{
 	/// <summary>
 	/// Description of BaseLineItem.
 	/// </summary>
-	public class BaseLineItem:BaseGraphics
+	public class BaseLineItem : BaseGraphics
 	{
 		public BaseLineItem()
 		{
 		}
-		
+
 		public override IExportColumn CreateExportColumn()
 		{
 			var ex = new ExportLine();
@@ -46,12 +47,10 @@ namespace ICSharpCode.Reporting.Items{
 			ex.ToPoint = ToPoint;
 			return ex;
 		}
-		
-		
-		public Point FromPoint {get;set;}
-		
-		public Point ToPoint {get;set;}
-		
-		
+
+
+		public Point FromPoint { get; set; }
+
+		public Point ToPoint { get; set; }
 	}
 }

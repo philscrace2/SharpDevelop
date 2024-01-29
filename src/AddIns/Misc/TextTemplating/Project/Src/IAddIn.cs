@@ -25,7 +25,7 @@ namespace ICSharpCode.TextTemplating
 	public interface IAddIn
 	{
 		string PrimaryIdentity { get; }
-		
+
 		IEnumerable<IAddInRuntime> GetRuntimes();
 	}
 }

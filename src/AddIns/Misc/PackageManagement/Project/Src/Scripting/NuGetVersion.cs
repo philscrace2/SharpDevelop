@@ -25,14 +25,15 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public static class NuGetVersion
 	{
 		static readonly Version version;
-		
+
 		static NuGetVersion()
 		{
 			AssemblyName name = typeof(PackageSource).Assembly.GetName();
 			version = name.Version;
 		}
-		
-		public static Version Version {
+
+		public static Version Version
+		{
 			get { return version; }
 		}
 	}

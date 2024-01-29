@@ -26,13 +26,14 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		public CodeStruct()
 		{
 		}
-		
+
 		public CodeStruct(CodeModelContext context, ITypeDefinition typeDefinition)
 			: base(context, typeDefinition)
 		{
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementStruct; }
 		}
 	}

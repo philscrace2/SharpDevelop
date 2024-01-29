@@ -17,6 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
+
 namespace ICSharpCode.Reporting.Globals
 {
 	/// <summary>
@@ -32,8 +33,8 @@ namespace ICSharpCode.Reporting.Globals
 		/// <returns></returns>
 		public static string LeftOf(string src, char c)
 		{
-			int idx=src.IndexOf(c);
-			if (idx==-1)
+			int idx = src.IndexOf(c);
+			if (idx == -1)
 			{
 				return src;
 			}
@@ -50,16 +51,18 @@ namespace ICSharpCode.Reporting.Globals
 		/// <returns></returns>
 		public static string LeftOf(string src, char c, int n)
 		{
-			int idx=-1;
+			int idx = -1;
 			while (n != 0)
 			{
-				idx=src.IndexOf(c, idx+1);
-				if (idx==-1)
+				idx = src.IndexOf(c, idx + 1);
+				if (idx == -1)
 				{
 					return src;
 				}
+
 				--n;
 			}
+
 			return src.Substring(0, idx);
 		}
 
@@ -71,13 +74,13 @@ namespace ICSharpCode.Reporting.Globals
 		/// <returns></returns>
 		public static string RightOf(string src, char c)
 		{
-			int idx=src.IndexOf(c);
-			if (idx==-1)
+			int idx = src.IndexOf(c);
+			if (idx == -1)
 			{
 				return "";
 			}
-			
-			return src.Substring(idx+1);
+
+			return src.Substring(idx + 1);
 		}
 
 		/// <summary>
@@ -88,66 +91,71 @@ namespace ICSharpCode.Reporting.Globals
 		/// <returns></returns>
 		public static string RightOf(string src, char c, int n)
 		{
-			int idx=-1;
+			int idx = -1;
 			while (n != 0)
 			{
-				idx=src.IndexOf(c, idx+1);
-				if (idx==-1)
+				idx = src.IndexOf(c, idx + 1);
+				if (idx == -1)
 				{
 					return "";
 				}
+
 				--n;
 			}
-			
-			return src.Substring(idx+1);
+
+			return src.Substring(idx + 1);
 		}
 
 		public static string LeftOfRightmostOf(string src, char c)
 		{
-			int idx=src.LastIndexOf(c);
-			if (idx==-1)
+			int idx = src.LastIndexOf(c);
+			if (idx == -1)
 			{
 				return src;
 			}
+
 			return src.Substring(0, idx);
 		}
 
 		public static string RightOfRightmostOf(string src, char c)
 		{
-			int idx=src.LastIndexOf(c);
-			if (idx==-1)
+			int idx = src.LastIndexOf(c);
+			if (idx == -1)
 			{
 				return src;
 			}
-			return src.Substring(idx+1);
+
+			return src.Substring(idx + 1);
 		}
 
 		public static string Between(string src, char start, char end)
 		{
-			string res=String.Empty;
-			int idxStart=src.IndexOf(start);
+			string res = String.Empty;
+			int idxStart = src.IndexOf(start);
 			if (idxStart != -1)
 			{
 				++idxStart;
-				int idxEnd=src.IndexOf(end, idxStart);
+				int idxEnd = src.IndexOf(end, idxStart);
 				if (idxEnd != -1)
 				{
-					res=src.Substring(idxStart, idxEnd-idxStart);
+					res = src.Substring(idxStart, idxEnd - idxStart);
 				}
 			}
+
 			return res;
 		}
 
 		public static int Count(string src, char find)
 		{
-			int ret=0;
-			foreach(char s in src)
+			int ret = 0;
+			foreach (char s in src)
 			{
-				if (s==find)
+				if (s == find)
 				{
 					++ret;
 				}
 			}
+
 			return ret;
 		}
 	}

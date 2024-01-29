@@ -6,15 +6,15 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:aim="clr-namespace:ICSharpCode.AddInManager2"
 	mc:Ignorable="d">
-	
+
 	<UserControl.Resources>
 		<BitmapImage x:Key="PreviousPageIcon"
-		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/resultset_previous.png"/>
+		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/resultset_previous.png" />
 		<BitmapImage x:Key="NextPageIcon"
-		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/resultset_next.png"/>
-		<BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-		<aim:BooleanToFontWeightConverter x:Key="BoolToFontWeight"/>
-		
+		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/resultset_next.png" />
+		<BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+		<aim:BooleanToFontWeightConverter x:Key="BoolToFontWeight" />
+
 		<DataTemplate x:Key="PagedListTemplate">
 			<Button
 				Background="Transparent"
@@ -24,10 +24,10 @@
 				Content="{Binding Path=Number}"
 				Command="{Binding Path=DataContext.ShowPageCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
 				CommandParameter="{Binding Path=Number}"
-				FontWeight="{Binding Path=IsSelected, Converter={StaticResource BoolToFontWeight}}"/>
+				FontWeight="{Binding Path=IsSelected, Converter={StaticResource BoolToFontWeight}}" />
 		</DataTemplate>
 	</UserControl.Resources>
-	
+
 	<StackPanel Orientation="Horizontal">
 		<Button
 			Visibility="{Binding Path=HasPreviousPage, Converter={StaticResource BoolToVisibility}}"
@@ -37,7 +37,7 @@
 			VerticalAlignment="Top">
 			<Image Source="{StaticResource PreviousPageIcon}"
 			       Height="16"
-			       Width="16"/>
+			       Width="16" />
 		</Button>
 		<ListBox
 			VerticalAlignment="Top"
@@ -46,7 +46,7 @@
 			ItemsSource="{Binding Path=Pages}">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<StackPanel Orientation="Horizontal"/>
+					<StackPanel Orientation="Horizontal" />
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 		</ListBox>
@@ -60,7 +60,7 @@
 			<Image
 				Source="{StaticResource NextPageIcon}"
 				Height="16"
-				Width="16"/>
+				Width="16" />
 		</Button>
 	</StackPanel>
 </UserControl>

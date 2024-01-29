@@ -26,53 +26,56 @@ namespace ICSharpCode.PackageManagement
 	{
 		MSBuildBasedProject project;
 		FrameworkName targetFramework;
-		
+
 		public ProjectTargetFramework(MSBuildBasedProject project)
 		{
 			this.project = project;
 			GetTargetFramework();
 		}
-		
+
 		void GetTargetFramework()
 		{
 			string identifier = GetTargetFrameworkIdentifier();
 			string version = GetTargetFrameworkVersion();
 			string profile = GetTargetFrameworkProfile();
-			
+
 			GetTargetFramework(identifier, version, profile);
 		}
-		
+
 		void GetTargetFramework(string identifier, string version, string profile)
 		{
 			string name = String.Format("{0}, Version={1}, Profile={2}", identifier, version, profile);
 			targetFramework = new FrameworkName(name);
 		}
-		
+
 		string GetTargetFrameworkIdentifier()
 		{
 			return GetEvaluatedPropertyOrDefault("TargetFrameworkIdentifier", ".NETFramework");
 		}
-		
+
 		string GetTargetFrameworkVersion()
 		{
 			return project.GetEvaluatedProperty("TargetFrameworkVersion");
 		}
-		
+
 		string GetTargetFrameworkProfile()
 		{
 			return GetEvaluatedPropertyOrDefault("TargetFrameworkProfile", String.Empty);
 		}
-		
+
 		string GetEvaluatedPropertyOrDefault(string propertyName, string defaultPropertyValue)
 		{
 			string propertyValue = project.GetEvaluatedProperty(propertyName);
-			if (String.IsNullOrEmpty(propertyValue)) {
+			if (String.IsNullOrEmpty(propertyValue))
+			{
 				return defaultPropertyValue;
 			}
+
 			return propertyValue;
 		}
-		
-		public FrameworkName TargetFrameworkName {
+
+		public FrameworkName TargetFrameworkName
+		{
 			get { return targetFramework; }
 		}
 	}

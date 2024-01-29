@@ -27,7 +27,7 @@ namespace ICSharpCode.AddInManager2
 		public static IEnumerable<T> DistinctLast<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer)
 		{
 			T previousItem = default(T);
-			
+
 			foreach (T currentItem in source)
 			{
 				if (previousItem != null)
@@ -37,16 +37,17 @@ namespace ICSharpCode.AddInManager2
 						yield return previousItem;
 					}
 				}
+
 				previousItem = currentItem;
 			}
-			
+
 			if (previousItem != null)
 			{
 				yield return previousItem;
 			}
 		}
 	}
-	
+
 	public static class SemanticVersionExtensions
 	{
 		public static Version ToVersion(this SemanticVersion semanticVersion)
@@ -55,8 +56,10 @@ namespace ICSharpCode.AddInManager2
 			if (!String.IsNullOrEmpty(semanticVersion.SpecialVersion))
 			{
 				// Remove special version from string (-1 for the "-" added before the version)
-				versionString = versionString.Substring(0, versionString.Length - semanticVersion.SpecialVersion.Length - 1);
+				versionString =
+					versionString.Substring(0, versionString.Length - semanticVersion.SpecialVersion.Length - 1);
 			}
+
 			return new Version(versionString);
 		}
 	}

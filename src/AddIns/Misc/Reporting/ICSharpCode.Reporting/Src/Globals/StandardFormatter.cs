@@ -27,77 +27,94 @@ namespace ICSharpCode.Reporting.Globals
 	/// </summary>
 	public static class StandardFormatter
 	{
-		public static void FormatOutput (IExportText textColumn) {
-			if (String.IsNullOrWhiteSpace(textColumn.Text)) {
+		public static void FormatOutput(IExportText textColumn)
+		{
+			if (String.IsNullOrWhiteSpace(textColumn.Text))
+			{
 				return;
 			}
-			if (textColumn.Name == "xy") {
+
+			if (textColumn.Name == "xy")
+			{
 				Console.WriteLine("stop");
 			}
-			if (!String.IsNullOrEmpty(textColumn.FormatString)) {
-				if (textColumn.DataType.ToLower().Contains("timespan")) {
-					textColumn.Text = HandleTimeSpan(textColumn.Text,textColumn.FormatString);
-					
-				} else {
+
+			if (!String.IsNullOrEmpty(textColumn.FormatString))
+			{
+				if (textColumn.DataType.ToLower().Contains("timespan"))
+				{
+					textColumn.Text = HandleTimeSpan(textColumn.Text, textColumn.FormatString);
+				}
+				else
+				{
 					var typeCode = TypeHelper.TypeCodeFromString(textColumn.DataType);
-					textColumn.Text = FormatItem(textColumn.Text,textColumn.FormatString,typeCode);
-					if (textColumn.Name == "xy") {
-						Console.WriteLine("stop {0}",textColumn.Text);
+					textColumn.Text = FormatItem(textColumn.Text, textColumn.FormatString, typeCode);
+					if (textColumn.Name == "xy")
+					{
+						Console.WriteLine("stop {0}", textColumn.Text);
 					}
 				}
 			}
 		}
-	
 
-		static string HandleTimeSpan (string valueToFormat,string toFormat) {
+
+		static string HandleTimeSpan(string valueToFormat, string toFormat)
+		{
 			TimeSpan time;
-			
+
 			bool valid = TimeSpan.TryParseExact(valueToFormat,
-			                                    "c",
-			                                    CultureInfo.CurrentCulture,
-			                                    out time);
-			if (! valid) {
+				"c",
+				CultureInfo.CurrentCulture,
+				out time);
+			if (!valid)
+			{
 				var test = TimeSpan.FromTicks(Convert.ToInt64(valueToFormat));
-				
-				if (test != null) {
+
+				if (test != null)
+				{
 					valid = true;
 					time = test;
-				} else{
-					var x = TimeSpan.Parse(valueToFormat.ToString(),CultureInfo.CurrentCulture);
 				}
-			} 
-			
-			if (valid) {
-				return time.ToString("g",DateTimeFormatInfo.CurrentInfo);
+				else
+				{
+					var x = TimeSpan.Parse(valueToFormat.ToString(), CultureInfo.CurrentCulture);
+				}
 			}
+
+			if (valid)
+			{
+				return time.ToString("g", DateTimeFormatInfo.CurrentInfo);
+			}
+
 			return toFormat;
 		}
-			
-		
-		static string FormatItem (string valueToFormat,string format,TypeCode typeCode)	{
-		
+
+
+		static string FormatItem(string valueToFormat, string format, TypeCode typeCode)
+		{
 			string retValue = String.Empty;
-			switch (typeCode) {
+			switch (typeCode)
+			{
 				case TypeCode.Int16:
 				case TypeCode.Int32:
-					retValue = FormatIntegers (valueToFormat,format);
+					retValue = FormatIntegers(valueToFormat, format);
 					break;
 				case TypeCode.DateTime:
-					retValue = FormatDate(valueToFormat,format);
+					retValue = FormatDate(valueToFormat, format);
 					break;
 				case TypeCode.Boolean:
-					retValue = FormatBool (valueToFormat);
+					retValue = FormatBool(valueToFormat);
 					break;
 				case TypeCode.Decimal:
-					retValue = FormatDecimal (valueToFormat,format);
+					retValue = FormatDecimal(valueToFormat, format);
 					break;
-					
+
 				case TypeCode.Double:
-						retValue = FormatDecimal (valueToFormat,format);
+					retValue = FormatDecimal(valueToFormat, format);
 					break;
 				case TypeCode.Single:
 					break;
-					
+
 				case TypeCode.String:
 				case TypeCode.Char:
 					retValue = valueToFormat;
@@ -106,84 +123,99 @@ namespace ICSharpCode.Reporting.Globals
 					retValue = valueToFormat;
 					break;
 			}
+
 			return retValue;
 		}
-		
-		
-		static string FormatBool (string toFormat){
-		
-			if (CheckValue(toFormat)) {
-				bool b = bool.Parse (toFormat);
-				return b.ToString (CultureInfo.CurrentCulture);
+
+
+		static string FormatBool(string toFormat)
+		{
+			if (CheckValue(toFormat))
+			{
+				bool b = bool.Parse(toFormat);
+				return b.ToString(CultureInfo.CurrentCulture);
 			}
+
 			return toFormat;
 		}
-	
-		
-		static string FormatIntegers(string toFormat, string format){
-		
+
+
+		static string FormatIntegers(string toFormat, string format)
+		{
 			string str = String.Empty;
-			if (CheckValue (toFormat)) {
+			if (CheckValue(toFormat))
+			{
 				int number = Int32.Parse(toFormat, NumberStyles.Any, CultureInfo.CurrentCulture.NumberFormat);
 				str = number.ToString(format, CultureInfo.CurrentCulture);
 				return str;
-			} else {
+			}
+			else
+			{
 				str = (0.0M).ToString(CultureInfo.CurrentCulture);
 			}
+
 			return str;
 		}
-		
-		
-		static string FormatDecimal(string toFormat, string format){
-		
+
+
+		static string FormatDecimal(string toFormat, string format)
+		{
 			string str = String.Empty;
-			if (CheckValue (toFormat)) {
-				try {
-					decimal number =	Decimal.Parse(toFormat,
-						              NumberStyles.Any,
-					                            CultureInfo.CurrentCulture.NumberFormat);
-					str = number.ToString (format,CultureInfo.CurrentCulture);
-					
-				} catch (FormatException) {
-//					throw ;
-					Console.WriteLine("StandardFormatter: {0} - {1} IncorrectFormat ",toFormat,format);
+			if (CheckValue(toFormat))
+			{
+				try
+				{
+					decimal number = Decimal.Parse(toFormat,
+						NumberStyles.Any,
+						CultureInfo.CurrentCulture.NumberFormat);
+					str = number.ToString(format, CultureInfo.CurrentCulture);
 				}
+				catch (FormatException)
+				{
+//					throw ;
+					Console.WriteLine("StandardFormatter: {0} - {1} IncorrectFormat ", toFormat, format);
+				}
+
 				return str;
-			} else {
+			}
+			else
+			{
 				str = (0.0M).ToString(CultureInfo.CurrentCulture);
 			}
+
 			return str;
 		}
-		
+
 //		http://stackoverflow.com/questions/4710455/i-need-code-to-validate-any-time-in-c-sharp-in-hhmmss-format
-		
-		static string FormatDate(string toFormat, string format){
-		
+
+		static string FormatDate(string toFormat, string format)
+		{
 			DateTime date;
 			if (DateTime.TryParse(toFormat, out date))
 			{
-				
 				string str = date.ToString(format,
-				                           DateTimeFormatInfo.CurrentInfo);
-			
-				Console.WriteLine("---------{0} - {1} - {2}",toFormat,format, str);
+					DateTimeFormatInfo.CurrentInfo);
+
+				Console.WriteLine("---------{0} - {1} - {2}", toFormat, format, str);
 				return str.Trim();
 			}
 
 			TimeSpan time;
 			bool valid = TimeSpan.TryParseExact(toFormat,
-			                                    "g",
-			                                    CultureInfo.CurrentCulture,
-			                                    out time);
-			if (valid) {
-				return time.ToString("g",DateTimeFormatInfo.CurrentInfo);
+				"g",
+				CultureInfo.CurrentCulture,
+				out time);
+			if (valid)
+			{
+				return time.ToString("g", DateTimeFormatInfo.CurrentInfo);
 			}
+
 			return toFormat;
 		}
-		
-		
-		static bool CheckValue (string toFormat){
-		
+
+
+		static bool CheckValue(string toFormat)
+		{
 			return String.IsNullOrEmpty(toFormat) ? false : true;
 		}
 	}

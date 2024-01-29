@@ -28,7 +28,7 @@ namespace ICSharpCode.AddInManager2.Model
 	public class AddInManagerEvents : IAddInManagerEvents
 	{
 		public event EventHandler OperationStarted;
-		
+
 		public void OnOperationStarted()
 		{
 			if (OperationStarted != null)
@@ -37,7 +37,7 @@ namespace ICSharpCode.AddInManager2.Model
 				OperationStarted(this, new EventArgs());
 			}
 		}
-		
+
 		public void OnOperationStarted(EventArgs e)
 		{
 			if (OperationStarted != null)
@@ -46,9 +46,9 @@ namespace ICSharpCode.AddInManager2.Model
 				OperationStarted(this, e);
 			}
 		}
-		
+
 		public event EventHandler AddInManagerViewOpened;
-		
+
 		public void OnAddInManagerViewOpened(EventArgs e)
 		{
 			if (AddInManagerViewOpened != null)
@@ -57,7 +57,7 @@ namespace ICSharpCode.AddInManager2.Model
 				AddInManagerViewOpened(this, e);
 			}
 		}
-		
+
 		public void OnAddInManagerViewOpened()
 		{
 			if (AddInManagerViewOpened != null)
@@ -66,20 +66,21 @@ namespace ICSharpCode.AddInManager2.Model
 				AddInManagerViewOpened(this, new EventArgs());
 			}
 		}
-		
+
 		public event EventHandler<PackageListDownloadEndedEventArgs> PackageListDownloadEnded;
-		
+
 		public void OnPackageListDownloadEnded(object sender, PackageListDownloadEndedEventArgs e)
 		{
 			if (PackageListDownloadEnded != null)
 			{
-				SD.Log.DebugFormatted("[AddInManager2.Events] Package list download ended (success: {0}).", e.WasSuccessful);
+				SD.Log.DebugFormatted("[AddInManager2.Events] Package list download ended (success: {0}).",
+					e.WasSuccessful);
 				PackageListDownloadEnded(sender, e);
 			}
 		}
-		
+
 		public event EventHandler<AddInInstallationEventArgs> AddInInstalled;
-		
+
 		public void OnAddInInstalled(AddInInstallationEventArgs e)
 		{
 			if (AddInInstalled != null)
@@ -88,9 +89,9 @@ namespace ICSharpCode.AddInManager2.Model
 				AddInInstalled(this, e);
 			}
 		}
-		
+
 		public event EventHandler<AddInInstallationEventArgs> AddInUninstalled;
-		
+
 		public void OnAddInUninstalled(AddInInstallationEventArgs e)
 		{
 			if (AddInUninstalled != null)
@@ -99,9 +100,9 @@ namespace ICSharpCode.AddInManager2.Model
 				AddInUninstalled(this, e);
 			}
 		}
-		
+
 		public event EventHandler<AddInOperationErrorEventArgs> AddInOperationError;
-		
+
 		public void OnAddInOperationError(AddInOperationErrorEventArgs e)
 		{
 			if (AddInOperationError != null)
@@ -110,31 +111,33 @@ namespace ICSharpCode.AddInManager2.Model
 				AddInOperationError(this, e);
 			}
 		}
-		
+
 		public event EventHandler<PackageOperationEventArgs> AddInPackageDownloaded;
-		
+
 		public void OnAddInPackageDownloaded(PackageOperationEventArgs e)
 		{
 			if (AddInPackageDownloaded != null)
 			{
-				SD.Log.DebugFormatted("[AddInManager2.Events] Package download finished: {0} {1}", e.Package.Id, e.Package.Version.ToString());
+				SD.Log.DebugFormatted("[AddInManager2.Events] Package download finished: {0} {1}", e.Package.Id,
+					e.Package.Version.ToString());
 				AddInPackageDownloaded(this, e);
 			}
 		}
-		
+
 		public event EventHandler<PackageOperationEventArgs> AddInPackageRemoved;
-		
+
 		public void OnAddInPackageRemoved(PackageOperationEventArgs e)
 		{
 			if (AddInPackageRemoved != null)
 			{
-				SD.Log.DebugFormatted("[AddInManager2.Events] Package removed: {0} {1}", e.Package.Id, e.Package.Version.ToString());
+				SD.Log.DebugFormatted("[AddInManager2.Events] Package removed: {0} {1}", e.Package.Id,
+					e.Package.Version.ToString());
 				AddInPackageRemoved(this, e);
 			}
 		}
-		
+
 		public event EventHandler<AddInInstallationEventArgs> AddInStateChanged;
-		
+
 		public void OnAddInStateChanged(AddInInstallationEventArgs e)
 		{
 			if (AddInStateChanged != null)
@@ -143,9 +146,9 @@ namespace ICSharpCode.AddInManager2.Model
 				AddInStateChanged(this, e);
 			}
 		}
-		
+
 		public event EventHandler<PackageMessageLoggedEventArgs> PackageMessageLogged;
-		
+
 		public void OnPackageMessageLogged(PackageMessageLoggedEventArgs e)
 		{
 			if (PackageMessageLogged != null)
@@ -153,9 +156,9 @@ namespace ICSharpCode.AddInManager2.Model
 				PackageMessageLogged(this, e);
 			}
 		}
-		
+
 		public event EventHandler<AcceptLicensesEventArgs> AcceptLicenses;
-		
+
 		public void OnAcceptLicenses(AcceptLicensesEventArgs e)
 		{
 			if (AcceptLicenses != null)
@@ -164,9 +167,9 @@ namespace ICSharpCode.AddInManager2.Model
 				AcceptLicenses(this, e);
 			}
 		}
-		
+
 		public event EventHandler<EventArgs> PackageSourcesChanged;
-		
+
 		public void OnPackageSourcesChanged(EventArgs e)
 		{
 			if (PackageSourcesChanged != null)

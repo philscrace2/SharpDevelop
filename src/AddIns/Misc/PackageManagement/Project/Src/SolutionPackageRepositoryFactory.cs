@@ -27,12 +27,12 @@ namespace ICSharpCode.PackageManagement
 	{
 		ISharpDevelopPackageRepositoryFactory repositoryFactory;
 		PackageManagementOptions options;
-		
+
 		public SolutionPackageRepositoryFactory()
 			: this(PackageManagementServices.PackageRepositoryCache, PackageManagementServices.Options)
 		{
 		}
-		
+
 		public SolutionPackageRepositoryFactory(
 			ISharpDevelopPackageRepositoryFactory repositoryFactory,
 			PackageManagementOptions options)
@@ -40,7 +40,7 @@ namespace ICSharpCode.PackageManagement
 			this.repositoryFactory = repositoryFactory;
 			this.options = options;
 		}
-		
+
 		public ISolutionPackageRepository CreateSolutionPackageRepository(ISolution solution)
 		{
 			return new SolutionPackageRepository(solution, repositoryFactory, options);

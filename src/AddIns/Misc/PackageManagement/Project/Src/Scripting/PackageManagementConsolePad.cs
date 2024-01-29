@@ -26,27 +26,34 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		PackageManagementConsoleView view;
 		PackageManagementConsoleViewModel viewModel;
-		
-		public override object Control {
-			get {
-				if (view == null) {
+
+		public override object Control
+		{
+			get
+			{
+				if (view == null)
+				{
 					view = new PackageManagementConsoleView();
 					viewModel = view.DataContext as PackageManagementConsoleViewModel;
 				}
+
 				return view;
 			}
 		}
-		
+
 		public override void Dispose()
 		{
-			if (viewModel != null) {
-				while (!viewModel.ShutdownConsole()) {
+			if (viewModel != null)
+			{
+				while (!viewModel.ShutdownConsole())
+				{
 					DoEvents();
 				}
+
 				viewModel = null;
 			}
 		}
-		
+
 		/// <summary>
 		/// Allow package management console thread to finish. Can be busy if solution was open when the user
 		/// closed SharpDevelop.
@@ -60,7 +67,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 				frame);
 			Dispatcher.PushFrame(frame);
 		}
-		
+
 		object ExitFrame(object frame)
 		{
 			var dispatcherFrame = frame as DispatcherFrame;

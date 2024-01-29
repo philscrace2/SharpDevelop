@@ -29,57 +29,66 @@ namespace ICSharpCode.Reporting.DataSource
 	/// </summary>
 	class ExtendedPropertyDescriptor : PropertyDescriptor
 	{
-	
 		Type componentType;
 		readonly Type propertyType;
 		PropertyInfo prop;
 
-		public ExtendedPropertyDescriptor (string name, Type componentType, Type propertyType)
-			: base (name, null)
+		public ExtendedPropertyDescriptor(string name, Type componentType, Type propertyType)
+			: base(name, null)
 		{
 			this.componentType = componentType;
 			this.propertyType = propertyType;
 		}
 
 
-		public override object GetValue (object component)
+		public override object GetValue(object component)
 		{
 			var x = component.GetType();
-			if (!componentType.IsAssignableFrom(component.GetType())){
+			if (!componentType.IsAssignableFrom(component.GetType()))
+			{
 				return null;
 			}
 
-			if (prop == null) {
-				prop = componentType.GetProperty (Name);
+			if (prop == null)
+			{
+				prop = componentType.GetProperty(Name);
 			}
-				
-			object obj = prop.GetValue (component, null);
-			if (obj != null) {
-				if (obj is IList){
-					PropertyTypeHash.Instance[componentType, Name] = DataCollection<object>.GetElementType((IList)obj, componentType, Name);
+
+			object obj = prop.GetValue(component, null);
+			if (obj != null)
+			{
+				if (obj is IList)
+				{
+					PropertyTypeHash.Instance[componentType, Name] =
+						DataCollection<object>.GetElementType((IList)obj, componentType, Name);
 				}
-			} 
+			}
+
 			return obj;
 		}
 
-		
-		public override void SetValue(object component,	object value)
+
+		public override void SetValue(object component, object value)
 		{
-			if (IsReadOnly){
+			if (IsReadOnly)
+			{
 				return;
 			}
-			if (prop == null){
-				prop = componentType.GetProperty (Name);
+
+			if (prop == null)
+			{
+				prop = componentType.GetProperty(Name);
 			}
-			prop.SetValue (component, value, null);
+
+			prop.SetValue(component, value, null);
 		}
 
-		public override void ResetValue(object component) 
+		public override void ResetValue(object component)
 		{
 			return;
 		}
 
-		public override bool CanResetValue(object component) 
+		public override bool CanResetValue(object component)
 		{
 			return false;
 		}

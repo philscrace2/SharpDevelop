@@ -27,12 +27,13 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: base(context, typeDefinition)
 		{
 		}
-		
+
 		public CodeDelegate()
 		{
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementDelegate; }
 		}
 	}

@@ -26,120 +26,51 @@ namespace ICSharpCode.AddInManager2.Model
 	/// Describes an AddIn package entry in AddInManager.
 	/// </summary>
 	public interface IAddInPackage
-	{	
-		string Name
-		{
-			get;
-		}
-		
-		bool HasLicenseUrl
-		{
-			get;
-		}
+	{
+		string Name { get; }
 
-		Uri LicenseUrl
-		{
-			get;
-		}
+		bool HasLicenseUrl { get; }
 
-		bool HasProjectUrl
-		{
-			get;
-		}
+		Uri LicenseUrl { get; }
 
-		Uri ProjectUrl
-		{
-			get;
-		}
+		bool HasProjectUrl { get; }
 
-		bool HasReportAbuseUrl
-		{
-			get;
-		}
+		Uri ProjectUrl { get; }
 
-		Uri ReportAbuseUrl
-		{
-			get;
-		}
+		bool HasReportAbuseUrl { get; }
 
-		bool IsAdded
-		{
-			get;
-		}
+		Uri ReportAbuseUrl { get; }
 
-		IEnumerable<AddInDependency> Dependencies
-		{
-			get;
-		}
+		bool IsAdded { get; }
 
-		bool HasDependencies
-		{
-			get;
-		}
+		IEnumerable<AddInDependency> Dependencies { get; }
 
-		bool HasNoDependencies
-		{
-			get;
-		}
+		bool HasDependencies { get; }
 
-		IEnumerable<string> Authors
-		{
-			get;
-		}
+		bool HasNoDependencies { get; }
 
-		bool HasDownloadCount
-		{
-			get;
-		}
+		IEnumerable<string> Authors { get; }
 
-		string Id
-		{
-			get;
-		}
+		bool HasDownloadCount { get; }
 
-		Uri IconUrl
-		{
-			get;
-		}
+		string Id { get; }
 
-		string Summary
-		{
-			get;
-		}
+		Uri IconUrl { get; }
 
-		Version Version
-		{
-			get;
-		}
+		string Summary { get; }
 
-		int DownloadCount
-		{
-			get;
-		}
+		Version Version { get; }
 
-		string Description
-		{
-			get;
-		}
+		int DownloadCount { get; }
 
-		DateTime? LastUpdated
-		{
-			get;
-		}
+		string Description { get; }
 
-		bool HasLastUpdated
-		{
-			get;
-		}
-		
-		bool HasVersion
-		{
-			get;
-		}
+		DateTime? LastUpdated { get; }
 
-		bool IsManaged
-		{
-			get;
-		}
+		bool HasLastUpdated { get; }
+
+		bool HasVersion { get; }
+
+		bool IsManaged { get; }
 	}
 }

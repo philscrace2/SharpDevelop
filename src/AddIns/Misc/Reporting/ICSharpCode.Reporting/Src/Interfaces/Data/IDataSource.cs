@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-
 using ICSharpCode.Reporting.BaseClasses;
 using ICSharpCode.Reporting.DataManager.Listhandling;
 
@@ -29,14 +28,14 @@ namespace ICSharpCode.Reporting.Interfaces.Data
 	/// <summary>
 	/// Description of IDataViewHandling.
 	/// </summary>
-	public interface IDataSource{
-		
+	public interface IDataSource
+	{
 		void Bind();
-		void Fill(List<IPrintableObject> collection,object current);
-		Collection<AbstractColumn> AvailableFields {get;}
-		IList <object> CurrentList {get;}
-		int Count {get;}
-		object Current {get;}
-		OrderGroup OrderGroup {get;}
+		void Fill(List<IPrintableObject> collection, object current);
+		Collection<AbstractColumn> AvailableFields { get; }
+		IList<object> CurrentList { get; }
+		int Count { get; }
+		object Current { get; }
+		OrderGroup OrderGroup { get; }
 	}
 }

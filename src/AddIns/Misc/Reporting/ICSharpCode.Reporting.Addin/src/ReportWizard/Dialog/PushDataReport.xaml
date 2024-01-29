@@ -10,14 +10,14 @@
                  CanFinish="true"
                  CancelButtonVisibility="Visible"
                  CanSelectPreviousPage="true"
-            	  CanSelectNextPage="false">
-	
+                 CanSelectNextPage="false">
+
 	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto"></ColumnDefinition>
 			<ColumnDefinition></ColumnDefinition>
 		</Grid.ColumnDefinitions>
-		
+
 		<Grid.RowDefinitions>
 			<RowDefinition Height="30"></RowDefinition>
 			<RowDefinition Height="30"></RowDefinition>
@@ -26,20 +26,26 @@
 			<RowDefinition Height="30"></RowDefinition>
 			<RowDefinition Height="150"></RowDefinition>
 		</Grid.RowDefinitions>
-	
-		<!-- Seelct project in Solution -->	
-		<TextBlock   Text="Select Project" FontSize="15" ></TextBlock>
-		<ComboBox Name="_projectsCbo" Grid.Row="1" SelectionChanged="_pro_SelectionChanged"></ComboBox>  
-		
+
+		<!-- Seelct project in Solution -->
+		<TextBlock Text="Select Project" FontSize="15"></TextBlock>
+		<ComboBox Name="_projectsCbo" Grid.Row="1" SelectionChanged="_pro_SelectionChanged"></ComboBox>
+
 		<!-- Select Type from Solution -->
-		
-		<TextBlock Name="_projTxt" Grid.Row="3" Visibility="Hidden" Text="{core:Localize SharpReport.Wizard.PushModel.SelectProject}"
-		            FontSize="15" ></TextBlock>
-		<ComboBox Name="_cboTypes" Grid.Row="4" Visibility="Hidden" SelectionChanged="_cboTypes_SelectionChanged" MinWidth="150" ></ComboBox>
-		
-		<TextBlock Name="_availTxt"  Visibility="Hidden" Text="{core:Localize SharpReport.Wizard.PushModel.AvailableFields}" FontSize="15" Grid.Column ="1" Margin="15,0,0,0"></TextBlock>
-		
-		<DataGrid  Name="_DataGrid"
+
+		<TextBlock Name="_projTxt" Grid.Row="3" Visibility="Hidden"
+		           Text="{core:Localize SharpReport.Wizard.PushModel.SelectProject}"
+		           FontSize="15">
+		</TextBlock>
+		<ComboBox Name="_cboTypes" Grid.Row="4" Visibility="Hidden" SelectionChanged="_cboTypes_SelectionChanged"
+		          MinWidth="150">
+		</ComboBox>
+
+		<TextBlock Name="_availTxt" Visibility="Hidden" Text="{core:Localize SharpReport.Wizard.PushModel.AvailableFields}"
+		           FontSize="15" Grid.Column="1" Margin="15,0,0,0">
+		</TextBlock>
+
+		<DataGrid Name="_DataGrid"
 		          ItemsSource="{Binding}"
 		          CanUserAddRows="True"
 		          CanUserDeleteRows="True"
@@ -76,4 +82,3 @@ http://www.scottlogic.com/blog/2008/11/26/multiselect-datagrid-with-checkboxes.h
         </DataGrid.Columns>
     </DataGrid>
 </StackPanel>-->
-

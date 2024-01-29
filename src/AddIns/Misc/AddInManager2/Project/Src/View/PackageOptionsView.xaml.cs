@@ -28,12 +28,12 @@ namespace ICSharpCode.AddInManager2.View
 	public partial class PackageOptionsView : OptionPanel
 	{
 		private PackageOptionsViewModel viewModel;
-		
+
 		public PackageOptionsView()
 		{
 			InitializeComponent();
 		}
-		
+
 		private PackageOptionsViewModel ViewModel
 		{
 			get
@@ -42,15 +42,16 @@ namespace ICSharpCode.AddInManager2.View
 				{
 					viewModel = DataContext as PackageOptionsViewModel;
 				}
+
 				return viewModel;
 			}
 		}
-		
+
 		public override void LoadOptions()
 		{
 			ViewModel.Load();
 		}
-		
+
 		public override bool SaveOptions()
 		{
 			ViewModel.Save();

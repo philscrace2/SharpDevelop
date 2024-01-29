@@ -29,7 +29,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-
 using WinForms = System.Windows.Forms;
 
 namespace ICSharpCode.Core.Presentation
@@ -45,20 +44,23 @@ namespace ICSharpCode.Core.Presentation
 			public string ActivationMethod;
 			public bool ImmediatelyExpandMenuBuildersForShortcuts;
 		}
-		
+
 		static Dictionary<string, System.Windows.Input.ICommand> knownCommands = LoadDefaultKnownCommands();
-		
+
 		static Dictionary<string, System.Windows.Input.ICommand> LoadDefaultKnownCommands()
 		{
 			var knownCommands = new Dictionary<string, System.Windows.Input.ICommand>();
-			foreach (Type t in new Type[] { typeof(ApplicationCommands), typeof(NavigationCommands) }) {
-				foreach (PropertyInfo p in t.GetProperties()) {
+			foreach (Type t in new Type[] { typeof(ApplicationCommands), typeof(NavigationCommands) })
+			{
+				foreach (PropertyInfo p in t.GetProperties())
+				{
 					knownCommands.Add(p.Name, (System.Windows.Input.ICommand)p.GetValue(null, null));
 				}
 			}
+
 			return knownCommands;
 		}
-		
+
 		/// <summary>
 		/// Gets a known WPF command.
 		/// </summary>
@@ -69,13 +71,15 @@ namespace ICSharpCode.Core.Presentation
 			if (commandName == null)
 				throw new ArgumentNullException("commandName");
 			System.Windows.Input.ICommand command;
-			lock (knownCommands) {
+			lock (knownCommands)
+			{
 				if (knownCommands.TryGetValue(commandName, out command))
 					return command;
 			}
+
 			return null;
 		}
-		
+
 		/// <summary>
 		/// Registers a WPF command for use with the &lt;MenuItem command="name"&gt; syntax.
 		/// </summary>
@@ -85,33 +89,36 @@ namespace ICSharpCode.Core.Presentation
 				throw new ArgumentNullException("name");
 			if (command == null)
 				throw new ArgumentNullException("command");
-			lock (knownCommands) {
+			lock (knownCommands)
+			{
 				knownCommands.Add(name, command);
 			}
 		}
-		
+
 		public static void UpdateStatus(IEnumerable menuItems)
 		{
 			if (menuItems == null)
 				return;
-			foreach (object o in menuItems) {
+			foreach (object o in menuItems)
+			{
 				IStatusUpdate cmi = o as IStatusUpdate;
 				if (cmi != null)
 					cmi.UpdateStatus();
 			}
 		}
-		
+
 		public static void UpdateText(IEnumerable menuItems)
 		{
 			if (menuItems == null)
 				return;
-			foreach (object o in menuItems) {
+			foreach (object o in menuItems)
+			{
 				IStatusUpdate cmi = o as IStatusUpdate;
 				if (cmi != null)
 					cmi.UpdateText();
 			}
 		}
-		
+
 		public static ContextMenu CreateContextMenu(object owner, string addInTreePath)
 		{
 			return CreateContextMenu(
@@ -123,7 +130,8 @@ namespace ICSharpCode.Core.Presentation
 		public static ContextMenu CreateContextMenu(UIElement inputBindingOwner, object owner, string addInTreePath)
 		{
 			return CreateContextMenu(
-				new MenuCreateContext {
+				new MenuCreateContext
+				{
 					InputBindingOwner = inputBindingOwner,
 					ActivationMethod = "ContextMenu"
 				},
@@ -138,7 +146,7 @@ namespace ICSharpCode.Core.Presentation
 				AddInTree.BuildItems<MenuItemDescriptor>(addInTreePath, owner, false));
 			return CreateContextMenu(items);
 		}
-	
+
 		public static ContextMenu ShowContextMenu(UIElement parent, object owner, string addInTreePath)
 		{
 			ContextMenu menu = new ContextMenu();
@@ -147,105 +155,125 @@ namespace ICSharpCode.Core.Presentation
 			menu.IsOpen = true;
 			return menu;
 		}
-		
+
 		internal static ContextMenu CreateContextMenu(IList subItems)
 		{
-			var contextMenu = new ContextMenu() {
+			var contextMenu = new ContextMenu()
+			{
 				ItemsSource = new object[1]
 			};
-			contextMenu.Opened += (sender, args) => {
+			contextMenu.Opened += (sender, args) =>
+			{
 				contextMenu.ItemsSource = ExpandMenuBuilders(subItems, true);
 				args.Handled = true;
 			};
 			return contextMenu;
 		}
-		
-		public static IList CreateMenuItems(UIElement inputBindingOwner, object owner, string addInTreePath, string activationMethod = null, bool immediatelyExpandMenuBuildersForShortcuts = false)
+
+		public static IList CreateMenuItems(UIElement inputBindingOwner, object owner, string addInTreePath,
+			string activationMethod = null, bool immediatelyExpandMenuBuildersForShortcuts = false)
 		{
 			IList items = CreateUnexpandedMenuItems(
-				new MenuCreateContext {
+				new MenuCreateContext
+				{
 					InputBindingOwner = inputBindingOwner,
 					ActivationMethod = activationMethod,
-					ImmediatelyExpandMenuBuildersForShortcuts =immediatelyExpandMenuBuildersForShortcuts
+					ImmediatelyExpandMenuBuildersForShortcuts = immediatelyExpandMenuBuildersForShortcuts
 				},
 				AddInTree.BuildItems<MenuItemDescriptor>(addInTreePath, owner, false));
 			return ExpandMenuBuilders(items, false);
 		}
-		
+
 		sealed class MenuItemBuilderPlaceholder
 		{
 			readonly IMenuItemBuilder builder;
 			readonly Codon codon;
 			readonly object caller;
-			
+
 			public MenuItemBuilderPlaceholder(IMenuItemBuilder builder, Codon codon, object caller)
 			{
 				this.builder = builder;
 				this.codon = codon;
 				this.caller = caller;
 			}
-			
+
 			public IEnumerable<object> BuildItems()
 			{
 				return builder.BuildItems(codon, caller);
 			}
 		}
-		
+
 		internal static IList CreateUnexpandedMenuItems(MenuCreateContext context, IEnumerable descriptors)
 		{
 			ArrayList result = new ArrayList();
-			if (descriptors != null) {
-				foreach (MenuItemDescriptor descriptor in descriptors) {
+			if (descriptors != null)
+			{
+				foreach (MenuItemDescriptor descriptor in descriptors)
+				{
 					result.Add(CreateMenuItemFromDescriptor(context, descriptor));
 				}
 			}
+
 			return result;
 		}
-		
+
 		static IList ExpandMenuBuilders(ICollection input, bool addDummyEntryIfMenuEmpty)
 		{
 			List<object> result = new List<object>(input.Count);
-			foreach (object o in input) {
+			foreach (object o in input)
+			{
 				MenuItemBuilderPlaceholder p = o as MenuItemBuilderPlaceholder;
-				if (p != null) {
+				if (p != null)
+				{
 					IEnumerable<object> c = p.BuildItems();
 					if (c != null)
 						result.AddRange(c);
-				} else {
+				}
+				else
+				{
 					result.Add(o);
 					IStatusUpdate statusUpdate = o as IStatusUpdate;
-					if (statusUpdate != null) {
+					if (statusUpdate != null)
+					{
 						statusUpdate.UpdateStatus();
 						statusUpdate.UpdateText();
 					}
 				}
 			}
-			if (addDummyEntryIfMenuEmpty && result.Count == 0) {
+
+			if (addDummyEntryIfMenuEmpty && result.Count == 0)
+			{
 				result.Add(new MenuItem { Header = "(empty menu)", IsEnabled = false });
 			}
+
 			return result;
 		}
-		
+
 		static object CreateMenuItemFromDescriptor(MenuCreateContext context, MenuItemDescriptor descriptor)
 		{
 			Codon codon = descriptor.Codon;
 			string type = codon.Properties.Contains("type") ? codon.Properties["type"] : "Command";
-			
-			switch (type) {
+
+			switch (type)
+			{
 				case "Separator":
 					return new ConditionalSeparator(codon, descriptor.Parameter, false, descriptor.Conditions);
 				case "CheckBox":
-					return new MenuCheckBox(context.InputBindingOwner, codon, descriptor.Parameter, descriptor.Conditions);
+					return new MenuCheckBox(context.InputBindingOwner, codon, descriptor.Parameter,
+						descriptor.Conditions);
 				case "Item":
 				case "Command":
-					return new MenuCommand(context.InputBindingOwner, codon, descriptor.Parameter, context.ActivationMethod, descriptor.Conditions);
+					return new MenuCommand(context.InputBindingOwner, codon, descriptor.Parameter,
+						context.ActivationMethod, descriptor.Conditions);
 				case "Menu":
-					var item = new CoreMenuItem(codon, descriptor.Parameter, descriptor.Conditions) {
+					var item = new CoreMenuItem(codon, descriptor.Parameter, descriptor.Conditions)
+					{
 						ItemsSource = new object[1],
 						SetEnabled = true
 					};
 					var subItems = CreateUnexpandedMenuItems(context, descriptor.SubItems);
-					item.SubmenuOpened += (sender, args) => {
+					item.SubmenuOpened += (sender, args) =>
+					{
 						item.ItemsSource = ExpandMenuBuilders(subItems, true);
 						args.Handled = true;
 					};
@@ -255,13 +283,14 @@ namespace ICSharpCode.Core.Presentation
 				case "Builder":
 					IMenuItemBuilder builder = codon.AddIn.CreateObject(codon.Properties["class"]) as IMenuItemBuilder;
 					if (builder == null)
-						throw new NotSupportedException("Menu item builder " + codon.Properties["class"] + " does not implement IMenuItemBuilder");
+						throw new NotSupportedException("Menu item builder " + codon.Properties["class"] +
+						                                " does not implement IMenuItemBuilder");
 					return new MenuItemBuilderPlaceholder(builder, descriptor.Codon, descriptor.Parameter);
 				default:
 					throw new NotSupportedException("unsupported menu item type : " + type);
 			}
 		}
-		
+
 		/// <summary>
 		/// Converts from the Windows-Forms style label format (accessor key marked with '&amp;')
 		/// to a WPF label format (accessor key marked with '_').
@@ -270,7 +299,7 @@ namespace ICSharpCode.Core.Presentation
 		{
 			return label.Replace("_", "__").Replace("&", "_");
 		}
-		
+
 		/// <summary>
 		/// Creates an KeyGesture for a shortcut.
 		/// </summary>
@@ -278,12 +307,13 @@ namespace ICSharpCode.Core.Presentation
 		{
 			return (KeyGesture)new KeyGestureConverter().ConvertFromInvariantString(text.Replace('|', '+'));
 		}
-		
+
 		public static string GetDisplayStringForShortcut(KeyGesture kg)
 		{
 			string old = kg.GetDisplayStringForCulture(Thread.CurrentThread.CurrentUICulture);
 			string text = KeyCodeConversion.KeyToUnicode(kg.Key.ToKeys());
-			if (text != null && !text.Any(ch => char.IsWhiteSpace(ch))) {
+			if (text != null && !text.Any(ch => char.IsWhiteSpace(ch)))
+			{
 				if ((kg.Modifiers & ModifierKeys.Alt) == ModifierKeys.Alt)
 					text = StringParser.Format("${res:Global.Shortcuts.Alt}+{0}", text);
 				if ((kg.Modifiers & ModifierKeys.Shift) == ModifierKeys.Shift)
@@ -294,20 +324,21 @@ namespace ICSharpCode.Core.Presentation
 					text = StringParser.Format("${res:Global.Shortcuts.Win}+{0}", text);
 				return text;
 			}
+
 			return old;
 		}
 	}
-	
+
 	static class KeyCodeConversion
 	{
 		[DllImport("user32.dll")]
-		static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte []
-		                              lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff,
-		                              int cchBuff, uint wFlags, IntPtr dwhkl);
+		static extern int ToUnicodeEx(uint wVirtKey, uint wScanCode, byte[]
+				lpKeyState, [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszBuff,
+			int cchBuff, uint wFlags, IntPtr dwhkl);
 
 		[DllImport("user32.dll")]
 		static extern bool GetKeyboardState(byte[] pbKeyState);
-		
+
 		[DllImport("user32.dll")]
 		static extern uint MapVirtualKeyEx(uint uCode, uint uMapType, IntPtr dwhkl);
 
@@ -319,29 +350,30 @@ namespace ICSharpCode.Core.Presentation
 		{
 			StringBuilder sb = new StringBuilder(256);
 			IntPtr hkl = GetKeyboardLayout(0);
-			
+
 			uint scanCode = MapVirtualKeyEx((uint)key, 0, hkl);
 			if (scanCode < 1) return null;
-			
+
 			ClearKeyboardBuffer(hkl);
 			int len = ToUnicodeEx((uint)key, scanCode, new byte[256], sb, sb.Capacity, 0, hkl);
 			if (len > 0)
 				return sb.ToString(0, len).ToUpper();
-			
+
 			ClearKeyboardBuffer(hkl);
 			return null;
 		}
-		
+
 		static void ClearKeyboardBuffer(IntPtr hkl)
 		{
 			StringBuilder sb = new StringBuilder(10);
 			uint key = (uint)WinForms.Keys.Space;
 			int rc;
-			do {
+			do
+			{
 				rc = ToUnicodeEx(key, MapVirtualKeyEx(key, 0, hkl), new byte[256], sb, sb.Capacity, 0, hkl);
-			} while(rc < 0);
+			} while (rc < 0);
 		}
-		
+
 		public static WinForms.Keys ToKeys(this Key key)
 		{
 			WinForms.Keys result;

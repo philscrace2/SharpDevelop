@@ -20,19 +20,18 @@ using System;
 
 namespace ICSharpCode.Reporting.Globals
 {
-	
 	///<summary>Technics to get the data
 	/// Push : report get's a ready filld dataset or something tah implements IList
 	/// Pull : report has to fill data by themself
 	/// FormSheet : FormSheet report, just labels and images are allowed
 	/// </summary>
-
-	public enum PushPullModel {
+	public enum PushPullModel
+	{
 		PushData,
 		PullData,
 		FormSheet
 	}
-	
+
 	/// <summary>
 	/// FormSheet means a blank form with Labels, Lines and Checkboxes
 	/// DataReport handles all Reports with Data
@@ -43,12 +42,12 @@ namespace ICSharpCode.Reporting.Globals
 	}
 
 	*/
-	public enum ReportSection {
+	public enum ReportSection
+	{
 		ReportHeader,
 		ReportPageHeader,
 		ReportDetail,
 		ReportPageFooter,
 		ReportFooter
 	}
-	
 }

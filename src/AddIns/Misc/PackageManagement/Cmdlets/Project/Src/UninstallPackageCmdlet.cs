@@ -33,50 +33,47 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 				null)
 		{
 		}
-		
+
 		public UninstallPackageCmdlet(
 			IPackageManagementConsoleHost consoleHost,
 			ICmdletTerminatingError terminatingError)
 			: base(consoleHost, terminatingError)
 		{
 		}
-		
+
 		[Parameter(Position = 0, Mandatory = true)]
 		public string Id { get; set; }
-		
-		[Parameter(Position = 1)]
-		public string ProjectName { get; set; }
-		
-		[Parameter(Position = 2)]
-		public SemanticVersion Version { get; set; }
-		
-		[Parameter]
-		public SwitchParameter Force { get; set; }
-		
-		[Parameter]
-		public SwitchParameter RemoveDependencies { get; set; }
-		
+
+		[Parameter(Position = 1)] public string ProjectName { get; set; }
+
+		[Parameter(Position = 2)] public SemanticVersion Version { get; set; }
+
+		[Parameter] public SwitchParameter Force { get; set; }
+
+		[Parameter] public SwitchParameter RemoveDependencies { get; set; }
+
 		protected override void ProcessRecord()
 		{
 			ThrowErrorIfProjectNotOpen();
-			using (IDisposable logger = ConsoleHost.CreateLogger(this)) {
+			using (IDisposable logger = ConsoleHost.CreateLogger(this))
+			{
 				UninstallPackage();
 			}
 		}
-		
+
 		void UninstallPackage()
 		{
 			IPackageManagementProject project = GetProject();
 			UninstallPackageAction action = CreateUninstallPackageAction(project);
 			action.Execute();
 		}
-		
+
 		IPackageManagementProject GetProject()
 		{
-			string source = null; 
+			string source = null;
 			return ConsoleHost.GetProject(source, ProjectName);
 		}
-		
+
 		UninstallPackageAction CreateUninstallPackageAction(IPackageManagementProject project)
 		{
 			UninstallPackageAction action = project.CreateUninstallPackageAction();
@@ -85,7 +82,7 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 			action.ForceRemove = Force.IsPresent;
 			action.RemoveDependencies = RemoveDependencies.IsPresent;
 			action.PackageScriptRunner = this;
-			
+
 			return action;
 		}
 	}

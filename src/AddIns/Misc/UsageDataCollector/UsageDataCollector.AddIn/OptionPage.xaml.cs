@@ -21,7 +21,6 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Navigation;
-
 using ICSharpCode.SharpDevelop.Gui;
 
 namespace ICSharpCode.UsageDataCollector
@@ -36,19 +35,21 @@ namespace ICSharpCode.UsageDataCollector
 			InitializeComponent();
 			AddHandler(Hyperlink.RequestNavigateEvent, new RequestNavigateEventHandler(OnRequestNavigate));
 		}
-		
+
 		public override void LoadOptions()
 		{
 			base.LoadOptions();
-			if (!AnalyticsMonitor.EnabledIsUndecided) {
+			if (!AnalyticsMonitor.EnabledIsUndecided)
+			{
 				if (AnalyticsMonitor.Enabled)
 					acceptRadio.IsChecked = true;
 				else
 					declineRadio.IsChecked = true;
 			}
+
 			showCollectedDataButton.IsEnabled = acceptRadio.IsChecked == true;
 		}
-		
+
 		public override bool SaveOptions()
 		{
 			if (acceptRadio.IsChecked == true)
@@ -57,17 +58,20 @@ namespace ICSharpCode.UsageDataCollector
 				AnalyticsMonitor.Enabled = false;
 			return base.SaveOptions();
 		}
-		
+
 		void OnRequestNavigate(object sender, RequestNavigateEventArgs e)
 		{
 			e.Handled = true;
-			try {
+			try
+			{
 				Process.Start(e.Uri.ToString());
-			} catch {
+			}
+			catch
+			{
 				// catch exceptions - e.g. incorrectly installed web browser
 			}
 		}
-		
+
 		void ShowCollectedDataButton_Click(object sender, RoutedEventArgs e)
 		{
 			string data = AnalyticsMonitor.Instance.GetTextForStoredData();

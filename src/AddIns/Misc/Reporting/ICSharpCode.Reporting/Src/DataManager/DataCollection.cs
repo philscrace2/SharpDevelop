@@ -31,115 +31,118 @@ namespace ICSharpCode.Reporting.DataManager
 	/// <summary>
 	/// Description of DataCollection.
 	/// </summary>
-	class DataCollection<T> : IList<T>,ITypedList
+	class DataCollection<T> : IList<T>, ITypedList
 	{
 		Collection<T> list = new Collection<T>();
 		Type elementType;
-		
+
 		public DataCollection(Type elementType)
 		{
 			this.elementType = elementType;
 		}
 
-		public T this[int index] 
+		public T this[int index]
 		{
-			get {
-				return list[index];
-			}
-			set {
+			get { return list[index]; }
+			set
+			{
 				T oldValue = list[index];
-				if (!object.Equals(oldValue, value)) {
+				if (!object.Equals(oldValue, value))
+				{
 					list[index] = value;
 				}
 			}
 		}
-		
-		public int Count 
+
+		public int Count
 		{
-			[DebuggerStepThrough]
-			get {
-				return list.Count;
-			}
+			[DebuggerStepThrough] get { return list.Count; }
 		}
-		
-		public bool IsReadOnly 
+
+		public bool IsReadOnly
 		{
-			get {
-				return false;
-			}
+			get { return false; }
 		}
-		
+
 		public int IndexOf(T item)
 		{
 			return list.IndexOf(item);
 		}
-		
+
 		public void Insert(int index, T item)
 		{
 			list.Insert(index, item);
 		}
-		
+
 		public void RemoveAt(int index)
 		{
 			list.RemoveAt(index);
 		}
-		
+
 		public void Add(T item)
 		{
 			list.Add(item);
 		}
-		
-		
+
+
 		public void AddRange(IEnumerable range)
 		{
-			foreach(T t in range) {
+			foreach (T t in range)
+			{
 				Add(t);
 			}
 		}
-		
-		
-		public void Clear(){
+
+
+		public void Clear()
+		{
 			list = new Collection<T>();
 		}
-		
+
 		public bool Contains(T item)
 		{
 			return list.Contains(item);
 		}
-		
+
 		public void CopyTo(T[] array, int arrayIndex)
 		{
 			list.CopyTo(array, arrayIndex);
 		}
-		
+
 		public bool Remove(T item)
 		{
-			if (list.Remove(item)) {
+			if (list.Remove(item))
+			{
 				return true;
 			}
+
 			return false;
 		}
-		
+
 		#region ITypedList Member
 
-		public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors){
-			if (listAccessors != null && listAccessors.Length > 0){
+		public PropertyDescriptorCollection GetItemProperties(PropertyDescriptor[] listAccessors)
+		{
+			if (listAccessors != null && listAccessors.Length > 0)
+			{
 				var t = this.elementType;
 
-			    t = listAccessors.Aggregate(t,
-                    (current, pd) => (Type) PropertyTypeHash.Instance[current, pd.Name]);
+				t = listAccessors.Aggregate(t,
+					(current, pd) => (Type)PropertyTypeHash.Instance[current, pd.Name]);
 
-			    // if t is null an empty list will be generated
+				// if t is null an empty list will be generated
 				return ExtendedTypeDescriptor.GetProperties(t);
 			}
+
 			return ExtendedTypeDescriptor.GetProperties(elementType);
 		}
-		
-		
-		public string GetListName(PropertyDescriptor[] listAccessors){
+
+
+		public string GetListName(PropertyDescriptor[] listAccessors)
+		{
 			return elementType.Name;
 		}
-		
+
 		public static Type GetElementType(IList list, Type parentType, string propertyName)
 		{
 			DataCollection<T> al = null;
@@ -152,6 +155,7 @@ namespace ICSharpCode.Reporting.DataManager
 					element = list[0];
 				}
 			}
+
 			if (al == null && element == null)
 			{
 				var pi = parentType.GetProperty(propertyName);
@@ -162,7 +166,10 @@ namespace ICSharpCode.Reporting.DataManager
 					{
 						parentObject = Activator.CreateInstance(parentType);
 					}
-					catch(Exception) {}
+					catch (Exception)
+					{
+					}
+
 					if (parentObject != null)
 					{
 						list = pi.GetValue(parentObject, null) as IList;
@@ -170,6 +177,7 @@ namespace ICSharpCode.Reporting.DataManager
 					}
 				}
 			}
+
 			if (al != null)
 			{
 				return al.elementType;
@@ -178,9 +186,10 @@ namespace ICSharpCode.Reporting.DataManager
 			{
 				return element.GetType();
 			}
+
 			return null;
 		}
-		
+
 		private static DataCollection<T> CheckForArrayList(object l)
 		{
 			var list = l as IList;
@@ -191,22 +200,24 @@ namespace ICSharpCode.Reporting.DataManager
 				var fi = list.GetType().GetField("_list", BindingFlags.NonPublic | BindingFlags.Instance);
 				if (fi != null)
 				{
-					list = (IList) fi.GetValue(list);
+					list = (IList)fi.GetValue(list);
 				}
 			}
+
 // ReSharper disable SuspiciousTypeConversion.Global
 			return list as DataCollection<T>;
 // ReSharper restore SuspiciousTypeConversion.Global
 		}
+
 		#endregion
-		
-		
+
+
 		[DebuggerStepThrough]
 		public IEnumerator<T> GetEnumerator()
 		{
 			return list.GetEnumerator();
 		}
-		
+
 		[DebuggerStepThrough]
 		IEnumerator IEnumerable.GetEnumerator()
 		{

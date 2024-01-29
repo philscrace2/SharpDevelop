@@ -28,46 +28,47 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class PackageScript : IPackageScript
 	{
 		bool lookedForTargetSpecificScript;
-		
+
 		public PackageScript(IPackage package, IPackageScriptFileName fileName)
 		{
 			this.Package = package;
 			this.ScriptFileName = fileName;
 		}
-		
+
 		protected IPackageScriptFileName ScriptFileName { get; private set; }
 		protected IPackageScriptSession Session { get; private set; }
 		protected bool UseTargetSpecificScript { get; set; }
-		
+
 		public IPackage Package { get; set; }
 		public IPackageManagementProject Project { get; set; }
-		
+
 		public bool Exists()
 		{
 			FindTargetSpecificScriptFileName();
 			return ScriptFileName.FileExists();
 		}
-		
+
 		public void Run(IPackageScriptSession session)
 		{
 			this.Session = session;
 			Run();
 		}
-		
+
 		void Run()
 		{
 			BeforeRun();
-			if (Exists()) {
+			if (Exists())
+			{
 				AddSessionVariables();
 				RunScript();
 				RemoveSessionVariables();
 			}
 		}
-		
+
 		protected virtual void BeforeRun()
 		{
 		}
-		
+
 		void AddSessionVariables()
 		{
 			Session.AddVariable("__rootPath", ScriptFileName.PackageInstallDirectory);
@@ -75,28 +76,30 @@ namespace ICSharpCode.PackageManagement.Scripting
 			Session.AddVariable("__package", Package);
 			Session.AddVariable("__project", GetProject());
 		}
-		
+
 		Project GetProject()
 		{
-			if (Project != null) {
+			if (Project != null)
+			{
 				return Project.ConvertToDTEProject();
 			}
+
 			return null;
 		}
-		
+
 		void RunScript()
 		{
 			string script = GetScript();
 			Session.InvokeScript(script);
 		}
-		
+
 		string GetScript()
 		{
 			return String.Format(
 				"& '{0}' $__rootPath $__toolsPath $__package $__project",
 				ScriptFileName);
 		}
-		
+
 		void RemoveSessionVariables()
 		{
 			Session.RemoveVariable("__rootPath");
@@ -104,15 +107,16 @@ namespace ICSharpCode.PackageManagement.Scripting
 			Session.RemoveVariable("__package");
 			Session.RemoveVariable("__project");
 		}
-		
+
 		void FindTargetSpecificScriptFileName()
 		{
-			if (UseTargetSpecificScript && !lookedForTargetSpecificScript) {
+			if (UseTargetSpecificScript && !lookedForTargetSpecificScript)
+			{
 				ScriptFileName.UseTargetSpecificFileName(Package, GetTargetFramework());
 				lookedForTargetSpecificScript = true;
 			}
 		}
-		
+
 		FrameworkName GetTargetFramework()
 		{
 			return Project.TargetFramework;

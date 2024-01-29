@@ -26,15 +26,17 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		List<string> propertiesAdded = new List<string>();
 		List<string> propertiesUpdated = new List<string>();
-		
-		public IEnumerable<string> PropertiesAdded {
+
+		public IEnumerable<string> PropertiesAdded
+		{
 			get { return propertiesAdded; }
 		}
-		
-		public IEnumerable<string> PropertiesUpdated {
+
+		public IEnumerable<string> PropertiesUpdated
+		{
 			get { return propertiesUpdated; }
 		}
-		
+
 		public override string ToString()
 		{
 			return String.Format(
@@ -42,26 +44,27 @@ namespace ICSharpCode.PackageManagement.Scripting
 				PropertiesToString(propertiesAdded),
 				PropertiesToString(propertiesUpdated));
 		}
-		
+
 		static string PropertiesToString(IEnumerable<string> properties)
 		{
-			if (!properties.Any()) {
+			if (!properties.Any())
+			{
 				return String.Empty;
 			}
-			
+
 			return String.Join(",\r\n", properties.Select(property => property));
 		}
-		
+
 		public void AddPropertyAdded(string propertyName)
 		{
 			propertiesAdded.Add(propertyName);
 		}
-		
+
 		public void AddPropertyUpdated(string propertyName)
 		{
 			propertiesUpdated.Add(propertyName);
 		}
-		
+
 		public bool AnyPropertiesChanged()
 		{
 			return propertiesUpdated.Any() || propertiesAdded.Any();

@@ -24,9 +24,8 @@ namespace ICSharpCode.Reporting.Addin.Services
 	/// <summary>
 	/// Description of DefaultMemberRelationshipService.
 	/// </summary>
-	class DefaultMemberRelationshipService:MemberRelationshipService
+	class DefaultMemberRelationshipService : MemberRelationshipService
 	{
-		
 		public override bool SupportsRelationship(MemberRelationship source, MemberRelationship relationship)
 		{
 			return true;

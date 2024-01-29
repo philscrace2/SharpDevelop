@@ -25,33 +25,34 @@ namespace ICSharpCode.Reporting.Items
 {
 	public class PrintableItem : IPrintableObject
 	{
-		public PrintableItem() {
+		public PrintableItem()
+		{
 			ForeColor = Color.Black;
 			FrameColor = Color.Black;
 			BackColor = Color.White;
 		}
-		
+
 		public string Name { get; set; }
 
 		public Point Location { get; set; }
 
 		public Size Size { get; set; }
 
-		
-		public Color ForeColor {get;set;}
-			
-		public Color BackColor {get;set;}
-			
-		public Color FrameColor {get;set;}
-		
-		public bool CanGrow {get;set;}
-		
-		public bool DrawBorder {get;set;}
-		
-		
-		public virtual IExportColumn CreateExportColumn(){
+
+		public Color ForeColor { get; set; }
+
+		public Color BackColor { get; set; }
+
+		public Color FrameColor { get; set; }
+
+		public bool CanGrow { get; set; }
+
+		public bool DrawBorder { get; set; }
+
+
+		public virtual IExportColumn CreateExportColumn()
+		{
 			return null;
 		}
-		
 	}
 }

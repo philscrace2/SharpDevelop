@@ -28,25 +28,27 @@ namespace ICSharpCode.Reporting.Expressions
 	/// </summary>
 	class ExpressionHelper
 	{
-		
-		public static string ExtractExpressionPart (string src)
+		public static string ExtractExpressionPart(string src)
 		{
-			char v = Convert.ToChar("=",CultureInfo.CurrentCulture );
-			return StringHelper.RightOf(src,v).Trim();
+			char v = Convert.ToChar("=", CultureInfo.CurrentCulture);
+			return StringHelper.RightOf(src, v).Trim();
 		}
-		
-		
-		public static bool CanEvaluate (string expression)
+
+
+		public static bool CanEvaluate(string expression)
 		{
-			if ((!String.IsNullOrEmpty(expression)) && (expression.StartsWith("=",StringComparison.OrdinalIgnoreCase))) {
+			if ((!String.IsNullOrEmpty(expression)) && (expression.StartsWith("=", StringComparison.OrdinalIgnoreCase)))
+			{
 				return true;
 			}
+
 			return false;
 		}
-		
-		
-		public static string ComposeAstNodeError (string branch,AstNode node) {
-			return String.Format (CultureInfo.CurrentCulture,"Missing {0} <{1}>",branch,node.AsString);
+
+
+		public static string ComposeAstNodeError(string branch, AstNode node)
+		{
+			return String.Format(CultureInfo.CurrentCulture, "Missing {0} <{1}>", branch, node.AsString);
 		}
 	}
 }

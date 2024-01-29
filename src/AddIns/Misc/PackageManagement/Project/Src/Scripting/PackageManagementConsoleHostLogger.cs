@@ -26,23 +26,24 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		ICmdletLogger logger;
 		IPackageManagementEvents packageEvents;
-		
+
 		public PackageManagementConsoleHostLogger(ICmdletLogger logger, IPackageManagementEvents packageEvents)
 		{
 			this.logger = logger;
 			this.packageEvents = packageEvents;
-			
+
 			packageEvents.PackageOperationMessageLogged += PackageOperationMessageLogged;
 		}
-		
+
 		void PackageOperationMessageLogged(object sender, PackageOperationMessageLoggedEventArgs e)
 		{
 			Log(e.Message.Level, e.Message.ToString());
 		}
-		
+
 		void Log(MessageLevel level, string message)
 		{
-			switch (level) {
+			switch (level)
+			{
 				case MessageLevel.Debug:
 					logger.WriteVerbose(message);
 					break;
@@ -57,7 +58,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 					break;
 			}
 		}
-		
+
 		ErrorRecord CreateErrorRecord(string message)
 		{
 			return new ErrorRecord(
@@ -66,7 +67,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 				ErrorCategory.NotSpecified,
 				null);
 		}
-		
+
 		public void Dispose()
 		{
 			packageEvents.PackageOperationMessageLogged -= PackageOperationMessageLogged;

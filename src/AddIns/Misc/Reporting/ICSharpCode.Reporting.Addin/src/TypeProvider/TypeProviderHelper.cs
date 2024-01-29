@@ -3,9 +3,10 @@
  * User: Peter Forstmeier
  * Date: 17.03.2014
  * Time: 20:20
- * 
+ *
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,12 +19,13 @@ namespace ICSharpCode.Reporting.Addin.TypeProvider
 	/// </summary>
 	static class TypeProviderHelper
 	{
-	
-		public static void RemoveProperties (IDictionary properties)
+		public static void RemoveProperties(IDictionary properties)
 		{
-			if (properties == null){
+			if (properties == null)
+			{
 				throw new ArgumentNullException("properties");
 			}
+
 			properties.Remove("AccessibleDescription");
 			properties.Remove("AccessibleName");
 			properties.Remove("AccessibleRole");
@@ -38,9 +40,9 @@ namespace ICSharpCode.Reporting.Addin.TypeProvider
 			properties.Remove("ContextMenuStrip");
 			properties.Remove("DataBindings");
 			properties.Remove("Dock");
-			
+
 			properties.Remove("Enabled");
-			
+
 			properties.Remove("ImeMode");
 			properties.Remove("Locked");
 			properties.Remove("Padding");
@@ -51,78 +53,82 @@ namespace ICSharpCode.Reporting.Addin.TypeProvider
 			properties.Remove("UseWaitCursor");
 			properties.Remove("Visible");
 		}
-		
-		public static void Remove (IDictionary properties,string[] toRemove)
+
+		public static void Remove(IDictionary properties, string[] toRemove)
 		{
-			if (properties == null){
+			if (properties == null)
+			{
 				throw new ArgumentNullException("properties");
 			}
-			if (toRemove == null) {
+
+			if (toRemove == null)
+			{
 				throw new ArgumentNullException("toRemove");
 			}
+
 			foreach (String str in toRemove)
 			{
 				properties.Remove(str);
 			}
 		}
-		
-		public static void AddDefaultProperties (List<PropertyDescriptor> allProperties,
-		                                         PropertyDescriptorCollection props )
+
+		public static void AddDefaultProperties(List<PropertyDescriptor> allProperties,
+			PropertyDescriptorCollection props)
 		{
-			PropertyDescriptor prop = props.Find("Location",true);
+			PropertyDescriptor prop = props.Find("Location", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("Size",true);
+
+			prop = props.Find("Size", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("BackColor",true);
+
+			prop = props.Find("BackColor", true);
 			allProperties.Add(prop);
-			
+
 
 			// need this for Contextmenu's
-			prop = props.Find("ContextMenu",true);
+			prop = props.Find("ContextMenu", true);
 			allProperties.Add(prop);
 		}
-		
-		public static void AddTextBasedProperties (List<PropertyDescriptor> allProperties,
-		                                          PropertyDescriptorCollection props)
+
+		public static void AddTextBasedProperties(List<PropertyDescriptor> allProperties,
+			PropertyDescriptorCollection props)
 		{
-			PropertyDescriptor prop = props.Find("Font",true);
+			PropertyDescriptor prop = props.Find("Font", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("FormatString",true);
+
+			prop = props.Find("FormatString", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("StringTrimming",true);
+
+			prop = props.Find("StringTrimming", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("ContentAlignment",true);
+
+			prop = props.Find("ContentAlignment", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("TextAlignment",true);
+
+			prop = props.Find("TextAlignment", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("CanGrow",true);
+
+			prop = props.Find("CanGrow", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("CanShrink",true);
+
+			prop = props.Find("CanShrink", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("DataType",true);
+
+			prop = props.Find("DataType", true);
 			allProperties.Add(prop);
 		}
-		
-		public static void AddGraphicProperties (List<PropertyDescriptor> allProperties,
-		                                         PropertyDescriptorCollection props)
+
+		public static void AddGraphicProperties(List<PropertyDescriptor> allProperties,
+			PropertyDescriptorCollection props)
 		{
 			PropertyDescriptor prop = null;
-			prop = props.Find("ForeColor",true);
+			prop = props.Find("ForeColor", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("DashStyle",true);
+
+			prop = props.Find("DashStyle", true);
 			allProperties.Add(prop);
-			
-			prop = props.Find("Thickness",true);
+
+			prop = props.Find("Thickness", true);
 			allProperties.Add(prop);
 		}
 	}

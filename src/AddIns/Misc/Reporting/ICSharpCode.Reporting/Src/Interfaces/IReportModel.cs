@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-
 using ICSharpCode.Reporting.Items;
 
 namespace ICSharpCode.Reporting.Interfaces
@@ -28,12 +27,12 @@ namespace ICSharpCode.Reporting.Interfaces
 	/// </summary>
 	public interface IReportModel
 	{
-		IReportSettings ReportSettings {get;set;}
-		Collection<BaseSection> SectionCollection {get;}
-		IReportContainer ReportHeader {get;}
-		IReportContainer PageHeader {get;}
-		IReportContainer DetailSection {get;}
-		IReportContainer PageFooter {get;}
-		IReportContainer ReportFooter {get;}
+		IReportSettings ReportSettings { get; set; }
+		Collection<BaseSection> SectionCollection { get; }
+		IReportContainer ReportHeader { get; }
+		IReportContainer PageHeader { get; }
+		IReportContainer DetailSection { get; }
+		IReportContainer PageFooter { get; }
+		IReportContainer ReportFooter { get; }
 	}
 }

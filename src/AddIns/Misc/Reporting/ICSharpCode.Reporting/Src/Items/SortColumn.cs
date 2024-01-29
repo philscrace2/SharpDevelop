@@ -25,34 +25,35 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of SortColumn.
 	/// </summary>
-	public class SortColumn : AbstractColumn {
-		
+	public class SortColumn : AbstractColumn
+	{
 		private ListSortDirection sortDirection = ListSortDirection.Ascending;
-		
-		public SortColumn():this(String.Empty,ListSortDirection.Ascending,typeof(System.String),false)
+
+		public SortColumn() : this(String.Empty, ListSortDirection.Ascending, typeof(System.String), false)
 		{
 		}
-		
 
-		public SortColumn(string columnName,ListSortDirection sortDirection)
-			:this(columnName,sortDirection,typeof(System.String),false){
+
+		public SortColumn(string columnName, ListSortDirection sortDirection)
+			: this(columnName, sortDirection, typeof(System.String), false)
+		{
 		}
-		
-		
-		public SortColumn(string columnName, ListSortDirection sortDirection, Type type,bool caseSensitive  ):base (columnName,type)
+
+
+		public SortColumn(string columnName, ListSortDirection sortDirection, Type type, bool caseSensitive) : base(
+			columnName, type)
 		{
 			CaseSensitive = caseSensitive;
 			this.sortDirection = sortDirection;
 		}
-		
+
 		#region properties
-		
-		public ListSortDirection SortDirection {get;set;}
-		
-			
-		public bool CaseSensitive {get;private set;}
-			
-		
+
+		public ListSortDirection SortDirection { get; set; }
+
+
+		public bool CaseSensitive { get; private set; }
+
 		#endregion
 	}
 }

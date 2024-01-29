@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement
 		protected PackagesViewModels()
 		{
 		}
-		
+
 		public PackagesViewModels(
 			IPackageManagementSolution solution,
 			IRegisteredPackageRepositories registeredPackageRepositories,
@@ -35,18 +35,22 @@ namespace ICSharpCode.PackageManagement
 		{
 			var packageViewModelFactory = new PackageViewModelFactory(solution, packageManagementEvents, actionRunner);
 			var updatedPackageViewModelFactory = new UpdatedPackageViewModelFactory(packageViewModelFactory);
-			
-			AvailablePackagesViewModel = new AvailablePackagesViewModel(solution, packageManagementEvents, registeredPackageRepositories, packageViewModelFactory, taskFactory);
-			InstalledPackagesViewModel = new InstalledPackagesViewModel(solution, packageManagementEvents, registeredPackageRepositories, packageViewModelFactory, taskFactory);
-			UpdatedPackagesViewModel = new UpdatedPackagesViewModel(solution, packageManagementEvents, registeredPackageRepositories, updatedPackageViewModelFactory, taskFactory);
-			RecentPackagesViewModel = new RecentPackagesViewModel(solution, packageManagementEvents, registeredPackageRepositories, packageViewModelFactory, taskFactory);
+
+			AvailablePackagesViewModel = new AvailablePackagesViewModel(solution, packageManagementEvents,
+				registeredPackageRepositories, packageViewModelFactory, taskFactory);
+			InstalledPackagesViewModel = new InstalledPackagesViewModel(solution, packageManagementEvents,
+				registeredPackageRepositories, packageViewModelFactory, taskFactory);
+			UpdatedPackagesViewModel = new UpdatedPackagesViewModel(solution, packageManagementEvents,
+				registeredPackageRepositories, updatedPackageViewModelFactory, taskFactory);
+			RecentPackagesViewModel = new RecentPackagesViewModel(solution, packageManagementEvents,
+				registeredPackageRepositories, packageViewModelFactory, taskFactory);
 		}
-		
+
 		public AvailablePackagesViewModel AvailablePackagesViewModel { get; protected set; }
 		public InstalledPackagesViewModel InstalledPackagesViewModel { get; protected set; }
 		public RecentPackagesViewModel RecentPackagesViewModel { get; protected set; }
 		public UpdatedPackagesViewModel UpdatedPackagesViewModel { get; protected set; }
-		
+
 		public void ReadPackages()
 		{
 			AvailablePackagesViewModel.ReadPackages();
@@ -54,7 +58,7 @@ namespace ICSharpCode.PackageManagement
 			UpdatedPackagesViewModel.ReadPackages();
 			RecentPackagesViewModel.ReadPackages();
 		}
-		
+
 		public void Dispose()
 		{
 			AvailablePackagesViewModel.Dispose();

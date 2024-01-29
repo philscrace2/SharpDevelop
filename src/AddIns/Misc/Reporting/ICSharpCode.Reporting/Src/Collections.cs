@@ -21,69 +21,74 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-
 using ICSharpCode.Reporting.BaseClasses;
 using ICSharpCode.Reporting.Items;
 
 namespace ICSharpCode.Reporting
 {
-	
-	public class SortColumnCollection: Collection<AbstractColumn>
+	public class SortColumnCollection : Collection<AbstractColumn>
 	{
-		
-		public AbstractColumn Find (string columnName)
+		public AbstractColumn Find(string columnName)
 		{
-			if (String.IsNullOrEmpty(columnName)) {
+			if (String.IsNullOrEmpty(columnName))
+			{
 				throw new ArgumentNullException("columnName");
 			}
-			
-			return this.FirstOrDefault(x => 0 == String.Compare(x.ColumnName,columnName,StringComparison.OrdinalIgnoreCase));
+
+			return this.FirstOrDefault(x =>
+				0 == String.Compare(x.ColumnName, columnName, StringComparison.OrdinalIgnoreCase));
 		}
-	
-		
-		public void AddRange (IEnumerable<SortColumn> items)
+
+
+		public void AddRange(IEnumerable<SortColumn> items)
 		{
-			foreach (SortColumn item in items){
+			foreach (SortColumn item in items)
+			{
 				this.Add(item);
 			}
 		}
 	}
-	
-	
-	public class GroupColumnCollection: SortColumnCollection
+
+
+	public class GroupColumnCollection : SortColumnCollection
 	{
-		
-		public new AbstractColumn Find (string columnName)
+		public new AbstractColumn Find(string columnName)
 		{
-			if (String.IsNullOrEmpty(columnName)) {
+			if (String.IsNullOrEmpty(columnName))
+			{
 				throw new ArgumentNullException("columnName");
 			}
-			
-			return this.FirstOrDefault(x => 0 == String.Compare(x.ColumnName,columnName,StringComparison.OrdinalIgnoreCase));
+
+			return this.FirstOrDefault(x =>
+				0 == String.Compare(x.ColumnName, columnName, StringComparison.OrdinalIgnoreCase));
 		}
 	}
-	
-	
-	public class ParameterCollection: Collection<BasicParameter>{		
-		
-		public BasicParameter Find (string parameterName)
+
+
+	public class ParameterCollection : Collection<BasicParameter>
+	{
+		public BasicParameter Find(string parameterName)
 		{
-			if (String.IsNullOrEmpty(parameterName)) {
+			if (String.IsNullOrEmpty(parameterName))
+			{
 				throw new ArgumentNullException("parameterName");
 			}
-			return this.FirstOrDefault(x => 0 == String.Compare(x.ParameterName,parameterName,StringComparison.OrdinalIgnoreCase));
+
+			return this.FirstOrDefault(x =>
+				0 == String.Compare(x.ParameterName, parameterName, StringComparison.OrdinalIgnoreCase));
 		}
-		
-		
+
+
 		public static CultureInfo Culture
 		{
 			get { return CultureInfo.CurrentCulture; }
 		}
-		
-		
-		public void AddRange (IEnumerable<BasicParameter> items)
+
+
+		public void AddRange(IEnumerable<BasicParameter> items)
 		{
-			foreach (BasicParameter item in items){
+			foreach (BasicParameter item in items)
+			{
 				this.Add(item);
 			}
 		}

@@ -25,92 +25,104 @@ namespace ICSharpCode.PackageManagement
 	public class PackageManagementEvents : IPackageManagementEvents
 	{
 		public event EventHandler PackageOperationsStarting;
-		
+
 		public void OnPackageOperationsStarting()
 		{
-			if (PackageOperationsStarting != null) {
+			if (PackageOperationsStarting != null)
+			{
 				PackageOperationsStarting(this, new EventArgs());
 			}
 		}
-		
+
 		public event EventHandler<PackageOperationExceptionEventArgs> PackageOperationError;
-		
+
 		public void OnPackageOperationError(Exception ex)
 		{
-			if (PackageOperationError != null) {
+			if (PackageOperationError != null)
+			{
 				PackageOperationError(this, new PackageOperationExceptionEventArgs(ex));
 			}
 		}
-		
+
 		public event EventHandler<AcceptLicensesEventArgs> AcceptLicenses;
-		
+
 		public bool OnAcceptLicenses(IEnumerable<IPackage> packages)
 		{
-			if (AcceptLicenses != null) {
+			if (AcceptLicenses != null)
+			{
 				var eventArgs = new AcceptLicensesEventArgs(packages);
 				AcceptLicenses(this, eventArgs);
 				return eventArgs.IsAccepted;
 			}
+
 			return true;
 		}
-		
+
 		public event EventHandler<ParentPackageOperationEventArgs> ParentPackageInstalled;
-		
+
 		public void OnParentPackageInstalled(IPackage package)
 		{
-			if (ParentPackageInstalled != null) {
+			if (ParentPackageInstalled != null)
+			{
 				ParentPackageInstalled(this, new ParentPackageOperationEventArgs(package));
 			}
 		}
-		
+
 		public event EventHandler<ParentPackageOperationEventArgs> ParentPackageUninstalled;
-		
+
 		public void OnParentPackageUninstalled(IPackage package)
 		{
-			if (ParentPackageUninstalled != null) {
+			if (ParentPackageUninstalled != null)
+			{
 				ParentPackageUninstalled(this, new ParentPackageOperationEventArgs(package));
 			}
 		}
-		
+
 		public event EventHandler<PackageOperationMessageLoggedEventArgs> PackageOperationMessageLogged;
-		
+
 		public void OnPackageOperationMessageLogged(MessageLevel level, string message, params object[] args)
 		{
-			if (PackageOperationMessageLogged != null) {
+			if (PackageOperationMessageLogged != null)
+			{
 				var eventArgs = new PackageOperationMessageLoggedEventArgs(level, message, args);
 				PackageOperationMessageLogged(this, eventArgs);
 			}
 		}
-		
+
 		public event EventHandler<SelectProjectsEventArgs> SelectProjects;
-		
+
 		public bool OnSelectProjects(IEnumerable<IPackageManagementSelectedProject> projects)
 		{
-			if (SelectProjects != null) {
+			if (SelectProjects != null)
+			{
 				var eventArgs = new SelectProjectsEventArgs(projects);
 				SelectProjects(this, eventArgs);
 				return eventArgs.IsAccepted;
 			}
+
 			return true;
 		}
-		
+
 		public event EventHandler<ResolveFileConflictEventArgs> ResolveFileConflict;
-		
+
 		public FileConflictResolution OnResolveFileConflict(string message)
 		{
-			if (ResolveFileConflict != null) {
+			if (ResolveFileConflict != null)
+			{
 				var eventArgs = new ResolveFileConflictEventArgs(message);
 				ResolveFileConflict(this, eventArgs);
 				return eventArgs.Resolution;
 			}
+
 			return FileConflictResolution.IgnoreAll;
 		}
-		
+
 		public event EventHandler<ParentPackagesOperationEventArgs> ParentPackagesUpdated;
-		
+
 		public void OnParentPackagesUpdated(IEnumerable<IPackage> packages)
 		{
-			if (ParentPackagesUpdated != null) {
+			if (ParentPackagesUpdated != null)
+			{
 				ParentPackagesUpdated(this, new ParentPackagesOperationEventArgs(packages));
 			}
 		}

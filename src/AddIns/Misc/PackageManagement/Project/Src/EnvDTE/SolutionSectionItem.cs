@@ -25,31 +25,34 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		SolutionSection section;
 		string value;
-		
+
 		public SolutionSectionItem(SolutionSection section, string name)
 			: this(section, name, section[name])
 		{
 		}
-		
+
 		SolutionSectionItem(SolutionSection section, string name, string value)
 		{
 			this.section = section;
 			this.Name = name;
 			this.value = value;
 		}
-		
+
 		public SolutionSectionItem(string name, string value)
 			: this(null, name, value)
 		{
 		}
-		
+
 		public string Name { get; set; }
-		
-		public string Value {
+
+		public string Value
+		{
 			get { return this.value; }
-			set {
+			set
+			{
 				this.value = value;
-				if (section != null) {
+				if (section != null)
+				{
 					section.Remove(Name);
 					section.Add(Name, value);
 				}

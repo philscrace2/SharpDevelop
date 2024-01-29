@@ -33,7 +33,7 @@ namespace ICSharpCode.PackageManagement
 		event EventHandler<ParentPackageOperationEventArgs> ParentPackageUninstalled;
 		event EventHandler<ParentPackagesOperationEventArgs> ParentPackagesUpdated;
 		event EventHandler<PackageOperationMessageLoggedEventArgs> PackageOperationMessageLogged;
-			
+
 		void OnPackageOperationsStarting();
 		void OnPackageOperationError(Exception ex);
 		bool OnAcceptLicenses(IEnumerable<IPackage> packages);

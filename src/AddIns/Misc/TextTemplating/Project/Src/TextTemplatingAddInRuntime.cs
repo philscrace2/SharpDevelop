@@ -25,17 +25,19 @@ namespace ICSharpCode.TextTemplating
 	public class TextTemplatingAddInRuntime : IAddInRuntime
 	{
 		Runtime runtime;
-		
+
 		public TextTemplatingAddInRuntime(Runtime runtime)
 		{
 			this.runtime = runtime;
 		}
-		
-		public string Assembly {
+
+		public string Assembly
+		{
 			get { return runtime.Assembly; }
 		}
-		
-		public Assembly LoadedAssembly {
+
+		public Assembly LoadedAssembly
+		{
 			get { return runtime.LoadedAssembly; }
 		}
 	}

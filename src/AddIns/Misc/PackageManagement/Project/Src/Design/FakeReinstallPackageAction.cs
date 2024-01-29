@@ -24,29 +24,29 @@ namespace ICSharpCode.PackageManagement.Design
 	public class FakeReinstallPackageAction : ReinstallPackageAction
 	{
 		public bool IsExecuted;
-		
+
 		public FakePackageManagementProject FakeProject;
-		
+
 		public FakeReinstallPackageAction()
 			: this(new FakePackageManagementProject())
 		{
 		}
-		
+
 		public FakeReinstallPackageAction(IPackageManagementProject project)
 			: base(project, null)
 		{
 			FakeProject = project as FakePackageManagementProject;
 		}
-		
+
 		protected override void ExecuteCore()
 		{
 			IsExecuted = true;
 		}
-		
+
 		protected override void BeforeExecute()
 		{
 		}
-		
+
 		protected override RunPackageScriptsAction CreateRunPackageScriptsAction(
 			IPackageScriptRunner scriptRunner,
 			IPackageManagementProject project)

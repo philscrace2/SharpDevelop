@@ -28,7 +28,7 @@ namespace ICSharpCode.PackageManagement
 			this.Message = message;
 			this.Resolution = FileConflictResolution.Ignore;
 		}
-		
+
 		public string Message { get; private set; }
 		public FileConflictResolution Resolution { get; set; }
 	}

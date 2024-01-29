@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement
 	public interface IPackageViewModelFactory
 	{
 		PackageViewModel CreatePackageViewModel(IPackageViewModelParent parent, IPackageFromRepository package);
-		
+
 		IPackageManagementSolution Solution { get; }
 		PackageManagementSelectedProjects SelectedProjects { get; }
 		IPackageManagementEvents PackageManagementEvents { get; }

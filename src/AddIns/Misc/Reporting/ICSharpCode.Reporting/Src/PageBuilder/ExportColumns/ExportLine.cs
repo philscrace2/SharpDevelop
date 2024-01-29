@@ -28,42 +28,43 @@ namespace ICSharpCode.Reporting.PageBuilder.ExportColumns
 	/// Description of ExportGraphics.
 	/// </summary>
 	/// 
-	public interface IExportGraphics:IExportColumn {
-		int Thickness {get;set;}
-		DashStyle DashStyle {get;set;}
-		LineCap StartLineCap {get;set;}
-		LineCap EndLineCap {get;set;}
+	public interface IExportGraphics : IExportColumn
+	{
+		int Thickness { get; set; }
+		DashStyle DashStyle { get; set; }
+		LineCap StartLineCap { get; set; }
+		LineCap EndLineCap { get; set; }
 	}
-	
-	
-	public class ExportLine:ExportColumn,IExportGraphics,IAcceptor
+
+
+	public class ExportLine : ExportColumn, IExportGraphics, IAcceptor
 	{
 		public ExportLine()
 		{
 		}
-		
-		
+
+
 		public void Accept(IVisitor visitor)
 		{
 			visitor.Visit(this);
 		}
-		
-		
+
+
 		public override ICSharpCode.Reporting.Arrange.IMeasurementStrategy MeasurementStrategy()
 		{
 			throw new NotImplementedException();
 		}
-		
-		public int Thickness {get;set;}
-		
-		public DashStyle DashStyle {get;set;}
-		
-		public LineCap StartLineCap {get;set;}
-		
-		public LineCap EndLineCap {get;set;}
-		
-		public Point FromPoint {get;set;}
-		
-		public Point ToPoint {get;set;}
+
+		public int Thickness { get; set; }
+
+		public DashStyle DashStyle { get; set; }
+
+		public LineCap StartLineCap { get; set; }
+
+		public LineCap EndLineCap { get; set; }
+
+		public Point FromPoint { get; set; }
+
+		public Point ToPoint { get; set; }
 	}
 }

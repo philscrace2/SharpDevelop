@@ -26,22 +26,22 @@ namespace ICSharpCode.PackageManagement
 	{
 		IPackageManagementEvents unsafeEvents;
 		IPackageManagementWorkbench workbench;
-		
+
 		public ThreadSafePackageManagementEvents(IPackageManagementEvents unsafeEvents)
 			: this(unsafeEvents, new PackageManagementWorkbench())
 		{
 		}
-		
+
 		public ThreadSafePackageManagementEvents(
 			IPackageManagementEvents unsafeEvents,
 			IPackageManagementWorkbench workbench)
 		{
 			this.unsafeEvents = unsafeEvents;
 			this.workbench = workbench;
-			
+
 			RegisterEventHandlers();
 		}
-		
+
 		void RegisterEventHandlers()
 		{
 			unsafeEvents.PackageOperationsStarting += RaisePackageOperationStartingEventIfHasSubscribers;
@@ -50,12 +50,12 @@ namespace ICSharpCode.PackageManagement
 			unsafeEvents.ParentPackageUninstalled += RaiseParentPackageUninstalledEventIfHasSubscribers;
 			unsafeEvents.ParentPackagesUpdated += RaiseParentPackagesUpdatedEventIfHasSubscribers;
 		}
-		
+
 		public void Dispose()
 		{
 			UnregisterEventHandlers();
 		}
-		
+
 		void UnregisterEventHandlers()
 		{
 			unsafeEvents.PackageOperationsStarting -= RaisePackageOperationStartingEventIfHasSubscribers;
@@ -64,179 +64,205 @@ namespace ICSharpCode.PackageManagement
 			unsafeEvents.ParentPackageUninstalled -= RaiseParentPackageUninstalledEventIfHasSubscribers;
 			unsafeEvents.ParentPackagesUpdated -= RaiseParentPackagesUpdatedEventIfHasSubscribers;
 		}
-		
+
 		void RaisePackageOperationStartingEventIfHasSubscribers(object sender, EventArgs e)
 		{
-			if (PackageOperationsStarting != null) {
+			if (PackageOperationsStarting != null)
+			{
 				RaisePackageOperationStartingEvent(sender, e);
 			}
 		}
-		
+
 		void RaisePackageOperationStartingEvent(object sender, EventArgs e)
 		{
-			if (InvokeRequired) {
+			if (InvokeRequired)
+			{
 				Action<object, EventArgs> action = RaisePackageOperationStartingEvent;
 				SafeThreadAsyncCall(action, sender, e);
-			} else {
+			}
+			else
+			{
 				PackageOperationsStarting(sender, e);
 			}
 		}
-		
-		bool InvokeRequired {
+
+		bool InvokeRequired
+		{
 			get { return workbench.InvokeRequired; }
 		}
-		
+
 		void SafeThreadAsyncCall<A, B>(Action<A, B> method, A arg1, B arg2)
 		{
 			workbench.SafeThreadAsyncCall<A, B>(method, arg1, arg2);
 		}
-		
+
 		R SafeThreadFunction<R>(Func<R> method)
 		{
 			return workbench.SafeThreadFunction<R>(method);
 		}
-		
+
 		public event EventHandler PackageOperationsStarting;
-		
+
 		void RaisePackageOperationErrorEventIfHasSubscribers(object sender, PackageOperationExceptionEventArgs e)
 		{
-			if (PackageOperationError != null) {
+			if (PackageOperationError != null)
+			{
 				RaisePackageOperationErrorEvent(sender, e);
 			}
 		}
-		
+
 		void RaisePackageOperationErrorEvent(object sender, PackageOperationExceptionEventArgs e)
 		{
-			if (PackageOperationError != null) {
-				if (InvokeRequired) {
+			if (PackageOperationError != null)
+			{
+				if (InvokeRequired)
+				{
 					Action<object, PackageOperationExceptionEventArgs> action = RaisePackageOperationErrorEvent;
 					SafeThreadAsyncCall(action, sender, e);
-				} else {
+				}
+				else
+				{
 					PackageOperationError(sender, e);
 				}
 			}
 		}
-		
+
 		public event EventHandler<PackageOperationExceptionEventArgs> PackageOperationError;
-		
+
 		void RaiseParentPackageInstalledEventIfHasSubscribers(object sender, ParentPackageOperationEventArgs e)
 		{
-			if (ParentPackageInstalled != null) {
+			if (ParentPackageInstalled != null)
+			{
 				RaiseParentPackageInstalledEvent(sender, e);
 			}
 		}
-		
+
 		void RaiseParentPackageInstalledEvent(object sender, ParentPackageOperationEventArgs e)
 		{
-			if (InvokeRequired) {
+			if (InvokeRequired)
+			{
 				Action<object, ParentPackageOperationEventArgs> action = RaiseParentPackageInstalledEvent;
 				SafeThreadAsyncCall(action, sender, e);
-			} else {
+			}
+			else
+			{
 				ParentPackageInstalled(sender, e);
 			}
 		}
-		
+
 		public event EventHandler<ParentPackageOperationEventArgs> ParentPackageInstalled;
-		
+
 		void RaiseParentPackageUninstalledEventIfHasSubscribers(object sender, ParentPackageOperationEventArgs e)
 		{
-			if (ParentPackageUninstalled != null) {
+			if (ParentPackageUninstalled != null)
+			{
 				RaiseParentPackageUninstalledEvent(sender, e);
 			}
 		}
-		
+
 		void RaiseParentPackageUninstalledEvent(object sender, ParentPackageOperationEventArgs e)
 		{
-			if (InvokeRequired) {
+			if (InvokeRequired)
+			{
 				Action<object, ParentPackageOperationEventArgs> action = RaiseParentPackageUninstalledEvent;
 				SafeThreadAsyncCall(action, sender, e);
-			} else {
+			}
+			else
+			{
 				ParentPackageUninstalled(sender, e);
 			}
 		}
-		
+
 		public event EventHandler<ParentPackageOperationEventArgs> ParentPackageUninstalled;
-		
-		public event EventHandler<AcceptLicensesEventArgs> AcceptLicenses {
+
+		public event EventHandler<AcceptLicensesEventArgs> AcceptLicenses
+		{
 			add { unsafeEvents.AcceptLicenses += value; }
 			remove { unsafeEvents.AcceptLicenses -= value; }
 		}
-		
-		public event EventHandler<PackageOperationMessageLoggedEventArgs> PackageOperationMessageLogged {
+
+		public event EventHandler<PackageOperationMessageLoggedEventArgs> PackageOperationMessageLogged
+		{
 			add { unsafeEvents.PackageOperationMessageLogged += value; }
 			remove { unsafeEvents.PackageOperationMessageLogged -= value; }
 		}
-		
-		public event EventHandler<SelectProjectsEventArgs> SelectProjects {
+
+		public event EventHandler<SelectProjectsEventArgs> SelectProjects
+		{
 			add { unsafeEvents.SelectProjects += value; }
 			remove { unsafeEvents.SelectProjects -= value; }
 		}
-		
+
 		public void OnPackageOperationsStarting()
 		{
 			unsafeEvents.OnPackageOperationsStarting();
 		}
-		
+
 		public void OnPackageOperationError(Exception ex)
 		{
 			unsafeEvents.OnPackageOperationError(ex);
 		}
-		
+
 		public bool OnAcceptLicenses(IEnumerable<IPackage> packages)
 		{
 			return unsafeEvents.OnAcceptLicenses(packages);
 		}
-		
+
 		public void OnParentPackageInstalled(IPackage package)
 		{
 			unsafeEvents.OnParentPackageInstalled(package);
 		}
-		
+
 		public void OnParentPackageUninstalled(IPackage package)
 		{
 			unsafeEvents.OnParentPackageUninstalled(package);
 		}
-		
+
 		public void OnPackageOperationMessageLogged(MessageLevel level, string message, params object[] args)
 		{
 			unsafeEvents.OnPackageOperationMessageLogged(level, message, args);
 		}
-		
+
 		public bool OnSelectProjects(IEnumerable<IPackageManagementSelectedProject> selectedProjects)
 		{
 			return unsafeEvents.OnSelectProjects(selectedProjects);
 		}
-		
-		public event EventHandler<ResolveFileConflictEventArgs> ResolveFileConflict {
+
+		public event EventHandler<ResolveFileConflictEventArgs> ResolveFileConflict
+		{
 			add { unsafeEvents.ResolveFileConflict += value; }
 			remove { unsafeEvents.ResolveFileConflict -= value; }
 		}
-		
+
 		public FileConflictResolution OnResolveFileConflict(string message)
 		{
 			return unsafeEvents.OnResolveFileConflict(message);
 		}
-		
+
 		public event EventHandler<ParentPackagesOperationEventArgs> ParentPackagesUpdated;
-		
+
 		public void OnParentPackagesUpdated(IEnumerable<IPackage> packages)
 		{
 			unsafeEvents.OnParentPackagesUpdated(packages);
 		}
-		
+
 		void RaiseParentPackagesUpdatedEventIfHasSubscribers(object sender, ParentPackagesOperationEventArgs e)
 		{
-			if (ParentPackagesUpdated != null) {
+			if (ParentPackagesUpdated != null)
+			{
 				RaiseParentPackagesUpdatedEvent(sender, e);
 			}
 		}
-		
+
 		void RaiseParentPackagesUpdatedEvent(object sender, ParentPackagesOperationEventArgs e)
 		{
-			if (InvokeRequired) {
+			if (InvokeRequired)
+			{
 				Action<object, ParentPackagesOperationEventArgs> action = RaiseParentPackagesUpdatedEvent;
 				SafeThreadAsyncCall(action, sender, e);
-			} else {
+			}
+			else
+			{
 				ParentPackagesUpdated(sender, e);
 			}
 		}

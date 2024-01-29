@@ -27,27 +27,31 @@ namespace ICSharpCode.TextTemplating
 		ITextTemplatingAppDomain templatingAppDomain;
 		TextTemplatingHostContext context;
 		string applicationBase;
-		
+
 		public TextTemplatingHost(TextTemplatingHostContext context, string applicationBase)
 		{
 			this.context = context;
 			this.applicationBase = applicationBase;
 		}
-		
+
 		public void Dispose()
 		{
-			if (templatingAppDomain != null) {
+			if (templatingAppDomain != null)
+			{
 				templatingAppDomain.Dispose();
 				templatingAppDomain = null;
 			}
+
 			context.Dispose();
 		}
-		
+
 		public override AppDomain ProvideTemplatingAppDomain(string content)
 		{
-			if (templatingAppDomain == null) {
+			if (templatingAppDomain == null)
+			{
 				CreateAppDomain();
 			}
+
 			return templatingAppDomain.AppDomain;
 		}
 
@@ -55,23 +59,23 @@ namespace ICSharpCode.TextTemplating
 		{
 			templatingAppDomain = context.CreateTextTemplatingAppDomain(applicationBase);
 		}
-		
+
 		protected override string ResolveAssemblyReference(string assemblyReference)
 		{
 			return context.ResolveAssemblyReference(assemblyReference);
 		}
-		
+
 		protected override string ResolvePath(string path)
 		{
 			path = ExpandPath(path);
 			return base.ResolvePath(path);
 		}
-		
+
 		string ExpandPath(string path)
 		{
 			return context.ExpandTemplateVariables(path);
 		}
-		
+
 		object IServiceProvider.GetService(Type serviceType)
 		{
 			return context.GetService(serviceType);

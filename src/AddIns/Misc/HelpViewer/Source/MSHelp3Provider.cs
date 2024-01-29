@@ -27,18 +27,22 @@ namespace MSHelpSystem
 	{
 		public override bool TryShowHelp(string fullTypeName)
 		{
-			if (string.IsNullOrEmpty(fullTypeName)) {
+			if (string.IsNullOrEmpty(fullTypeName))
+			{
 				throw new ArgumentNullException("fullTypeName");
 			}
+
 			LoggingService.Info(string.Format("HelpViewer: TryShowHelp calls \"{0}\"", fullTypeName));
 			return DisplayHelp.ContextualHelp(fullTypeName);
 		}
 
 		public override bool TryShowHelpByKeyword(string keyword)
 		{
-			if (string.IsNullOrEmpty(keyword)) {
+			if (string.IsNullOrEmpty(keyword))
+			{
 				throw new ArgumentNullException("keyword");
 			}
+
 			LoggingService.Info(string.Format("HelpViewer: TryShowHelpByKeyword calls \"{0}\"", keyword));
 			DisplayHelp.Keywords(keyword);
 			return true;

@@ -38,8 +38,9 @@ namespace ICSharpCode.PackageManagement
 				installAction.AllowPrereleaseVersions,
 				installAction.DependencyVersion);
 		}
-		
-		public IPackageOperationResolver CreateUpdatePackageOperationResolver(IPackageRepository localRepository, IPackageRepository sourceRepository, ILogger logger, IUpdatePackageSettings settings)
+
+		public IPackageOperationResolver CreateUpdatePackageOperationResolver(IPackageRepository localRepository,
+			IPackageRepository sourceRepository, ILogger logger, IUpdatePackageSettings settings)
 		{
 			return new InstallWalker(
 				localRepository,

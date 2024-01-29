@@ -24,33 +24,33 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		SolutionExtensibilityGlobals extensibilityGlobals;
 		SolutionExtensibilityGlobalsPersistence extensibilityGlobalsPersistence;
-		
+
 		public SolutionGlobals(Solution solution)
 		{
 			this.extensibilityGlobals = new SolutionExtensibilityGlobals(solution);
 			this.extensibilityGlobalsPersistence = new SolutionExtensibilityGlobalsPersistence(extensibilityGlobals);
 		}
-		
+
 		protected override object GetVariableValue(string name)
 		{
 			return extensibilityGlobals[name];
 		}
-		
+
 		protected override void SetVariableValue(string name, object value)
 		{
 			extensibilityGlobals[name] = value;
 		}
-		
+
 		protected override bool GetVariablePersists(string name)
 		{
 			return extensibilityGlobalsPersistence[name];
 		}
-		
+
 		protected override void SetVariablePersists(string name, bool value)
 		{
 			extensibilityGlobalsPersistence[name] = value;
 		}
-		
+
 		protected override bool GetVariableExists(string name)
 		{
 			return extensibilityGlobals.ItemExists(name);

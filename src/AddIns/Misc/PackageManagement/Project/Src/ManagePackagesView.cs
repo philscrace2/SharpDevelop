@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			InitializeComponent();
 		}
-		
+
 		public void Dispose()
 		{
 			var viewModel = DataContext as ManagePackagesViewModel;

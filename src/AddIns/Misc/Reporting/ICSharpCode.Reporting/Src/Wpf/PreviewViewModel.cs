@@ -20,7 +20,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Documents;
-
 using ICSharpCode.Reporting.Interfaces;
 using ICSharpCode.Reporting.Items;
 using ICSharpCode.Reporting.PageBuilder.ExportColumns;
@@ -31,20 +30,19 @@ namespace ICSharpCode.Reporting.WpfReportViewer
 	/// <summary>
 	/// Description of PreviewViewModel.
 	/// </summary>
-	public class PreviewViewModel:INotifyPropertyChanged
+	public class PreviewViewModel : INotifyPropertyChanged
 	{
-		
-		FixedDocument document ;
-		
+		FixedDocument document;
+
 		public PreviewViewModel(IReportSettings reportSettings, Collection<ExportPage> pages)
 		{
 			if (pages == null)
 				throw new ArgumentNullException("pages");
 			if (reportSettings == null)
 				throw new ArgumentNullException("reportSettings");
-			
+
 			Document = CreateFixedDocument(reportSettings);
-			
+
 			var wpfExporter = new WpfExporter(pages);
 			wpfExporter.Run();
 			this.Document = wpfExporter.Document;
@@ -54,27 +52,29 @@ namespace ICSharpCode.Reporting.WpfReportViewer
 		{
 			var document = new FixedDocument();
 			document.DocumentPaginator.PageSize = new System.Windows.Size(reportSettings.PageSize.Width,
-			                                                              reportSettings.PageSize.Height);
-		return document;
+				reportSettings.PageSize.Height);
+			return document;
 		}
-		
-		
+
+
 		public FixedDocument Document
 		{
-			get {return document;}
-			set {
+			get { return document; }
+			set
+			{
 				this.document = value;
-				OnNotifyPropertyChanged ("Document");
+				OnNotifyPropertyChanged("Document");
 			}
 		}
-		
-		
+
+
 		public event PropertyChangedEventHandler PropertyChanged;
-		
+
 		void OnNotifyPropertyChanged(string num0)
 		{
-			if (PropertyChanged != null) {
-				PropertyChanged(this,new PropertyChangedEventArgs(num0));
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(num0));
 			}
 		}
 	}

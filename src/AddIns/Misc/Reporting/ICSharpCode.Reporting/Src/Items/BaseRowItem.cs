@@ -18,17 +18,18 @@
 
 using ICSharpCode.Reporting.Interfaces.Export;
 using ICSharpCode.Reporting.PageBuilder.ExportColumns;
+
 namespace ICSharpCode.Reporting.Items
 {
 	/// <summary>
 	/// Description of BaseRowItem.
 	/// </summary>
-	public class BaseRowItem:ReportContainer
+	public class BaseRowItem : ReportContainer
 	{
 		public BaseRowItem()
 		{
 		}
-		
+
 		public override IExportColumn CreateExportColumn()
 		{
 			var er = new ExportRow();

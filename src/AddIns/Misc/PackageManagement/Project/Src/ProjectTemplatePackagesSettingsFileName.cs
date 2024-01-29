@@ -24,13 +24,14 @@ namespace ICSharpCode.PackageManagement
 	public class ProjectTemplatePackagesSettingsFileName
 	{
 		string directory;
-		
+
 		public ProjectTemplatePackagesSettingsFileName(IPropertyService propertyService)
 		{
 			directory = Path.Combine(propertyService.ConfigDirectory, "templates");
 		}
-		
-		public string Directory {
+
+		public string Directory
+		{
 			get { return directory; }
 		}
 	}

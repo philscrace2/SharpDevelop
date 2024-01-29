@@ -33,9 +33,11 @@ namespace MSHelpSystem.Helper
 
 		static HelpClientWatcher()
 		{
-			if (!Directory.Exists(clientPath)) {
+			if (!Directory.Exists(clientPath))
+			{
 				Directory.CreateDirectory(clientPath);
 			}
+
 			clientFileChanged = new FileSystemWatcher(clientPath);
 			clientFileChanged.NotifyFilter = NotifyFilters.LastWrite;
 			clientFileChanged.Filter = "HelpClient.cfg";
@@ -46,7 +48,10 @@ namespace MSHelpSystem.Helper
 			helpMode = GetHelpMode();
 		}
 
-		static string clientPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Microsoft\HelpLibrary");
+		static string clientPath =
+			Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+				@"Microsoft\HelpLibrary");
+
 		static FileSystemWatcher clientFileChanged = null;
 		static string helpMode = string.Empty;
 
@@ -76,44 +81,57 @@ namespace MSHelpSystem.Helper
 		static string GetHelpMode()
 		{
 			Configuration config = null;
-			try {
+			try
+			{
 				string clientFile = Path.Combine(clientPath, "HelpClient.cfg");
-				if (File.Exists(clientFile)) {
+				if (File.Exists(clientFile))
+				{
 					ExeConfigurationFileMap fm = new ExeConfigurationFileMap();
 					fm.ExeConfigFilename = clientFile;
-					try {
+					try
+					{
 						config = ConfigurationManager.OpenMappedExeConfiguration(fm, ConfigurationUserLevel.None);
 					}
-					catch (ConfigurationErrorsException) {
+					catch (ConfigurationErrorsException)
+					{
 						Thread.Sleep(0x3e8);
 						config = ConfigurationManager.OpenMappedExeConfiguration(fm, ConfigurationUserLevel.None);
 					}
-					if (config != null) {
+
+					if (config != null)
+					{
 						AppSettingsSection section = (AppSettingsSection)config.GetSection("appSettings");
 						string tmp = section.Settings["helpMode"].Value;
-						return (string.IsNullOrEmpty(tmp)) ? "offline":tmp;
+						return (string.IsNullOrEmpty(tmp)) ? "offline" : tmp;
 					}
 				}
-				else {
+				else
+				{
 					ExeConfigurationFileMap fm = new ExeConfigurationFileMap();
 					fm.ExeConfigFilename = Path.Combine(Help3Environment.AppRoot, "HelpClient.cfg");
-					try {
+					try
+					{
 						config = ConfigurationManager.OpenMappedExeConfiguration(fm, ConfigurationUserLevel.None);
 					}
-					catch (ConfigurationErrorsException) {
+					catch (ConfigurationErrorsException)
+					{
 						Thread.Sleep(0x3e8);
 						config = ConfigurationManager.OpenMappedExeConfiguration(fm, ConfigurationUserLevel.None);
 					}
-					if (config != null) {
+
+					if (config != null)
+					{
 						AppSettingsSection section = (AppSettingsSection)config.GetSection("appSettings");
 						string tmp = section.Settings["helpMode"].Value;
-						return (string.IsNullOrEmpty(tmp)) ? "offline":tmp;
+						return (string.IsNullOrEmpty(tmp)) ? "offline" : tmp;
 					}
 				}
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				LoggingService.Error(string.Format("HelpViewer: {0}", ex.ToString()));
 			}
+
 			return "offline";
 		}
 
@@ -123,36 +141,48 @@ namespace MSHelpSystem.Helper
 			LoggingService.Info(string.Format("HelpViewer: Trying to set help mode to \"{0}\"", helpMode));
 
 			Configuration config = null;
-			try {
+			try
+			{
 				string clientFile = Path.Combine(clientPath, "HelpClient.cfg");
-				if (!File.Exists(clientFile)) {
+				if (!File.Exists(clientFile))
+				{
 					string sourceFile = Path.Combine(Help3Environment.AppRoot, "HelpClient.cfg");
-					if (!Directory.Exists(clientPath)) {
+					if (!Directory.Exists(clientPath))
+					{
 						Directory.CreateDirectory(clientPath);
 					}
+
 					File.Copy(sourceFile, clientFile);
 					Thread.Sleep(0x3e8);
 				}
-				if (File.Exists(clientFile)) {
+
+				if (File.Exists(clientFile))
+				{
 					ExeConfigurationFileMap fm = new ExeConfigurationFileMap();
 					fm.ExeConfigFilename = clientFile;
-					try {
+					try
+					{
 						config = ConfigurationManager.OpenMappedExeConfiguration(fm, ConfigurationUserLevel.None);
 					}
-					catch (ConfigurationErrorsException) {
+					catch (ConfigurationErrorsException)
+					{
 						Thread.Sleep(0x3e8);
 						config = ConfigurationManager.OpenMappedExeConfiguration(fm, ConfigurationUserLevel.None);
 					}
-					if (config != null) {
+
+					if (config != null)
+					{
 						AppSettingsSection section = (AppSettingsSection)config.GetSection("appSettings");
 						section.Settings["helpMode"].Value = helpMode;
 						config.Save();
 					}
 				}
 			}
-			catch (Exception ex) {
+			catch (Exception ex)
+			{
 				LoggingService.Error(string.Format("HelpViewer: {0}", ex.ToString()));
 			}
+
 			clientFileChanged.EnableRaisingEvents = true;
 		}
 	}

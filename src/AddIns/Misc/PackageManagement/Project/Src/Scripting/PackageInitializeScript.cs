@@ -27,20 +27,21 @@ namespace ICSharpCode.PackageManagement.Scripting
 			: base(package, fileName)
 		{
 		}
-		
+
 		protected override void BeforeRun()
 		{
 			AddScriptDirectoryToEnvironmentPath();
 		}
-		
+
 		void AddScriptDirectoryToEnvironmentPath()
 		{
-			if (ScriptFileName.ScriptDirectoryExists()) {
+			if (ScriptFileName.ScriptDirectoryExists())
+			{
 				string directory = ScriptFileName.GetScriptDirectory();
 				AddScriptDirectoryToEnvironmentPath(directory);
 			}
 		}
-		
+
 		void AddScriptDirectoryToEnvironmentPath(string directory)
 		{
 			var environmentPath = new PowerShellSessionEnvironmentPath(Session);

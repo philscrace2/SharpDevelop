@@ -45,18 +45,20 @@ namespace ICSharpCode.StartPage
 		public RecentProjectsControl()
 		{
 			InitializeComponent();
-			
+
 			this.SetValueToExtension(HeaderProperty, new LocalizeExtension("StartPage.StartMenu.BarNameName"));
 			BuildRecentProjectList();
 		}
-		
-		public static readonly DependencyProperty HeaderProperty = HeaderedContentControl.HeaderProperty.AddOwner(typeof(RecentProjectsControl));
-		
-		public object Header {
+
+		public static readonly DependencyProperty HeaderProperty =
+			HeaderedContentControl.HeaderProperty.AddOwner(typeof(RecentProjectsControl));
+
+		public object Header
+		{
 			get { return GetValue(HeaderProperty); }
 			set { SetValue(HeaderProperty, value); }
 		}
-		
+
 		async void BuildRecentProjectList()
 		{
 			// When building the project list we access the .sln files (to see if they still exist).
@@ -65,13 +67,17 @@ namespace ICSharpCode.StartPage
 			var projectPaths = SD.FileService.RecentOpen.RecentProjects.ToArray();
 			List<RecentOpenItem> items = new List<RecentOpenItem>();
 			await Task.Run(
-				delegate {
-					foreach (FileName path in projectPaths) {
+				delegate
+				{
+					foreach (FileName path in projectPaths)
+					{
 						Core.LoggingService.Debug("RecentProjectsControl: Looking up path '" + path + "'");
 						FileInfo file = new FileInfo(path);
-						if (file.Exists) {
+						if (file.Exists)
+						{
 							items.Add(
-								new RecentOpenItem {
+								new RecentOpenItem
+								{
 									Name = Path.GetFileNameWithoutExtension(path),
 									LastModification = file.LastWriteTime.ToShortDateString(),
 									Path = path
@@ -79,64 +85,71 @@ namespace ICSharpCode.StartPage
 						}
 					}
 				});
-			if (items.Count > 0) {
+			if (items.Count > 0)
+			{
 				lastProjectsListView.ItemsSource = items;
 				lastProjectsListView.Visibility = Visibility.Visible;
 			}
 		}
-		
+
 		class RecentOpenItem : INotifyPropertyChanged
 		{
 			public string Name { get; set; }
 			public string LastModification { get; set; }
 			public string Path { get; set; }
-			
-			event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged { add { } remove { } }
-			
+
+			event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+			{
+				add { }
+				remove { }
+			}
+
 			public override string ToString()
 			{
 				return this.Name;
 			}
 		}
-		
+
 		void lastProjectsDoubleClick(object sender, RoutedEventArgs e)
 		{
 			RecentOpenItem item = (RecentOpenItem)lastProjectsListView.SelectedItem;
-			if (item != null) {
+			if (item != null)
+			{
 				SD.ProjectService.OpenSolutionOrProject(FileName.Create(item.Path));
 			}
 		}
-		
+
 		void lastProjectsKeyDown(object sender, KeyEventArgs e)
 		{
-			if (e.Key == Key.Return) {
+			if (e.Key == Key.Return)
+			{
 				lastProjectsDoubleClick(null, null);
 			}
 		}
-		
+
 		void listViewHyperlinkClick(object sender, RoutedEventArgs e)
 		{
 			RecentOpenItem item = (RecentOpenItem)((Hyperlink)sender).Tag;
 			SD.ProjectService.OpenSolutionOrProject(FileName.Create(item.Path));
 		}
-		
+
 		void openSolutionClick(object sender, RoutedEventArgs e)
 		{
 			new ICSharpCode.SharpDevelop.Project.Commands.LoadSolution().Run();
 		}
-		
+
 		void newSolutionClick(object sender, RoutedEventArgs e)
 		{
 			new ICSharpCode.SharpDevelop.Project.Commands.CreateNewSolution().Run();
 		}
-		
+
 		void openContainingFolderClick(object sender, RoutedEventArgs e)
 		{
 			RecentOpenItem item = (RecentOpenItem)lastProjectsListView.SelectedItem;
 			string folder = Path.GetDirectoryName(item.Path);
 			Process.Start("explorer", "\"" + folder + "\"");
 		}
-		
+
 		void removeRecentProjectClick(object sender, RoutedEventArgs e)
 		{
 			RecentOpenItem item = (RecentOpenItem)lastProjectsListView.SelectedItem;

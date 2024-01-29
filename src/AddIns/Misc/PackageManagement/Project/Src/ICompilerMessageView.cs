@@ -23,7 +23,7 @@ namespace ICSharpCode.PackageManagement
 	public interface ICompilerMessageView
 	{
 		IMessageViewCategory Create(string categoryName, string categoryDisplayName);
-		
+
 		IMessageViewCategory GetExisting(string name);
 	}
 }

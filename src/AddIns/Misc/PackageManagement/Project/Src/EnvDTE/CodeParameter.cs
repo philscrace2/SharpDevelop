@@ -25,31 +25,38 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class CodeParameter : CodeElement, global::EnvDTE.CodeParameter
 	{
 		protected readonly IParameter parameter;
-		
+
 		public CodeParameter(CodeModelContext context, IParameter parameter)
 			: base(context)
 		{
 			this.parameter = parameter;
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementParameter; }
 		}
-		
-		public override string Name {
+
+		public override string Name
+		{
 			get { return parameter.Name; }
 		}
-		
-		public virtual global::EnvDTE.CodeTypeRef2 Type {
+
+		public virtual global::EnvDTE.CodeTypeRef2 Type
+		{
 			get { return new CodeTypeRef2(context, this, parameter.Type); }
 		}
-		
-		public virtual global::EnvDTE.CodeElements Attributes {
-			get {
+
+		public virtual global::EnvDTE.CodeElements Attributes
+		{
+			get
+			{
 				var list = new CodeElementsList<CodeAttribute2>();
-				foreach (var attr in parameter.Attributes) {
+				foreach (var attr in parameter.Attributes)
+				{
 					list.Add(new CodeAttribute2(context, attr));
 				}
+
 				return list;
 			}
 		}

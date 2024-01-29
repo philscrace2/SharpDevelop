@@ -13,55 +13,63 @@ namespace ICSharpCode.PackageManagement
 	{
 		public static Func<IFileSystem, string, IMachineWideSettings, ISettings> LoadDefaultSettings
 			= Settings.LoadDefaultSettings;
-		
+
 		IPackageManagementProjectService projectService;
-		
+
 		public SettingsProvider()
 			: this(PackageManagementServices.ProjectService)
 		{
 		}
-		
+
 		public SettingsProvider(IPackageManagementProjectService projectService)
 		{
 			this.projectService = projectService;
 			projectService.SolutionOpened += OnSettingsChanged;
 			projectService.SolutionClosed += OnSettingsChanged;
 		}
-		
+
 		public event EventHandler SettingsChanged;
-		
+
 		void OnSettingsChanged(object sender, SolutionEventArgs e)
 		{
-			if (SettingsChanged != null) {
+			if (SettingsChanged != null)
+			{
 				SettingsChanged(this, new EventArgs());
 			}
 		}
-		
+
 		public ISettings LoadSettings()
 		{
-			try {
+			try
+			{
 				return LoadSettings(GetSolutionDirectory());
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				LoggingService.Error("Unable to load NuGet.Config file.", ex);
 			}
+
 			return NullSettings.Instance;
 		}
-		
+
 		string GetSolutionDirectory()
 		{
 			ISolution solution = projectService.OpenSolution;
-			if (solution != null) {
+			if (solution != null)
+			{
 				return Path.Combine(solution.Directory, ".nuget");
 			}
+
 			return null;
 		}
-		
+
 		ISettings LoadSettings(string directory)
 		{
-			if (directory == null) {
+			if (directory == null)
+			{
 				return LoadDefaultSettings(null, null, null);
 			}
-			
+
 			return LoadDefaultSettings(new PhysicalFileSystem(directory), null, null);
 		}
 	}

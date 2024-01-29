@@ -28,6 +28,8 @@ namespace ICSharpCode.PackageManagement
 		void MakePartial(ITypeDefinition typeDefinition);
 		void MakeVirtual(IMember member);
 		void AddFieldAtStart(ITypeDefinition typeDefinition, Accessibility accessibility, IType fieldType, string name);
-		void AddMethodAtStart(ITypeDefinition typeDefinition, Accessibility accessibility, IType returnType, string name);
+
+		void AddMethodAtStart(ITypeDefinition typeDefinition, Accessibility accessibility, IType returnType,
+			string name);
 	}
 }

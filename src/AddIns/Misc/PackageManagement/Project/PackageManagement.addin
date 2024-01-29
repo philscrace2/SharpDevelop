@@ -1,20 +1,20 @@
-﻿<AddIn 
+﻿<AddIn
 	name="Package Management"
 	author="Matt Ward"
 	copyright="prj:///doc/copyright.txt"
 	url="http://sharpdevelop.com"
 	description="NuGet Package Management"
 	addInManagerHidden="preinstalled">
-	
+
 	<Manifest>
-		<Identity name="ICSharpCode.PackageManagement"/>
+		<Identity name="ICSharpCode.PackageManagement" />
 	</Manifest>
-	
+
 	<Runtime>
-		<Import assembly=":ICSharpCode.SharpDevelop"/>
-		<Import assembly="PackageManagement.dll"/>
+		<Import assembly=":ICSharpCode.SharpDevelop" />
+		<Import assembly="PackageManagement.dll" />
 	</Runtime>
-	
+
 	<!-- Projects window context menu - project selected -->
 	<Path path="/SharpDevelop/Pads/ProjectBrowser/ContextMenu/ProjectNode">
 		<Condition name="WriteableProject" action="Disable">
@@ -23,16 +23,16 @@
 				label="${res:AddIns.PackageManagement.Menu.ManagePackages}"
 				insertafter="AddWebReference"
 				insertbefore="AddSeparator"
-				class="ICSharpCode.PackageManagement.ManagePackagesCommand"/>
+				class="ICSharpCode.PackageManagement.ManagePackagesCommand" />
 			<MenuItem
 				id="RestorePackages"
 				label="${res:AddIns.PackageManagement.Menu.RestorePackages}"
 				insertafter="AddWebReference"
 				insertbefore="AddSeparator"
-				class="ICSharpCode.PackageManagement.RestorePackagesCommand"/>
+				class="ICSharpCode.PackageManagement.RestorePackagesCommand" />
 		</Condition>
 	</Path>
-	
+
 	<!-- Projects window context menu - References selected -->
 	<Path name="/SharpDevelop/Pads/ProjectBrowser/ContextMenu/ReferenceFolderNode">
 		<Condition name="WriteableProject" action="Disable">
@@ -41,16 +41,16 @@
 				label="${res:AddIns.PackageManagement.Menu.ManagePackages}"
 				insertafter="AddWebReference"
 				insertbefore="AddSeparator"
-				class="ICSharpCode.PackageManagement.ManagePackagesCommand"/>
+				class="ICSharpCode.PackageManagement.ManagePackagesCommand" />
 			<MenuItem
 				id="RestorePackages"
 				label="${res:AddIns.PackageManagement.Menu.RestorePackages}"
 				insertafter="AddWebReference"
 				insertbefore="AddSeparator"
-				class="ICSharpCode.PackageManagement.RestorePackagesCommand"/>
+				class="ICSharpCode.PackageManagement.RestorePackagesCommand" />
 		</Condition>
 	</Path>
-	
+
 	<!-- Project main menu -->
 	<Path name="/SharpDevelop/Workbench/MainMenu/Project">
 		<Condition name="WriteableProject" action="Disable">
@@ -59,16 +59,16 @@
 				label="${res:AddIns.PackageManagement.Menu.ManagePackages}"
 				insertafter="AddWebReference"
 				insertbefore="AddSeparator"
-				class="ICSharpCode.PackageManagement.ManagePackagesCommand"/>
+				class="ICSharpCode.PackageManagement.ManagePackagesCommand" />
 			<MenuItem
 				id="RestorePackages"
 				label="${res:AddIns.PackageManagement.Menu.RestorePackages}"
 				insertafter="AddWebReference"
 				insertbefore="AddSeparator"
-				class="ICSharpCode.PackageManagement.RestorePackagesCommand"/>
+				class="ICSharpCode.PackageManagement.RestorePackagesCommand" />
 		</Condition>
 	</Path>
-	
+
 	<!-- Projects window context menu - solution selected -->
 	<Path path="/SharpDevelop/Pads/ProjectBrowser/ContextMenu/SolutionNode">
 		<Condition name="WriteableSolution" action="Disable">
@@ -77,13 +77,13 @@
 				label="${res:AddIns.PackageManagement.Menu.ManagePackages}"
 				insertafter="CombineAddMenu"
 				insertbefore="AddSeparator"
-				class="ICSharpCode.PackageManagement.ManagePackagesCommand"/>
+				class="ICSharpCode.PackageManagement.ManagePackagesCommand" />
 			<MenuItem
 				id="RestorePackagesForSolution"
 				label="${res:AddIns.PackageManagement.Menu.RestorePackages}"
 				insertafter="CombineAddMenu"
 				insertbefore="AddSeparator"
-				class="ICSharpCode.PackageManagement.RestorePackagesCommand"/>
+				class="ICSharpCode.PackageManagement.RestorePackagesCommand" />
 		</Condition>
 	</Path>
 
@@ -97,14 +97,14 @@
 			<OptionPanel
 				id="PackageManagementOptions"
 				label="${res:Dialog.Options.IDEOptions.General}"
-				class="ICSharpCode.PackageManagement.PackageManagementOptionsView"/>
+				class="ICSharpCode.PackageManagement.PackageManagementOptionsView" />
 			<OptionPanel
 				id="PackageSources"
 				label="${res:AddIns.PackageManagement.Options.PackageSources}"
-				class="ICSharpCode.PackageManagement.RegisteredPackageSourcesView"/>
+				class="ICSharpCode.PackageManagement.RegisteredPackageSourcesView" />
 		</OptionPanel>
 	</Path>
-	
+
 	<!-- Package Management Console Pad -->
 	<Path name="/SharpDevelop/Workbench/Pads">
 		<Pad
@@ -113,19 +113,19 @@
 			title="${res:AddIns.PackageManagement.ConsolePad.Title}"
 			icon="PadIcons.Output"
 			defaultPosition="Bottom, Hidden"
-			class="ICSharpCode.PackageManagement.Scripting.PackageManagementConsolePad"/>
+			class="ICSharpCode.PackageManagement.Scripting.PackageManagementConsolePad" />
 	</Path>
 
 	<!-- Project template command -->
 	<Path name="/AddIns/PackageManagement/TemplateCommands">
 		<Class
 			id="InstallPackages"
-			class="ICSharpCode.PackageManagement.InstallProjectTemplatePackagesCommand"/>
+			class="ICSharpCode.PackageManagement.InstallProjectTemplatePackagesCommand" />
 	</Path>
-	
+
 	<Path name="/SharpDevelop/TextTemplating/ServiceProviders">
 		<Class
 			id="PackageManagementServiceProvider"
-			class="ICSharpCode.PackageManagement.PackageManagementServiceProvider"/>
+			class="ICSharpCode.PackageManagement.PackageManagementServiceProvider" />
 	</Path>
 </AddIn>

@@ -26,7 +26,7 @@ namespace ICSharpCode.PackageManagement
 			: base(solution)
 		{
 		}
-		
+
 		protected override bool IsProjectSelected(IPackageManagementProject project, IPackageFromRepository package)
 		{
 			return project.IsPackageInstalled(package);

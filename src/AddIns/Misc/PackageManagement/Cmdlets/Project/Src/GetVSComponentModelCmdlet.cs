@@ -31,7 +31,7 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 		public GetVSComponentModelCmdlet()
 		{
 		}
-		
+
 		protected override void ProcessRecord()
 		{
 			object service = Package.GetGlobalService(typeof(SComponentModel));

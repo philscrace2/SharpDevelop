@@ -21,7 +21,6 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-
 using ICSharpCode.Core.WinForms;
 using ICSharpCode.Reporting.Items;
 using ICSharpCode.Reporting.Addin.Designer;
@@ -31,15 +30,14 @@ namespace ICSharpCode.Reporting.Addin.Services
 {
 	class MenuCommandService : System.ComponentModel.Design.MenuCommandService
 	{
-		
 		Control panel;
-		
+
 		public MenuCommandService(Control panel, IServiceProvider serviceProvider) : base(serviceProvider)
 		{
 			this.panel = panel;
 //			this.InitializeGlobalCommands( );
 		}
-		
+
 		/*
 		private void InitializeGlobalCommands()
 		{
@@ -62,23 +60,28 @@ namespace ICSharpCode.Reporting.Addin.Services
 		{
 			string contextMenuPath = "/SharpDevelop/ReportDesigner/ContextMenus/";
 			var selectionService = (ISelectionService)base.GetService(typeof(ISelectionService));
-			
-			if (selectionService != null) {
-				if (menuID == MenuCommands.TraySelectionMenu) {
+
+			if (selectionService != null)
+			{
+				if (menuID == MenuCommands.TraySelectionMenu)
+				{
 					contextMenuPath += "TraySelectionMenu";
 				}
-				else if (selectionService.PrimarySelection is RootReportModel) {
+				else if (selectionService.PrimarySelection is RootReportModel)
+				{
 					System.Console.WriteLine("found Root");
 					contextMenuPath += "ContainerMenu";
 				}
-				else if (selectionService.PrimarySelection is BaseSection) {
+				else if (selectionService.PrimarySelection is BaseSection)
+				{
 					System.Console.WriteLine("found baseSection");
 					contextMenuPath += "ContainerMenu";
 				}
-				else {
+				else
+				{
 					contextMenuPath += "SelectionMenu";
 				}
-				
+
 				Point p = panel.PointToClient(new Point(x, y));
 				MenuService.ShowContextMenu(this, contextMenuPath, panel, p.X, p.Y);
 			}

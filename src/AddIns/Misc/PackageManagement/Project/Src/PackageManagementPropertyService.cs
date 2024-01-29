@@ -23,11 +23,13 @@ namespace ICSharpCode.PackageManagement
 {
 	public class PackageManagementPropertyService : IPropertyService
 	{
-		public string DataDirectory {
+		public string DataDirectory
+		{
 			get { return PropertyService.DataDirectory; }
 		}
-		
-		public string ConfigDirectory {
+
+		public string ConfigDirectory
+		{
 			get { return PropertyService.ConfigDirectory; }
 		}
 	}

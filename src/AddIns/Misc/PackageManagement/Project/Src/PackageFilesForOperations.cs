@@ -25,25 +25,29 @@ namespace ICSharpCode.PackageManagement
 	public class PackageFilesForOperations
 	{
 		IEnumerable<PackageOperation> operations;
-		
+
 		public PackageFilesForOperations(IEnumerable<PackageOperation> operations)
 		{
 			this.operations = operations;
 		}
-		
+
 		public bool HasAnyPackageScripts()
 		{
-			foreach (PackageFiles files in GetPackageFilesForEachOperation()) {
-				if (files.HasAnyPackageScripts()) {
+			foreach (PackageFiles files in GetPackageFilesForEachOperation())
+			{
+				if (files.HasAnyPackageScripts())
+				{
 					return true;
 				}
 			}
+
 			return false;
 		}
-		
+
 		IEnumerable<PackageFiles> GetPackageFilesForEachOperation()
 		{
-			foreach (PackageOperation operation in operations) {
+			foreach (PackageOperation operation in operations)
+			{
 				yield return new PackageFiles(operation.Package);
 			}
 		}

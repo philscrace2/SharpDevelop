@@ -29,7 +29,7 @@ namespace ICSharpCode.PackageManagement
 	public abstract class PackagesViewModel : ViewModelBase<PackagesViewModel>, IDisposable, IPackageViewModelParent
 	{
 		Pages pages = new Pages();
-		
+
 		protected IPackageManagementEvents packageManagementEvents;
 		protected IPackageManagementSolution solution;
 		protected IPackageManagementProject project;
@@ -42,7 +42,7 @@ namespace ICSharpCode.PackageManagement
 		ITask<PackagesForSelectedPageResult> task;
 		bool includePrerelease;
 		PackagesForSelectedPageQuery packagesForSelectedPageQuery;
-		
+
 		public PackagesViewModel(
 			IPackageManagementSolution solution,
 			IPackageManagementEvents packageManagementEvents,
@@ -56,13 +56,13 @@ namespace ICSharpCode.PackageManagement
 			this.packageViewModelFactory = packageViewModelFactory;
 			this.taskFactory = taskFactory;
 			this.solution = solution;
-			
+
 			PackageViewModels = new ObservableCollection<PackageViewModel>();
 
 			CreateCommands();
 			TryGetActiveProject();
 		}
-		
+
 		void CreateCommands()
 		{
 			ShowNextPageCommand = new DelegateCommand(param => ShowNextPage());
@@ -71,12 +71,15 @@ namespace ICSharpCode.PackageManagement
 			SearchCommand = new DelegateCommand(param => Search());
 			UpdateAllPackagesCommand = new DelegateCommand(param => UpdateAllPackages());
 		}
-		
+
 		void TryGetActiveProject()
 		{
-			try {
+			try
+			{
 				project = solution.GetActiveProject();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				errorMessage = ex.Message;
 			}
 		}
@@ -86,43 +89,48 @@ namespace ICSharpCode.PackageManagement
 		public ICommand ShowPageCommand { get; private set; }
 		public ICommand SearchCommand { get; private set; }
 		public ICommand UpdateAllPackagesCommand { get; private set; }
-		
+
 		public void Dispose()
 		{
 			OnDispose();
 			IsDisposed = true;
 		}
-		
+
 		protected virtual void OnDispose()
 		{
 		}
-		
+
 		public bool IsDisposed { get; private set; }
-		
+
 		public bool HasError { get; private set; }
 		public string ErrorMessage { get; private set; }
-		
+
 		public ObservableCollection<PackageViewModel> PackageViewModels { get; set; }
-		
-		public IRegisteredPackageRepositories RegisteredPackageRepositories {
+
+		public IRegisteredPackageRepositories RegisteredPackageRepositories
+		{
 			get { return registeredPackageRepositories; }
 		}
+
 		public bool IsReadingPackages { get; private set; }
-		
+
 		protected void OnPackageChanged(object sender, EventArgs e)
 		{
-			if (IsReadingPackages || (PackageViewModels == null)) {
+			if (IsReadingPackages || (PackageViewModels == null))
+			{
 				return;
 			}
-			
+
 			// refresh all because we don't know if any dependent package is (un)installed
-			foreach (PackageViewModel packageViewModel in PackageViewModels) {
-				if (!IsReadingPackages) {
+			foreach (PackageViewModel packageViewModel in PackageViewModels)
+			{
+				if (!IsReadingPackages)
+				{
 					packageViewModel.PackageChanged();
 				}
 			}
 		}
-		
+
 		public void ReadPackages()
 		{
 			allPackages = null;
@@ -130,7 +138,7 @@ namespace ICSharpCode.PackageManagement
 			UpdateRepositoryBeforeReadPackagesTaskStarts();
 			StartReadPackagesTask();
 		}
-		
+
 		void StartReadPackagesTask()
 		{
 			IsReadingPackages = true;
@@ -140,23 +148,24 @@ namespace ICSharpCode.PackageManagement
 			CreateReadPackagesTask();
 			task.Start();
 		}
-		
+
 		protected virtual void UpdateRepositoryBeforeReadPackagesTaskStarts()
 		{
 		}
-		
+
 		void CancelReadPackagesTask()
 		{
-			if (task != null) {
+			if (task != null)
+			{
 				task.Cancel();
 			}
 		}
-		
+
 		void CreateReadPackagesTask()
 		{
 			var query = new PackagesForSelectedPageQuery(this, allPackages, GetSearchCriteria());
 			packagesForSelectedPageQuery = query;
-			
+
 			task = taskFactory.CreateTask(
 				() => GetPackagesForSelectedPageResult(query),
 				OnPackagesReadForSelectedPage);
@@ -167,34 +176,42 @@ namespace ICSharpCode.PackageManagement
 			IEnumerable<IPackage> packages = GetPackagesForSelectedPage(query);
 			return new PackagesForSelectedPageResult(packages, query);
 		}
-		
+
 		void OnPackagesReadForSelectedPage(ITask<PackagesForSelectedPageResult> task)
 		{
 			IsReadingPackages = false;
-			if (task.IsFaulted) {
+			if (task.IsFaulted)
+			{
 				SaveError(task.Exception);
-			} else if (task.IsCancelled) {
+			}
+			else if (task.IsCancelled)
+			{
 				// Ignore
-			} else if (!IsCurrentQuery(task.Result)) {
+			}
+			else if (!IsCurrentQuery(task.Result))
+			{
 				// Ignore.
-			} else {
+			}
+			else
+			{
 				UpdatePackagesForSelectedPage(task.Result);
 			}
+
 			base.OnPropertyChanged(null);
 		}
-		
+
 		bool IsCurrentQuery(PackagesForSelectedPageResult result)
 		{
 			return packagesForSelectedPageQuery == result.Query;
 		}
-		
+
 		void SaveError(AggregateException ex)
 		{
 			HasError = true;
 			ErrorMessage = GetErrorMessage(ex);
 			ICSharpCode.Core.LoggingService.Debug(ex);
 		}
-		
+
 		string GetErrorMessage(AggregateException ex)
 		{
 			var errorMessage = new AggregateExceptionErrorMessage(ex);
@@ -209,29 +226,31 @@ namespace ICSharpCode.PackageManagement
 			allPackages = result.AllPackages;
 			UpdatePackageViewModels(result.Packages);
 		}
-		
+
 		void PagesChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			StartReadPackagesTask();
 			base.OnPropertyChanged(null);
 		}
-		
+
 		IEnumerable<IPackage> GetPackagesForSelectedPage(PackagesForSelectedPageQuery query)
 		{
 			IEnumerable<IPackage> filteredPackages = GetFilteredPackagesBeforePagingResults(query);
 			return GetPackagesForSelectedPage(filteredPackages, query);
 		}
-		
+
 		IEnumerable<IPackage> GetFilteredPackagesBeforePagingResults(PackagesForSelectedPageQuery query)
 		{
-			if (query.AllPackages == null) {
+			if (query.AllPackages == null)
+			{
 				IQueryable<IPackage> packages = GetPackagesFromPackageSource(query.SearchCriteria);
 				query.TotalPackages = packages.Count();
 				query.AllPackages = GetFilteredPackagesBeforePagingResults(packages);
 			}
+
 			return query.AllPackages;
 		}
-		
+
 		/// <summary>
 		/// Returns the queryable object that will be used to query the NuGet online feed.
 		/// </summary>
@@ -239,34 +258,37 @@ namespace ICSharpCode.PackageManagement
 		{
 			return GetPackagesFromPackageSource(GetSearchCriteria());
 		}
-		
+
 		IQueryable<IPackage> GetPackagesFromPackageSource(string searchCriteria)
 		{
 			IQueryable<IPackage> packages = GetAllPackages(searchCriteria);
 			return OrderPackages(packages);
 		}
-		
+
 		protected virtual IQueryable<IPackage> OrderPackages(IQueryable<IPackage> packages)
 		{
 			return packages
 				.OrderBy(package => package.Id);
 		}
-		
+
 		string GetSearchCriteria()
 		{
-			if (String.IsNullOrWhiteSpace(SearchTerms)) {
+			if (String.IsNullOrWhiteSpace(SearchTerms))
+			{
 				return null;
 			}
+
 			return SearchTerms;
 		}
-		
-		IEnumerable<IPackage> GetPackagesForSelectedPage(IEnumerable<IPackage> allPackages, PackagesForSelectedPageQuery query)
+
+		IEnumerable<IPackage> GetPackagesForSelectedPage(IEnumerable<IPackage> allPackages,
+			PackagesForSelectedPageQuery query)
 		{
 			return allPackages
 				.Skip(query.Skip)
 				.Take(query.Take);
 		}
-		
+
 		/// <summary>
 		/// Returns all the packages.
 		/// </summary>
@@ -274,7 +296,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			return null;
 		}
-		
+
 		/// <summary>
 		/// Allows filtering of the packages before paging the results. Call base class method
 		/// to run default filtering.
@@ -284,193 +306,219 @@ namespace ICSharpCode.PackageManagement
 			IEnumerable<IPackage> bufferedPackages = GetBufferedPackages(allPackages);
 			return bufferedPackages;
 		}
-		
+
 		IEnumerable<IPackage> GetBufferedPackages(IQueryable<IPackage> allPackages)
 		{
 			return allPackages.AsBufferedEnumerable(30);
 		}
-		
+
 		void UpdatePackageViewModels(IEnumerable<IPackage> packages)
 		{
 			IEnumerable<PackageViewModel> currentViewModels = ConvertToPackageViewModels(packages);
 			UpdatePackageViewModels(currentViewModels);
 		}
-		
+
 		void UpdatePackageViewModels(IEnumerable<PackageViewModel> newPackageViewModels)
 		{
 			ClearPackages();
 			PackageViewModels.AddRange(newPackageViewModels);
 		}
-		
+
 		void ClearPackages()
 		{
 			PackageViewModels.Clear();
 		}
-		
+
 		public IEnumerable<PackageViewModel> ConvertToPackageViewModels(IEnumerable<IPackage> packages)
 		{
-			foreach (IPackage package in packages) {
+			foreach (IPackage package in packages)
+			{
 				yield return CreatePackageViewModel(package);
 			}
 		}
-		
+
 		PackageViewModel CreatePackageViewModel(IPackage package)
 		{
 			var repository = registeredPackageRepositories.ActiveRepository;
 			var packageFromRepository = new PackageFromRepository(package, repository);
 			return packageViewModelFactory.CreatePackageViewModel(this, packageFromRepository);
 		}
-		
-		public int SelectedPageNumber {
+
+		public int SelectedPageNumber
+		{
 			get { return pages.SelectedPageNumber; }
-			set {
-				if (pages.SelectedPageNumber != value) {
+			set
+			{
+				if (pages.SelectedPageNumber != value)
+				{
 					pages.SelectedPageNumber = value;
 					StartReadPackagesTask();
 					base.OnPropertyChanged(null);
 				}
 			}
 		}
-		
-		public int PageSize {
+
+		public int PageSize
+		{
 			get { return pages.PageSize; }
 			set { pages.PageSize = value; }
 		}
-		
-		public int ItemsBeforeFirstPage {
+
+		public int ItemsBeforeFirstPage
+		{
 			get { return pages.ItemsBeforeFirstPage; }
 		}
-		
-		public bool IsPaged {
+
+		public bool IsPaged
+		{
 			get { return pages.IsPaged; }
 		}
-		
-		public ObservableCollection<Page> Pages {
+
+		public ObservableCollection<Page> Pages
+		{
 			get { return pages; }
 		}
-		
-		public bool HasPreviousPage {
+
+		public bool HasPreviousPage
+		{
 			get { return pages.HasPreviousPage; }
 		}
-		
-		public bool HasNextPage {
+
+		public bool HasNextPage
+		{
 			get { return pages.HasNextPage; }
 		}
-		
-		public int MaximumSelectablePages {
+
+		public int MaximumSelectablePages
+		{
 			get { return pages.MaximumSelectablePages; }
 			set { pages.MaximumSelectablePages = value; }
 		}
-		
+
 		public int TotalItems { get; private set; }
-		
+
 		public void ShowNextPage()
 		{
 			SelectedPageNumber += 1;
 		}
-		
+
 		public void ShowPreviousPage()
 		{
 			SelectedPageNumber -= 1;
 		}
-		
+
 		void ExecuteShowPageCommand(object param)
 		{
 			int pageNumber = (int)param;
 			ShowPage(pageNumber);
 		}
-		
+
 		public void ShowPage(int pageNumber)
 		{
 			SelectedPageNumber = pageNumber;
 		}
-		
+
 		public bool IsSearchable { get; set; }
-		
+
 		public string SearchTerms { get; set; }
-		
+
 		public void Search()
 		{
 			ReadPackages();
 			OnPropertyChanged(null);
 		}
-		
+
 		public bool ShowPackageSources { get; set; }
-		
-		public IEnumerable<PackageSource> PackageSources {
-			get {
-				foreach (PackageSource packageSource in registeredPackageRepositories.PackageSources.GetEnabledPackageSources()) {
+
+		public IEnumerable<PackageSource> PackageSources
+		{
+			get
+			{
+				foreach (PackageSource packageSource in registeredPackageRepositories.PackageSources
+					         .GetEnabledPackageSources())
+				{
 					yield return packageSource;
 				}
-				if (registeredPackageRepositories.PackageSources.HasMultipleEnabledPackageSources) {
+
+				if (registeredPackageRepositories.PackageSources.HasMultipleEnabledPackageSources)
+				{
 					yield return RegisteredPackageSourceSettings.AggregatePackageSource;
 				}
 			}
 		}
-		
-		public PackageSource SelectedPackageSource {
+
+		public PackageSource SelectedPackageSource
+		{
 			get { return registeredPackageRepositories.ActivePackageSource; }
-			set {
-				if (registeredPackageRepositories.ActivePackageSource != value) {
+			set
+			{
+				if (registeredPackageRepositories.ActivePackageSource != value)
+				{
 					registeredPackageRepositories.ActivePackageSource = value;
 					ReadPackages();
 					OnPropertyChanged(null);
 				}
 			}
 		}
-		
+
 		public bool ShowUpdateAllPackages { get; set; }
-		
-		public bool IsUpdateAllPackagesEnabled {
-			get {
-				return ShowUpdateAllPackages && (TotalItems > 1);
-			}
+
+		public bool IsUpdateAllPackagesEnabled
+		{
+			get { return ShowUpdateAllPackages && (TotalItems > 1); }
 		}
-		
+
 		void UpdateAllPackages()
 		{
-			try {
+			try
+			{
 				packageViewModelFactory.PackageManagementEvents.OnPackageOperationsStarting();
 				TryUpdatingAllPackages();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				ReportError(ex);
 				LogError(ex);
 			}
 		}
-		
+
 		void LogError(Exception ex)
 		{
 			packageViewModelFactory
 				.Logger
 				.Log(MessageLevel.Error, ex.ToString());
 		}
-		
+
 		void ReportError(Exception ex)
 		{
 			packageViewModelFactory
 				.PackageManagementEvents
 				.OnPackageOperationError(ex);
 		}
-		
+
 		protected virtual void TryUpdatingAllPackages()
 		{
 		}
-		
-		protected IPackageActionRunner ActionRunner {
+
+		protected IPackageActionRunner ActionRunner
+		{
 			get { return packageViewModelFactory.PackageActionRunner; }
 		}
-		
-		public bool IncludePrerelease {
+
+		public bool IncludePrerelease
+		{
 			get { return includePrerelease; }
-			set {
-				if (includePrerelease != value) {
+			set
+			{
+				if (includePrerelease != value)
+				{
 					includePrerelease = value;
 					ReadPackages();
 					OnPropertyChanged(null);
 				}
 			}
 		}
-		
+
 		public bool ShowPrerelease { get; set; }
 	}
 }

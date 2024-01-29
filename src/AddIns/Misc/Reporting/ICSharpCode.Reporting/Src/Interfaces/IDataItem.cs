@@ -25,12 +25,12 @@ namespace ICSharpCode.Reporting.Interfaces
 	/// </summary>
 	public interface IDataItem
 	{
-		
 		string ColumnName { get; set; }
+
 //		string MappingName { get; }
 //		string BaseTableName { get; set; }
-		string DBValue {get;set;}
-		string Name {get;set;}
-		string DataType {get;set;}
+		string DBValue { get; set; }
+		string Name { get; set; }
+		string DataType { get; set; }
 	}
 }

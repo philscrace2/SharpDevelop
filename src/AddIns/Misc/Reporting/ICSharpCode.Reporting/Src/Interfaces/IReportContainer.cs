@@ -24,8 +24,8 @@ namespace ICSharpCode.Reporting.Interfaces
 	/// <summary>
 	/// Description of IReportContainer.
 	/// </summary>
-	public interface IReportContainer :IPrintableObject
+	public interface IReportContainer : IPrintableObject
 	{
-		 List<IPrintableObject> Items {get;}
+		List<IPrintableObject> Items { get; }
 	}
 }

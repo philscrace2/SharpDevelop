@@ -29,15 +29,16 @@ namespace ICSharpCode.PackageManagement.Design
 			AddDesignTimePackages();
 			ActivePackageSource = new PackageSource("http://nuget.org", "NuGet Official Package Source");
 		}
-		
+
 		void AddDesignTimePackages()
 		{
-			for (int i = 0; i < 5; ++i) {
+			for (int i = 0; i < 5; ++i)
+			{
 				FakePackage package = CreatePackage(i);
 				FakeActiveRepository.FakePackages.Add(package);
 			}
 		}
-		
+
 		FakePackage CreatePackage(int i)
 		{
 			var package = new FakePackage();
@@ -57,8 +58,10 @@ namespace ICSharpCode.PackageManagement.Design
 			package.LastUpdated = new DateTime(2011, 1, 2);
 			package.AddAuthor("A User");
 			package.AddAuthor("B User");
-			package.AddDependency("NuGet.Package." + i, SemanticVersion.Parse("1.0.0.1"), SemanticVersion.Parse("1.2.0.2"));
-			package.AddDependency("NuGet.Package." + i + 1, SemanticVersion.Parse("1.2.0.2"), SemanticVersion.Parse("2.2.0.0"));
+			package.AddDependency("NuGet.Package." + i, SemanticVersion.Parse("1.0.0.1"),
+				SemanticVersion.Parse("1.2.0.2"));
+			package.AddDependency("NuGet.Package." + i + 1, SemanticVersion.Parse("1.2.0.2"),
+				SemanticVersion.Parse("2.2.0.0"));
 			return package;
 		}
 	}

@@ -28,17 +28,21 @@ namespace ICSharpCode.PackageManagement
 		{
 			InitializeComponent();
 		}
-		
+
 		public override bool SaveOptions()
 		{
-			try {
+			try
+			{
 				var viewModel = DataContext as PackageManagementOptionsViewModel;
 				viewModel.SaveOptions();
 				return true;
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				LoggingService.Error("Unable to save NuGet.config changes", ex);
 				MessageServiceExtensions.ShowNuGetConfigFileSaveError("Unable to save package management options.");
 			}
+
 			return false;
 		}
 	}

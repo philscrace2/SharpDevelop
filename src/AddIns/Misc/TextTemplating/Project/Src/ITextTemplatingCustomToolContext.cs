@@ -25,12 +25,12 @@ namespace ICSharpCode.TextTemplating
 	public interface ITextTemplatingCustomToolContext
 	{
 		FileProjectItem EnsureOutputFileIsInProject(FileProjectItem baseItem, string outputFileName);
-		
+
 		void ClearTasksExceptCommentTasks();
 		void AddTask(SDTask task);
 		void BringErrorsPadToFront();
 		void DebugLog(string message, Exception ex);
-		
+
 		void SetLogicalCallContextData(string name, object data);
 	}
 }

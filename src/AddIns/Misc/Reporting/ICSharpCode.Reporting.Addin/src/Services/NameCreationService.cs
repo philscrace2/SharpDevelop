@@ -3,9 +3,10 @@
  * User: Peter Forstmeier
  * Date: 16.03.2014
  * Time: 17:57
- * 
+ *
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
 using System;
 using System.ComponentModel;
 using System.ComponentModel.Design.Serialization;
@@ -16,7 +17,7 @@ namespace ICSharpCode.Reporting.Addin.Services
 	/// <summary>
 	/// Description of NameCreationService.
 	/// </summary>
-	public class NameCreationService: INameCreationService
+	public class NameCreationService : INameCreationService
 	{
 		public NameCreationService()
 		{
@@ -24,7 +25,6 @@ namespace ICSharpCode.Reporting.Addin.Services
 
 		string INameCreationService.CreateName(IContainer container, Type type)
 		{
-			
 			var cc = container.Components;
 			int min = Int32.MaxValue;
 			int max = Int32.MinValue;
@@ -38,7 +38,7 @@ namespace ICSharpCode.Reporting.Addin.Services
 					count++;
 
 					string name = comp.Site.Name;
-					if(name.StartsWith(type.Name,StringComparison.InvariantCultureIgnoreCase))
+					if (name.StartsWith(type.Name, StringComparison.InvariantCultureIgnoreCase))
 					{
 						try
 						{
@@ -50,13 +50,13 @@ namespace ICSharpCode.Reporting.Addin.Services
 							if (value > max)
 								max = value;
 						}
-                        catch (Exception ex)
-                        {
-                            Trace.WriteLine(ex.ToString());
-                        }
-                    }
+						catch (Exception ex)
+						{
+							Trace.WriteLine(ex.ToString());
+						}
+					}
 				}
-			}// for
+			} // for
 
 			if (count == 0)
 				return type.Name + "1";
@@ -67,18 +67,19 @@ namespace ICSharpCode.Reporting.Addin.Services
 
 				return type.Name + j.ToString();
 			}
-			else 
+			else
 			{
 				int j = max + 1;
 
 				return type.Name + j.ToString();
 			}
 		}
-		
+
 		bool INameCreationService.IsValidName(string name)
 		{
 			return true;
 		}
+
 		void INameCreationService.ValidateName(string name)
 		{
 			return;

@@ -24,21 +24,24 @@ namespace ICSharpCode.PackageManagement
 	public class PackageLicenseViewModel : ViewModelBase<PackageLicenseViewModel>
 	{
 		IPackage package;
-		
+
 		public PackageLicenseViewModel(IPackage package)
 		{
 			this.package = package;
 		}
-		
-		public string Id {
+
+		public string Id
+		{
 			get { return package.Id; }
 		}
-		
-		public string Summary {
+
+		public string Summary
+		{
 			get { return package.SummaryOrDescription(); }
 		}
-		
-		public Uri LicenseUrl {
+
+		public Uri LicenseUrl
+		{
 			get { return package.LicenseUrl; }
 		}
 	}

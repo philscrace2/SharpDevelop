@@ -28,7 +28,7 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 	{
 		IPackageManagementProjectService projectService;
 		IPackageInitializationScriptsFactory scriptsFactory;
-		
+
 		public InvokeInitializePackagesCmdlet()
 			: this(
 				PackageManagementServices.ProjectService,
@@ -37,7 +37,7 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 				null)
 		{
 		}
-		
+
 		public InvokeInitializePackagesCmdlet(
 			IPackageManagementProjectService projectService,
 			IPackageInitializationScriptsFactory scriptsFactory,
@@ -48,27 +48,28 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 			this.projectService = projectService;
 			this.scriptsFactory = scriptsFactory;
 		}
-		
+
 		protected override void ProcessRecord()
 		{
 			UpdateWorkingDirectory();
 			RunPackageInitializationScripts();
 		}
-		
+
 		void UpdateWorkingDirectory()
 		{
 			string command = "Invoke-UpdateWorkingDirectory";
 			InvokeScript(command);
 		}
-		
+
 		void RunPackageInitializationScripts()
 		{
 			IPackageInitializationScripts scripts = GetPackageInitializationScripts();
-			if (scripts.Any()) {
+			if (scripts.Any())
+			{
 				scripts.Run(this);
 			}
 		}
-		
+
 		IPackageInitializationScripts GetPackageInitializationScripts()
 		{
 			ISolution solution = projectService.OpenSolution;

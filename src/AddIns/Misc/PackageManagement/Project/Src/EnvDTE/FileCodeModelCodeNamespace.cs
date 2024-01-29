@@ -32,12 +32,12 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		NamespaceName namespaceName;
 		CodeElementsList<CodeElement> members = new CodeElementsList<CodeElement>();
-		
+
 		public FileCodeModelCodeNamespace(CodeModelContext context, string namespaceName)
 			: this(context, new NamespaceName(namespaceName))
 		{
 		}
-		
+
 		FileCodeModelCodeNamespace(CodeModelContext context, NamespaceName namespaceName)
 		{
 			this.context = context;
@@ -45,33 +45,39 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			this.InfoLocation = global::EnvDTE.vsCMInfoLocation.vsCMInfoLocationExternal;
 			this.Language = context.CurrentProject.GetCodeModelLanguage();
 		}
-		
-		public override global::EnvDTE.vsCMInfoLocation InfoLocation {
+
+		public override global::EnvDTE.vsCMInfoLocation InfoLocation
+		{
 			get { return global::EnvDTE.vsCMInfoLocation.vsCMInfoLocationProject; }
 		}
-		
-		public global::EnvDTE.CodeElements Members {
+
+		public global::EnvDTE.CodeElements Members
+		{
 			get { return members; }
 		}
-		
+
 		internal void AddMember(CodeElement member)
 		{
 			members.Add(member);
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementNamespace; }
 		}
-		
-		internal NamespaceName NamespaceName {
+
+		internal NamespaceName NamespaceName
+		{
 			get { return namespaceName; }
 		}
-		
-		public string FullName {
+
+		public string FullName
+		{
 			get { return namespaceName.QualifiedName; }
 		}
-		
-		public override string Name {
+
+		public override string Name
+		{
 			get { return FullName; }
 		}
 	}

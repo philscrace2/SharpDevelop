@@ -28,47 +28,53 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		protected readonly IAttribute attribute;
 		const string AttributeEndName = "Attribute";
-		
+
 		public CodeAttribute()
 		{
 		}
-		
+
 		public CodeAttribute(CodeModelContext context, IAttribute attribute)
 			: base(context)
 		{
 			this.attribute = attribute;
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementAttribute; }
 		}
-		
-		public override string Name {
+
+		public override string Name
+		{
 			get { return GetShortName(attribute.AttributeType.Name); }
 		}
-		
+
 		string GetShortName(string name)
 		{
-			if (name.EndsWith(AttributeEndName)) {
+			if (name.EndsWith(AttributeEndName))
+			{
 				return name.Substring(0, name.Length - AttributeEndName.Length);
 			}
+
 			return name;
 		}
-		
-		public virtual string FullName {
+
+		public virtual string FullName
+		{
 			get { return attribute.AttributeType.FullName; }
 		}
-		
-		public virtual string Value {
+
+		public virtual string Value
+		{
 			get { return GetValue(); }
 			set { }
 		}
-		
+
 		string GetValue()
 		{
 			return String.Join(", ", GetArgumentValues());
 		}
-		
+
 		string[] GetArgumentValues()
 		{
 			return attribute
@@ -76,7 +82,7 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 				.Select(arg => GetArgumentValue(arg))
 				.ToArray();
 		}
-		
+
 		string GetArgumentValue(ResolveResult argument)
 		{
 			return new CodeAttributeArgument(String.Empty, argument).Value;

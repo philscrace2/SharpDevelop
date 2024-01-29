@@ -25,17 +25,17 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		public SourceControl()
 		{
 		}
-		
+
 		public bool IsItemCheckedOut(string itemName)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public bool IsItemUnderSCC(string itemName)
 		{
 			throw new NotImplementedException();
 		}
-		
+
 		public bool CheckOutItem(string itemName)
 		{
 			throw new NotImplementedException();

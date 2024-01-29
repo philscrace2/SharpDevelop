@@ -27,31 +27,24 @@ namespace ICSharpCode.AddInManager2.Model
 		{
 			this.Message = new PackageOperationMessage(level, message, args);
 		}
-		
-		public PackageOperationMessage Message
-		{
-			get;
-			private set;
-		}
+
+		public PackageOperationMessage Message { get; private set; }
 	}
-	
+
 	public class PackageOperationMessage
 	{
 		string message;
 		object[] args;
-		
+
 		public PackageOperationMessage(MessageLevel level, string message, params object[] args)
 		{
 			this.Level = level;
 			this.message = message;
 			this.args = args;
 		}
-		
-		public MessageLevel Level
-		{
-			get; private set;
-		}
-		
+
+		public MessageLevel Level { get; private set; }
+
 		public override string ToString()
 		{
 			return String.Format(message, args);

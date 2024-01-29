@@ -29,56 +29,55 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of BaseTextItem.
 	/// </summary>
-	public interface  ITextItem:IPrintableObject
+	public interface ITextItem : IPrintableObject
 	{
-		Font Font {get;set;}
-		string Text {get;set;}
-		ContentAlignment ContentAlignment {get;set;}
-		TextAlignment TextAlignment {get;set;}
-		string FormatString {get;set;}
-		string DataType {get;set;}
-		
+		Font Font { get; set; }
+		string Text { get; set; }
+		ContentAlignment ContentAlignment { get; set; }
+		TextAlignment TextAlignment { get; set; }
+		string FormatString { get; set; }
+		string DataType { get; set; }
 	}
-	
-	public class BaseTextItem:PrintableItem,ITextItem
+
+	public class BaseTextItem : PrintableItem, ITextItem
 	{
-		public BaseTextItem(){
+		public BaseTextItem()
+		{
 			Name = "BaseTextItem";
 			Font = GlobalValues.DefaultFont;
 			Size = GlobalValues.PreferedSize;
 		}
 
-		
-		
-		public Font Font {get;set;}
-		
-		public string Text {get;set;}
-		
-		public string FormatString {get;set;}
-		
-		[Obsolete ("Use TextAlignment")]
-		public ContentAlignment ContentAlignment {get;set;}
-		
-		public TextAlignment TextAlignment {get;set;}
+
+		public Font Font { get; set; }
+
+		public string Text { get; set; }
+
+		public string FormatString { get; set; }
+
+		[Obsolete("Use TextAlignment")] public ContentAlignment ContentAlignment { get; set; }
+
+		public TextAlignment TextAlignment { get; set; }
 
 
 		string dataType;
-		
-		public string DataType 
+
+		public string DataType
 		{
-			get {
-				if (String.IsNullOrEmpty(this.dataType)) {
+			get
+			{
+				if (String.IsNullOrEmpty(this.dataType))
+				{
 					this.dataType = typeof(System.String).ToString();
 				}
+
 				return dataType;
 			}
-			set {
-				dataType = value;
-			}
+			set { dataType = value; }
 		}
-		
-		
-		public override  IExportColumn CreateExportColumn()
+
+
+		public override IExportColumn CreateExportColumn()
 		{
 			var export = new ExportText();
 			export.ToExportItem(this);
@@ -89,6 +88,6 @@ namespace ICSharpCode.Reporting.Items
 			export.TextAlignment = TextAlignment;
 			export.DataType = DataType;
 			return export;
-		}	
+		}
 	}
 }

@@ -19,21 +19,21 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
 using ICSharpCode.SharpDevelop.Gui.XmlForms;
 
-namespace Plugins.RegExpTk {
+namespace Plugins.RegExpTk
+{
 	// TODO: remove XmlForms
-	#pragma warning disable 618
+#pragma warning disable 618
 	public class GroupForm : BaseSharpDevelopForm
 	{
 		public GroupForm(Match match)
 		{
 			SetupFromXmlStream(this.GetType().Assembly.GetManifestResourceStream("Resources.RegExpTkGroupForm.xfrm"));
-			
+
 			ListView groupsListView = (ListView)ControlDictionary["GroupsListView"];
 			((Button)ControlDictionary["CloseButton"]).Click += new EventHandler(CloseButton_Click);
-			foreach(Group group in match.Groups)
+			foreach (Group group in match.Groups)
 			{
 				ListViewItem groupItem = groupsListView.Items.Add(group.Value);
 				groupItem.SubItems.Add(group.Index.ToString());
@@ -41,11 +41,10 @@ namespace Plugins.RegExpTk {
 				groupItem.SubItems.Add(group.Length.ToString());
 			}
 		}
-		
+
 		void CloseButton_Click(object sender, EventArgs e)
 		{
 			Close();
 		}
 	}
-
 }

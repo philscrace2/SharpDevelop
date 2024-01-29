@@ -28,26 +28,35 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: base(context, parameter)
 		{
 		}
-		
-		public virtual global::EnvDTE.vsCMParameterKind ParameterKind {
+
+		public virtual global::EnvDTE.vsCMParameterKind ParameterKind
+		{
 			get { return GetParameterKind(); }
 		}
-		
+
 		global::EnvDTE.vsCMParameterKind GetParameterKind()
 		{
-			global::EnvDTE.vsCMParameterKind kind =  global::EnvDTE.vsCMParameterKind.vsCMParameterKindNone;
-			if (parameter.IsOptional) {
+			global::EnvDTE.vsCMParameterKind kind = global::EnvDTE.vsCMParameterKind.vsCMParameterKindNone;
+			if (parameter.IsOptional)
+			{
 				return global::EnvDTE.vsCMParameterKind.vsCMParameterKindOptional;
 			}
-			if (parameter.IsOut) {
+
+			if (parameter.IsOut)
+			{
 				return global::EnvDTE.vsCMParameterKind.vsCMParameterKindOut;
 			}
-			if (parameter.IsRef) {
+
+			if (parameter.IsRef)
+			{
 				return global::EnvDTE.vsCMParameterKind.vsCMParameterKindRef;
 			}
-			if (parameter.IsParams) {
+
+			if (parameter.IsParams)
+			{
 				return global::EnvDTE.vsCMParameterKind.vsCMParameterKindParamArray;
 			}
+
 			return kind;
 		}
 	}

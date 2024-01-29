@@ -21,7 +21,7 @@ using System;
 namespace ICSharpCode.PackageManagement
 {
 	public class Process : IProcess
-	{	
+	{
 		public void Start(string fileName)
 		{
 			System.Diagnostics.Process.Start(fileName);

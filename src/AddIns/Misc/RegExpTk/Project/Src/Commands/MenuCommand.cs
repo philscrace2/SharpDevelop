@@ -21,8 +21,8 @@ using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Gui;
 
-namespace Plugins.RegExpTk {
-	
+namespace Plugins.RegExpTk
+{
 	public class RegExpTkCommand : AbstractMenuCommand
 	{
 		public override void Run()

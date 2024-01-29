@@ -43,7 +43,7 @@ namespace ICSharpCode.UsageDataCollector
 			FoldingManager foldingManager = FoldingManager.Install(textEditor.TextArea);
 			new XmlFoldingStrategy().UpdateFoldings(foldingManager, textEditor.Document);
 		}
-		
+
 		void Button_Click(object sender, RoutedEventArgs e)
 		{
 			Close();

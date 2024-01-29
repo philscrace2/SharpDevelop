@@ -26,13 +26,12 @@ namespace ICSharpCode.StartPage
 	public class StartPageViewContent : AbstractViewContent
 	{
 		StartPageControl content = new StartPageControl();
-		
-		public override object Control {
-			get {
-				return content;
-			}
+
+		public override object Control
+		{
+			get { return content; }
 		}
-		
+
 		public StartPageViewContent()
 		{
 			SetLocalizedTitle("${res:StartPage.StartPageContentName}");

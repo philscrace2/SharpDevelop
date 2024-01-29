@@ -28,40 +28,53 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: base(context, typeDefinition)
 		{
 		}
-		
-		public global::EnvDTE.CodeElements PartialClasses {
-			get {
+
+		public global::EnvDTE.CodeElements PartialClasses
+		{
+			get
+			{
 				var partialClasses = new CodeElementsList<CodeType>();
 				partialClasses.Add(this);
 				return partialClasses;
 			}
 		}
-		
-		public bool IsGeneric {
+
+		public bool IsGeneric
+		{
 			get { return typeDefinition.FullTypeName.TypeParameterCount > 0; }
 		}
-		
-		public global::EnvDTE.vsCMClassKind ClassKind {
-			get {
-				if (typeDefinition.Parts.First().IsPartial) {
+
+		public global::EnvDTE.vsCMClassKind ClassKind
+		{
+			get
+			{
+				if (typeDefinition.Parts.First().IsPartial)
+				{
 					return global::EnvDTE.vsCMClassKind.vsCMClassKindPartialClass;
 				}
+
 				return global::EnvDTE.vsCMClassKind.vsCMClassKindMainClass;
 			}
-			set {
-				if (value == ClassKind) {
+			set
+			{
+				if (value == ClassKind)
+				{
 					return;
 				}
-				
-				if (value == global::EnvDTE.vsCMClassKind.vsCMClassKindPartialClass) {
+
+				if (value == global::EnvDTE.vsCMClassKind.vsCMClassKindPartialClass)
+				{
 					context.CodeGenerator.MakePartial(typeDefinition);
-				} else {
+				}
+				else
+				{
 					throw new NotImplementedException();
 				}
 			}
 		}
-		
-		public bool IsAbstract {
+
+		public bool IsAbstract
+		{
 			get { return typeDefinition.IsAbstract; }
 		}
 	}

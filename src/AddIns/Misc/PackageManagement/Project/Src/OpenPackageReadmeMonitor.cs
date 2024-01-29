@@ -27,12 +27,12 @@ namespace ICSharpCode.PackageManagement
 	{
 		IPackageManagementProject project;
 		IPackageManagementFileService fileService;
-		
+
 		public OpenPackageReadMeMonitor(string packageId, IPackageManagementProject project)
 			: this(packageId, project, new PackageManagementFileService())
 		{
 		}
-		
+
 		public OpenPackageReadMeMonitor(
 			string packageId,
 			IPackageManagementProject project,
@@ -43,31 +43,33 @@ namespace ICSharpCode.PackageManagement
 			this.fileService = fileService;
 			project.PackageInstalled += PackageInstalled;
 		}
-		
+
 		public string PackageId { get; private set; }
 		public bool IsDisposed { get; private set; }
-		
+
 		string ReadMeFile { get; set; }
-		
+
 		public void Dispose()
 		{
-			if (IsDisposed) {
+			if (IsDisposed)
+			{
 				return;
 			}
-			
+
 			IsDisposed = true;
 			project.PackageInstalled -= PackageInstalled;
 		}
-		
+
 		void PackageInstalled(object sender, PackageOperationEventArgs e)
 		{
-			if (e.Package.Id != PackageId) {
+			if (e.Package.Id != PackageId)
+			{
 				return;
 			}
-			
+
 			ReadMeFile = FindReadMeFileInPackage(e.InstallPath, e.Package);
 		}
-		
+
 		string FindReadMeFileInPackage(string installPath, IPackage package)
 		{
 			return package.GetFiles()
@@ -75,10 +77,11 @@ namespace ICSharpCode.PackageManagement
 				.Select(file => Path.Combine(installPath, file.Path))
 				.FirstOrDefault();
 		}
-		
+
 		public void OpenReadMeFile()
 		{
-			if ((ReadMeFile != null) && fileService.FileExists(ReadMeFile)) {
+			if ((ReadMeFile != null) && fileService.FileExists(ReadMeFile))
+			{
 				fileService.OpenFile(ReadMeFile);
 			}
 		}

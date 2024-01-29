@@ -21,7 +21,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-
 using ICSharpCode.Core;
 using ICSharpCode.Core.Presentation;
 using ICSharpCode.SharpDevelop;
@@ -34,14 +33,14 @@ namespace SearchAndReplace
 	{
 		Button stopButton;
 		bool finished;
-		
+
 		public ObserverSearchResult(string title)
 		{
 			rootNode = new SearchRootNode(title, new List<SearchResultMatch>());
 		}
-		
+
 		public IDisposable Registration { get; set; }
-		
+
 		public override object GetControl()
 		{
 			SD.MainThread.VerifyAccess();
@@ -51,72 +50,90 @@ namespace SearchAndReplace
 			resultsTreeViewInstance.ItemsSource = new object[] { rootNode };
 			return resultsTreeViewInstance;
 		}
-		
+
 		public override void OnDeactivate()
 		{
 			if (!finished)
 				StopButtonClick(null, null);
 			base.OnDeactivate();
 		}
-		
+
 		public override IList GetToolbarItems()
 		{
 			var items = base.GetToolbarItems();
-			
-			if (!finished) {
-				stopButton = new Button { Content = new Image { Height = 16, Source = PresentationResourceService.GetBitmapSource("Icons.16x16.Debug.StopProcess") } };
+
+			if (!finished)
+			{
+				stopButton = new Button
+				{
+					Content = new Image
+					{
+						Height = 16,
+						Source = PresentationResourceService.GetBitmapSource("Icons.16x16.Debug.StopProcess")
+					}
+				};
 				stopButton.Click += StopButtonClick;
-				
+
 				items.Add(stopButton);
 			}
-			
+
 			return items;
 		}
-		
+
 		void StopButtonClick(object sender, RoutedEventArgs e)
 		{
-			try {
+			try
+			{
 				stopButton.Visibility = Visibility.Hidden;
 				if (Registration != null) Registration.Dispose();
-			} finally {
+			}
+			finally
+			{
 				rootNode.WasCancelled = true;
 				finished = true;
 			}
 		}
-		
+
 		void IObserver<SearchedFile>.OnNext(SearchedFile value)
 		{
 			rootNode.Add(value);
 		}
-		
+
 		void IObserver<SearchedFile>.OnError(Exception error)
 		{
 			if (error == null)
 				throw new ArgumentNullException("error");
 			// flatten AggregateException and
 			// filter OperationCanceledException
-			try {
+			try
+			{
 				if (error is AggregateException)
 					((AggregateException)error).Flatten().Handle(ex => ex is OperationCanceledException);
 				else if (!(error is OperationCanceledException))
 					MessageService.ShowException(error);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				MessageService.ShowException(ex);
 			}
+
 			OnCompleted();
 		}
-		
+
 		void OnCompleted()
 		{
-			try {
+			try
+			{
 				stopButton.Visibility = Visibility.Collapsed;
 				if (Registration != null)
 					Registration.Dispose();
-			} finally {
+			}
+			finally
+			{
 				finished = true;
 			}
 		}
-		
+
 		void IObserver<SearchedFile>.OnCompleted()
 		{
 			OnCompleted();

@@ -26,15 +26,15 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of BaseRectangleItem.
 	/// </summary>
-	public class BaseRectangleItem:BaseGraphics,IReportContainer
+	public class BaseRectangleItem : BaseGraphics, IReportContainer
 	{
 		public BaseRectangleItem()
 		{
 			Items = new List<IPrintableObject>();
 			CornerRadius = 0;
 		}
-		
-		
+
+
 		public override IExportColumn CreateExportColumn()
 		{
 			var ex = new ExportRectangle();
@@ -50,10 +50,9 @@ namespace ICSharpCode.Reporting.Items
 			ex.EndLineCap = EndLineCap;
 			return ex;
 		}
-		
+
 		public int CornerRadius { get; set; }
-		
-		public List<IPrintableObject> Items {get;private set;}
-			
+
+		public List<IPrintableObject> Items { get; private set; }
 	}
 }

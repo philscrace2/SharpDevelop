@@ -24,59 +24,70 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	public class CodeProperty : CodeElement, global::EnvDTE.CodeProperty
 	{
 		protected readonly IProperty property;
-		
+
 		public CodeProperty()
 		{
 		}
-		
+
 		public CodeProperty(CodeModelContext context, IProperty property)
 			: base(context, property)
 		{
 			this.property = property;
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementProperty; }
 		}
-		
-		public virtual global::EnvDTE.vsCMAccess Access {
+
+		public virtual global::EnvDTE.vsCMAccess Access
+		{
 			get { return property.Accessibility.ToAccess(); }
 			set { }
 		}
-		
-		public virtual global::EnvDTE.CodeClass Parent {
+
+		public virtual global::EnvDTE.CodeClass Parent
+		{
 			get { return new CodeClass(context, property.DeclaringTypeDefinition); }
 		}
-		
-		public virtual global::EnvDTE.CodeElements Attributes {
+
+		public virtual global::EnvDTE.CodeElements Attributes
+		{
 			get { return GetAttributes(property); }
 		}
-		
-		public virtual global::EnvDTE.CodeTypeRef Type {
+
+		public virtual global::EnvDTE.CodeTypeRef Type
+		{
 			get { return new CodeTypeRef2(context, this, property.ReturnType); }
 		}
-		
-		public virtual global::EnvDTE.CodeFunction Getter {
+
+		public virtual global::EnvDTE.CodeFunction Getter
+		{
 			get { return GetGetter(); }
 		}
-		
+
 		CodeFunction GetGetter()
 		{
-			if (property.CanGet) {
+			if (property.CanGet)
+			{
 				return new CodeFunction2(context, property.Getter);
 			}
+
 			return null;
 		}
-		
-		public virtual global::EnvDTE.CodeFunction Setter {
+
+		public virtual global::EnvDTE.CodeFunction Setter
+		{
 			get { return GetSetter(); }
 		}
-		
+
 		CodeFunction GetSetter()
 		{
-			if (property.CanSet) {
+			if (property.CanSet)
+			{
 				return new CodeFunction2(context, property.Setter);
 			}
+
 			return null;
 		}
 	}

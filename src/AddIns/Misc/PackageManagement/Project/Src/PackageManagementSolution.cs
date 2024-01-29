@@ -30,7 +30,7 @@ namespace ICSharpCode.PackageManagement
 		IPackageManagementProjectService projectService;
 		IPackageManagementProjectFactory projectFactory;
 		ISolutionPackageRepositoryFactory solutionPackageRepositoryFactory;
-		
+
 		public PackageManagementSolution(
 			IRegisteredPackageRepositories registeredPackageRepositories,
 			IPackageManagementEvents packageManagementEvents)
@@ -41,7 +41,7 @@ namespace ICSharpCode.PackageManagement
 				new SolutionPackageRepositoryFactory())
 		{
 		}
-		
+
 		public PackageManagementSolution(
 			IRegisteredPackageRepositories registeredPackageRepositories,
 			IPackageManagementProjectService projectService,
@@ -53,121 +53,130 @@ namespace ICSharpCode.PackageManagement
 			this.projectService = projectService;
 			this.solutionPackageRepositoryFactory = solutionPackageRepositoryFactory;
 		}
-		
-		public string FileName {
+
+		public string FileName
+		{
 			get { return OpenSolution.FileName; }
 		}
-		
-		ISolution OpenSolution {
+
+		ISolution OpenSolution
+		{
 			get { return projectService.OpenSolution; }
 		}
-		
+
 		public IPackageManagementProject GetActiveProject()
 		{
-			if (HasActiveProject()) {
+			if (HasActiveProject())
+			{
 				return GetActiveProject(ActivePackageRepository);
 			}
+
 			return null;
 		}
-		
+
 		bool HasActiveProject()
 		{
 			return GetActiveMSBuildBasedProject() != null;
 		}
-		
+
 		public IProject GetActiveMSBuildProject()
 		{
 			return projectService.CurrentProject;
 		}
-		
-		IPackageRepository ActivePackageRepository {
+
+		IPackageRepository ActivePackageRepository
+		{
 			get { return registeredPackageRepositories.ActiveRepository; }
 		}
-		
+
 		public IPackageManagementProject GetActiveProject(IPackageRepository sourceRepository)
 		{
 			MSBuildBasedProject activeProject = GetActiveMSBuildBasedProject();
-			if (activeProject != null) {
+			if (activeProject != null)
+			{
 				return CreateProject(sourceRepository, activeProject);
 			}
+
 			return null;
 		}
-		
+
 		MSBuildBasedProject GetActiveMSBuildBasedProject()
 		{
 			return GetActiveMSBuildProject() as MSBuildBasedProject;
 		}
-		
+
 		IPackageManagementProject CreateProject(IPackageRepository sourceRepository, MSBuildBasedProject project)
 		{
 			return projectFactory.CreateProject(sourceRepository, project);
 		}
-		
+
 		IPackageRepository CreatePackageRepository(PackageSource source)
 		{
 			return registeredPackageRepositories.CreateRepository(source);
 		}
-		
+
 		public IPackageManagementProject GetProject(PackageSource source, string projectName)
 		{
 			MSBuildBasedProject msbuildProject = GetMSBuildProject(projectName);
 			return CreateProject(source, msbuildProject);
 		}
-		
+
 		MSBuildBasedProject GetMSBuildProject(string name)
 		{
 			var openProjects = new OpenMSBuildProjects(projectService);
 			return openProjects.FindProject(name);
 		}
-		
+
 		IPackageManagementProject CreateProject(PackageSource source, MSBuildBasedProject project)
 		{
 			IPackageRepository sourceRepository = CreatePackageRepository(source);
 			return CreateProject(sourceRepository, project);
 		}
-		
+
 		public IPackageManagementProject GetProject(IPackageRepository sourceRepository, string projectName)
 		{
 			MSBuildBasedProject msbuildProject = GetMSBuildProject(projectName);
 			return CreateProject(sourceRepository, msbuildProject);
 		}
-		
+
 		public IPackageManagementProject GetProject(IPackageRepository sourceRepository, IProject project)
 		{
 			var msbuildProject = project as MSBuildBasedProject;
 			return CreateProject(sourceRepository, msbuildProject);
 		}
-		
+
 		public IEnumerable<IProject> GetMSBuildProjects()
 		{
-			return projectService.AllProjects.OfType<MSBuildBasedProject>();;
+			return projectService.AllProjects.OfType<MSBuildBasedProject>();
+			;
 		}
-		
-		public bool IsOpen {
+
+		public bool IsOpen
+		{
 			get { return OpenSolution != null; }
 		}
-		
+
 		public bool HasMultipleProjects()
 		{
 			return projectService.AllProjects.Count > 1;
 		}
-		
+
 		public ISolutionPackageRepository CreateSolutionPackageRepository()
 		{
 			return solutionPackageRepositoryFactory.CreateSolutionPackageRepository(OpenSolution);
 		}
-		
+
 		public bool IsPackageInstalled(IPackage package)
 		{
 			return CreateSolutionPackageRepository().IsInstalled(package);
 		}
-		
+
 		public IQueryable<IPackage> GetPackages()
 		{
 			ISolutionPackageRepository repository = CreateSolutionPackageRepository();
 			return repository.GetPackages();
 		}
-		
+
 		public IQueryable<IPackage> GetSolutionPackages()
 		{
 			ISolutionPackageRepository repository = CreateSolutionPackageRepository();
@@ -176,7 +185,7 @@ namespace ICSharpCode.PackageManagement
 				.GetPackages()
 				.Where(package => !IsPackageInstalledInAnyProject(projects, package));
 		}
-		
+
 		public IQueryable<IPackage> GetProjectPackages()
 		{
 			ISolutionPackageRepository repository = CreateSolutionPackageRepository();
@@ -185,28 +194,31 @@ namespace ICSharpCode.PackageManagement
 				.GetPackages()
 				.Where(package => IsPackageInstalledInAnyProject(projects, package));
 		}
-		
+
 		bool IsPackageInstalledInAnyProject(IList<IPackageManagementProject> projects, IPackage package)
 		{
-			if (projects.Any(project => project.IsPackageInstalled(package))) {
+			if (projects.Any(project => project.IsPackageInstalled(package)))
+			{
 				return true;
 			}
+
 			return false;
 		}
-		
+
 		public string GetInstallPath(IPackage package)
 		{
 			return CreateSolutionPackageRepository().GetInstallPath(package);
 		}
-		
+
 		public IEnumerable<IPackage> GetPackagesInReverseDependencyOrder()
 		{
 			return CreateSolutionPackageRepository().GetPackagesByReverseDependencyOrder();
 		}
-		
+
 		public IEnumerable<IPackageManagementProject> GetProjects(IPackageRepository sourceRepository)
 		{
-			foreach (MSBuildBasedProject msbuildProject in GetMSBuildProjects()) {
+			foreach (MSBuildBasedProject msbuildProject in GetMSBuildProjects())
+			{
 				yield return projectFactory.CreateProject(sourceRepository, msbuildProject);
 			}
 		}

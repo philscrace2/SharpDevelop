@@ -26,30 +26,34 @@ namespace ICSharpCode.PackageManagement
 	{
 		AggregateException ex;
 		StringBuilder errorMessage = new StringBuilder();
-		
+
 		public AggregateExceptionErrorMessage(AggregateException ex)
 		{
 			this.ex = ex;
 			BuildErrorMessage();
 		}
-		
+
 		void BuildErrorMessage()
 		{
 			BuildErrorMessage(ex.InnerExceptions);
 		}
-		
+
 		void BuildErrorMessage(IEnumerable<Exception> exceptions)
 		{
-			foreach (Exception ex in exceptions) {
+			foreach (Exception ex in exceptions)
+			{
 				var aggregateEx = ex as AggregateException;
-				if (aggregateEx != null) {
+				if (aggregateEx != null)
+				{
 					BuildErrorMessage(aggregateEx.InnerExceptions);
-				} else {
+				}
+				else
+				{
 					errorMessage.AppendLine(ex.Message);
 				}
 			}
 		}
-		
+
 		public override string ToString()
 		{
 			return errorMessage.ToString().TrimEnd();

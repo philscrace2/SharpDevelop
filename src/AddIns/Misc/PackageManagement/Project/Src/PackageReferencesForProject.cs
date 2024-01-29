@@ -40,7 +40,7 @@ namespace ICSharpCode.PackageManagement
 				new PackageReferenceFileFactory())
 		{
 		}
-		
+
 		public PackageReferencesForProject(
 			MSBuildBasedProject project,
 			IPackageReferenceInstaller packageReferenceInstaller,
@@ -50,37 +50,42 @@ namespace ICSharpCode.PackageManagement
 			this.packageReferenceFileFactory = packageReferenceFileFactory;
 			this.packageReferenceInstaller = packageReferenceInstaller;
 		}
-		
+
 		public void RemovePackageReferences()
 		{
 			GetPackageReferences();
 			IPackageReferenceFile file = PackageReferenceFile;
 			file.Delete();
 		}
-		
+
 		void GetPackageReferences()
 		{
-			if (packageReferences == null) {
+			if (packageReferences == null)
+			{
 				IEnumerable<PackageReference> packageReferencesInFile = PackageReferenceFile.GetPackageReferences();
 				packageReferences = new List<PackageReference>(packageReferencesInFile);
 			}
 		}
-		
-		IPackageReferenceFile PackageReferenceFile {
-			get {
-				if (packageReferenceFile == null) {
+
+		IPackageReferenceFile PackageReferenceFile
+		{
+			get
+			{
+				if (packageReferenceFile == null)
+				{
 					packageReferenceFile = GetPackageReferenceFile();
 				}
+
 				return packageReferenceFile;
 			}
 		}
-		
+
 		IPackageReferenceFile GetPackageReferenceFile()
 		{
 			var fileName = new PackageReferenceFileNameForProject(project);
 			return packageReferenceFileFactory.CreatePackageReferenceFile(fileName.ToString());
 		}
-		
+
 		public void InstallPackages()
 		{
 			GetPackageReferences();

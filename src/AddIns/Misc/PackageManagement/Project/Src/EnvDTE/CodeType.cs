@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.SharpDevelop;
 
@@ -30,24 +29,27 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		protected ITypeDefinition typeDefinition;
 		IType[] typeArguments;
-		
+
 		CodeElementsList<CodeElement> members;
-		
+
 		internal static CodeType Create(CodeModelContext context, IType type)
 		{
 			ITypeDefinition typeDefinition = type.GetDefinition();
-			if (typeDefinition != null) {
+			if (typeDefinition != null)
+			{
 				return Create(context.WithFilteredFileName(null), typeDefinition, type.TypeArguments.ToArray());
 			}
+
 			return null;
 		}
-		
+
 		internal static CodeType Create(
 			CodeModelContext context,
 			ITypeDefinition typeDefinition,
 			params IType[] typeArguments)
 		{
-			switch (typeDefinition.Kind) {
+			switch (typeDefinition.Kind)
+			{
 				case TypeKind.Class:
 					return new CodeClass2(context, typeDefinition);
 				case TypeKind.Interface:
@@ -61,7 +63,7 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 					return new CodeType(context, typeDefinition, typeArguments);
 			}
 		}
-		
+
 		public CodeType(CodeModelContext context, ITypeDefinition typeDefinition, params IType[] typeArguments)
 			: base(context, typeDefinition)
 		{
@@ -69,105 +71,130 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			this.typeArguments = typeArguments;
 			this.InfoLocation = GetInfoLocation();
 		}
-		
+
 		global::EnvDTE.vsCMInfoLocation GetInfoLocation()
 		{
-			if (typeDefinition.ParentAssembly.IsMainAssembly) {
+			if (typeDefinition.ParentAssembly.IsMainAssembly)
+			{
 				return global::EnvDTE.vsCMInfoLocation.vsCMInfoLocationProject;
 			}
+
 			return global::EnvDTE.vsCMInfoLocation.vsCMInfoLocationExternal;
 		}
-		
+
 		public CodeType()
 		{
 		}
-		
-		public virtual global::EnvDTE.vsCMAccess Access {
+
+		public virtual global::EnvDTE.vsCMAccess Access
+		{
 			get { return typeDefinition.Accessibility.ToAccess(); }
 			set { }
 		}
-		
-		public virtual string FullName {
-			get {
+
+		public virtual string FullName
+		{
+			get
+			{
 				FullTypeName fullTypeName = typeDefinition.FullTypeName;
 				var fullName = new StringBuilder();
-				if (!string.IsNullOrEmpty(fullTypeName.TopLevelTypeName.Namespace)) {
+				if (!string.IsNullOrEmpty(fullTypeName.TopLevelTypeName.Namespace))
+				{
 					fullName.Append(fullTypeName.TopLevelTypeName.Namespace);
 					fullName.Append('.');
 				}
+
 				fullName.Append(fullTypeName.TopLevelTypeName.Name);
-				for (int i = 0; i < fullTypeName.NestingLevel; i++) {
+				for (int i = 0; i < fullTypeName.NestingLevel; i++)
+				{
 					fullName.Append('.');
 					fullName.Append(fullTypeName.GetNestedTypeName(i));
 				}
+
 				return fullName.ToString() + GetTypeArguments();
 			}
 		}
-		
+
 		string GetTypeArguments()
 		{
-			if (typeArguments.Length == 0) {
+			if (typeArguments.Length == 0)
+			{
 				return String.Empty;
 			}
-			
+
 			return String.Format(
 				"<{0}>",
 				String.Join(", ", typeArguments.Select(type => type.FullName)));
 		}
-		
-		public virtual global::EnvDTE.CodeElements Members {
-			get {
-				if (members == null) {
+
+		public virtual global::EnvDTE.CodeElements Members
+		{
+			get
+			{
+				if (members == null)
+				{
 					members = new CodeElementsList<CodeElement>();
 					members.AddRange(typeDefinition.Members
 						.Where(member => IsInFilter(member.Region))
 						.Where(member => !member.Region.End.IsEmpty || !typeDefinition.ParentAssembly.IsMainAssembly)
 						.Select(member => CreateMember(context, member)));
 				}
+
 				return members;
 			}
 		}
-		
-		public virtual global::EnvDTE.CodeElements Bases {
-			get {
+
+		public virtual global::EnvDTE.CodeElements Bases
+		{
+			get
+			{
 				var types = new CodeElementsList<CodeType>();
-				foreach (IType baseType in GetBaseTypes()) {
+				foreach (IType baseType in GetBaseTypes())
+				{
 					CodeType element = Create(context, baseType);
-					if (element != null) {
+					if (element != null)
+					{
 						types.Add(element);
 					}
 				}
+
 				return types;
 			}
 		}
-		
+
 		IEnumerable<IType> GetBaseTypes()
 		{
-			if (typeDefinition.Kind == TypeKind.Interface) {
+			if (typeDefinition.Kind == TypeKind.Interface)
+			{
 				return typeDefinition.DirectBaseTypes;
 			}
+
 			return typeDefinition.DirectBaseTypes.Where(type => type.Kind != TypeKind.Interface);
 		}
-		
-		public virtual global::EnvDTE.CodeElements Attributes {
-			get {
-				return GetAttributes(typeDefinition);
-			}
+
+		public virtual global::EnvDTE.CodeElements Attributes
+		{
+			get { return GetAttributes(typeDefinition); }
 		}
-		
-		public virtual global::EnvDTE.CodeNamespace Namespace {
+
+		public virtual global::EnvDTE.CodeNamespace Namespace
+		{
 			get { return new FileCodeModelCodeNamespace(context, typeDefinition.Namespace); }
 		}
-		
-		public virtual global::EnvDTE.ProjectItem ProjectItem {
-			get {
-				if (context.CurrentProject != null) {
+
+		public virtual global::EnvDTE.ProjectItem ProjectItem
+		{
+			get
+			{
+				if (context.CurrentProject != null)
+				{
 					return EnvDTE.ProjectItem.FindByEntity(context.CurrentProject, typeDefinition);
 				}
+
 				return null;
 			}
 		}
-		
+
 		/// <summary>
 		/// Returns true if the current type matches the fully qualified name or any of its
 		/// base types are a match.
@@ -178,19 +205,21 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 				.GetAllBaseTypeDefinitions()
 				.Any(baseType => baseType.FullName == fullName);
 		}
-		
+
 		protected IType FindType(string type)
 		{
 			var fieldTypeName = new FullTypeName(type);
 			return typeDefinition.Compilation.FindType(fieldTypeName);
 		}
-		
+
 		protected void ReloadTypeDefinition()
 		{
 			ICompilation compilation = context.DteProject.GetCompilationUnit(typeDefinition.BodyRegion.FileName);
-			
-			ITypeDefinition matchedTypeDefinition = compilation.MainAssembly.GetTypeDefinition(typeDefinition.FullTypeName);
-			if (matchedTypeDefinition != null) {
+
+			ITypeDefinition matchedTypeDefinition =
+				compilation.MainAssembly.GetTypeDefinition(typeDefinition.FullTypeName);
+			if (matchedTypeDefinition != null)
+			{
 				typeDefinition = matchedTypeDefinition;
 			}
 		}

@@ -25,21 +25,23 @@ namespace ICSharpCode.PackageManagement.VisualStudio
 	public class VsPackageMetadata : IVsPackageMetadata
 	{
 		IPackage package;
-		
+
 		public VsPackageMetadata(IPackage package, string installPath)
 		{
 			this.package = package;
 			this.InstallPath = installPath;
 		}
-		
-		public string Id {
+
+		public string Id
+		{
 			get { return package.Id; }
 		}
-		
-		public SemanticVersion Version {
+
+		public SemanticVersion Version
+		{
 			get { return package.Version; }
 		}
-		
+
 		public string InstallPath { get; private set; }
 	}
 }

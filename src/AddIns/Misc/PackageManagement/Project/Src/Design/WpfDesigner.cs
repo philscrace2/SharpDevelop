@@ -29,18 +29,18 @@ namespace ICSharpCode.PackageManagement.Design
 			var isInDesignModeProperty = DesignerProperties.IsInDesignModeProperty;
 			return GetPropertyDefaultValueAsBool(isInDesignModeProperty);
 		}
-		
+
 		static bool GetPropertyDefaultValueAsBool(DependencyProperty property)
 		{
 			var dependencyPropertyDescriptor = GetDependencyPropertyDescriptor(property);
 			return GetPropertyDefaultValueAsBool(dependencyPropertyDescriptor);
 		}
-		
+
 		static DependencyPropertyDescriptor GetDependencyPropertyDescriptor(DependencyProperty property)
 		{
 			return DependencyPropertyDescriptor.FromProperty(property, typeof(FrameworkElement));
 		}
-		
+
 		static bool GetPropertyDefaultValueAsBool(DependencyPropertyDescriptor dependencyPropertyDescriptor)
 		{
 			return (bool)dependencyPropertyDescriptor.Metadata.DefaultValue;

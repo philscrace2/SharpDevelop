@@ -27,29 +27,31 @@ namespace ICSharpCode.PackageManagement
 	public class ManagePackagesCommand : AbstractMenuCommand
 	{
 		IPackageManagementOutputMessagesView outputMessagesView;
-		
+
 		public ManagePackagesCommand()
 			: this(PackageManagementServices.OutputMessagesView)
 		{
 		}
-		
+
 		public ManagePackagesCommand(IPackageManagementOutputMessagesView outputMessagesView)
 		{
 			this.outputMessagesView = outputMessagesView;
 		}
-		
+
 		public override void Run()
 		{
 			outputMessagesView.Clear();
-			
-			using (IManagePackagesView view = CreateManagePackagesView()) {
+
+			using (IManagePackagesView view = CreateManagePackagesView())
+			{
 				view.ShowDialog();
 			}
 		}
-		
+
 		protected virtual IManagePackagesView CreateManagePackagesView()
 		{
-			return new ManagePackagesView() {
+			return new ManagePackagesView()
+			{
 				Owner = SD.Workbench.MainWindow
 			};
 		}

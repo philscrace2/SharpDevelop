@@ -28,7 +28,8 @@ namespace ICSharpCode.PackageManagement
 		{
 			return rootElement
 				.Imports
-				.FirstOrDefault(import => String.Equals(import.Project, importedProjectFile, StringComparison.OrdinalIgnoreCase));
+				.FirstOrDefault(import =>
+					String.Equals(import.Project, importedProjectFile, StringComparison.OrdinalIgnoreCase));
 		}
 	}
 }

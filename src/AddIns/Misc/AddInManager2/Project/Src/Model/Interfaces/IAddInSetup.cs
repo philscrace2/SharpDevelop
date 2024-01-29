@@ -27,10 +27,7 @@ namespace ICSharpCode.AddInManager2.Model
 {
 	public interface IAddInSetup
 	{
-		IEnumerable<ManagedAddIn> AddInsWithMarkedForInstallation
-		{
-			get;
-		}
+		IEnumerable<ManagedAddIn> AddInsWithMarkedForInstallation { get; }
 		AddIn InstallAddIn(string archiveFileName);
 		AddIn InstallAddIn(IPackage package, string packageDirectory);
 		void UninstallAddIn(AddIn addIn);

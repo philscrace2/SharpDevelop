@@ -23,12 +23,12 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class ClearPackageManagementConsoleHostCommand
 	{
 		IPackageManagementConsoleHost consoleHost;
-		
+
 		public ClearPackageManagementConsoleHostCommand(IPackageManagementConsoleHost consoleHost)
 		{
 			this.consoleHost = consoleHost;
 		}
-		
+
 		public void ClearHost()
 		{
 			consoleHost.Clear();

@@ -26,14 +26,14 @@ namespace ICSharpCode.PackageManagement
 			: this(project, selected: false)
 		{
 		}
-		
+
 		public PackageManagementSelectedProject(
 			IPackageManagementProject project,
 			bool selected)
 			: this(project, selected, enabled: true)
 		{
 		}
-		
+
 		public PackageManagementSelectedProject(
 			IPackageManagementProject project,
 			bool selected,
@@ -44,10 +44,10 @@ namespace ICSharpCode.PackageManagement
 			this.IsSelected = selected;
 			this.IsEnabled = enabled;
 		}
-		
+
 		public IPackageManagementProject Project { get; private set; }
 		public string Name { get; private set; }
-		
+
 		public bool IsSelected { get; set; }
 		public bool IsEnabled { get; set; }
 	}

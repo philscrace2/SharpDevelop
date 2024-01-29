@@ -27,21 +27,27 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		public CodeAttribute2()
 		{
 		}
-		
+
 		public CodeAttribute2(CodeModelContext context, IAttribute attribute)
 			: base(context, attribute)
 		{
 		}
-		
-		public virtual global::EnvDTE.CodeElements Arguments {
-			get { 
+
+		public virtual global::EnvDTE.CodeElements Arguments
+		{
+			get
+			{
 				var list = new CodeElementsList<CodeAttributeArgument>();
-				foreach (var arg in attribute.PositionalArguments) {
+				foreach (var arg in attribute.PositionalArguments)
+				{
 					list.Add(new CodeAttributeArgument(string.Empty, arg));
 				}
-				foreach (var arg in attribute.NamedArguments) {
+
+				foreach (var arg in attribute.NamedArguments)
+				{
 					list.Add(new CodeAttributeArgument(arg.Key.Name, arg.Value));
 				}
+
 				return list;
 			}
 		}

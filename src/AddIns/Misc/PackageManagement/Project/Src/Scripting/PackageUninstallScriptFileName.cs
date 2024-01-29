@@ -27,13 +27,14 @@ namespace ICSharpCode.PackageManagement.Scripting
 			: base(packageInstallDirectory)
 		{
 		}
-		
+
 		public PackageUninstallScriptFileName(IFileSystem fileSystem)
 			: base(fileSystem)
 		{
 		}
-		
-		public override string Name {
+
+		public override string Name
+		{
 			get { return "uninstall.ps1"; }
 		}
 	}

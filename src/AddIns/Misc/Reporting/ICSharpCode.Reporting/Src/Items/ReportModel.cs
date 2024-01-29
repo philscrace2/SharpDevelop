@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-
 using ICSharpCode.Reporting.Interfaces;
 
 namespace ICSharpCode.Reporting.Items
@@ -26,44 +25,49 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of ReportModel.
 	/// </summary>
-	public class ReportModel :IReportModel
+	public class ReportModel : IReportModel
 	{
-		
-		public ReportModel() {
+		public ReportModel()
+		{
 			SectionCollection = new Collection<BaseSection>();
 			ReportSettings = new ReportSettings();
 		}
-			
+
 		#region Sections
-		
-		public IReportContainer ReportHeader {
-			get {return (BaseSection)SectionCollection[0];}
+
+		public IReportContainer ReportHeader
+		{
+			get { return (BaseSection)SectionCollection[0]; }
 		}
-		
-		
-		public IReportContainer PageHeader {
-			get {return (BaseSection)SectionCollection[1];}
+
+
+		public IReportContainer PageHeader
+		{
+			get { return (BaseSection)SectionCollection[1]; }
 		}
-		
-		
-		public IReportContainer DetailSection {
-			get {return (BaseSection)SectionCollection[2];}
+
+
+		public IReportContainer DetailSection
+		{
+			get { return (BaseSection)SectionCollection[2]; }
 		}
-		
-		
-		public IReportContainer PageFooter {
-			get {return (BaseSection)SectionCollection[3];}
+
+
+		public IReportContainer PageFooter
+		{
+			get { return (BaseSection)SectionCollection[3]; }
 		}
-		
-		
-		public IReportContainer ReportFooter {
-			get {return (BaseSection)SectionCollection[4];}
+
+
+		public IReportContainer ReportFooter
+		{
+			get { return (BaseSection)SectionCollection[4]; }
 		}
-		
+
 		#endregion
-		
-		public IReportSettings ReportSettings{get;set;}
-		
-		public Collection<BaseSection> SectionCollection {get; private set;}
+
+		public IReportSettings ReportSettings { get; set; }
+
+		public Collection<BaseSection> SectionCollection { get; private set; }
 	}
 }

@@ -24,21 +24,23 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class PowerShellWorkingDirectory
 	{
 		IPackageManagementProjectService projectService;
-		
+
 		public PowerShellWorkingDirectory(IPackageManagementProjectService projectService)
 		{
 			this.projectService = projectService;
 		}
-		
+
 		public string GetWorkingDirectory()
 		{
 			ISolution solution = projectService.OpenSolution;
-			if (solution != null) {
+			if (solution != null)
+			{
 				return QuotedDirectory(solution.Directory);
 			}
+
 			return "$env:USERPROFILE";
 		}
-		
+
 		string QuotedDirectory(string directory)
 		{
 			return String.Format("'{0}'", directory);

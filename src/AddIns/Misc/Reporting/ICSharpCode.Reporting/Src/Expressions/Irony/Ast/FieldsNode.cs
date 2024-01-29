@@ -28,27 +28,29 @@ namespace ICSharpCode.Reporting.Expressions.Irony.Ast
 	/// <summary>
 	/// Description of FieldsNode.
 	/// </summary>
-	public class FieldsNode: AstNode
+	public class FieldsNode : AstNode
 	{
 		AstNode fieldNode;
-		
-		public override void Init(AstContext context,ParseTreeNode treeNode)
+
+		public override void Init(AstContext context, ParseTreeNode treeNode)
 		{
 			base.Init(context, treeNode);
 			var nodes = treeNode.GetMappedChildNodes();
 			fieldNode = AddChild("Args", nodes[2]);
 		}
-		
-		
+
+
 		protected override object DoEvaluate(ScriptThread thread)
 		{
-			thread.CurrentNode = this;  //standard prolog
+			thread.CurrentNode = this; //standard prolog
 			var container = thread.GetCurrentContainer();
 			var column = (ExportText)container.ExportedItems.Where(x => x.Name == fieldNode.AsString).FirstOrDefault();
-			if (column == null) {
-				return ExpressionHelper.ComposeAstNodeError("Fields",fieldNode);
+			if (column == null)
+			{
+				return ExpressionHelper.ComposeAstNodeError("Fields", fieldNode);
 			}
-			return	column.Text;
+
+			return column.Text;
 		}
 	}
 }

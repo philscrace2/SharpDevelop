@@ -31,13 +31,13 @@ namespace ICSharpCode.AddInManager2
 			return new AddInManagerTask<TResult>(function, continueWith);
 		}
 	}
-	
+
 	public class AddInManagerTask<TResult>
 	{
 		Task<TResult> task;
 		Action<AddInManagerTask<TResult>> continueWith;
 		CancellationTokenSource cancellationTokenSource;
-		
+
 		public AddInManagerTask(
 			Func<TResult> function,
 			Action<AddInManagerTask<TResult>> continueWith)
@@ -53,52 +53,40 @@ namespace ICSharpCode.AddInManager2
 			task = new Task<TResult>(function, cancellationTokenSource.Token);
 			task.ContinueWith(result => OnContinueWith(result), scheduler);
 		}
-		
+
 		private void OnContinueWith(Task<TResult> task)
 		{
 			continueWith(this);
 		}
-		
+
 		public void Start()
 		{
 			task.Start();
 		}
-		
+
 		public TResult Result
 		{
-			get
-			{
-				return task.Result;
-			}
+			get { return task.Result; }
 		}
-		
+
 		public void Cancel()
 		{
 			cancellationTokenSource.Cancel();
 		}
-		
+
 		public bool IsCancelled
 		{
-			get
-			{
-				return cancellationTokenSource.IsCancellationRequested;
-			}
+			get { return cancellationTokenSource.IsCancellationRequested; }
 		}
-		
+
 		public bool IsFaulted
 		{
-			get
-			{
-				return task.IsFaulted;
-			}
+			get { return task.IsFaulted; }
 		}
-		
+
 		public AggregateException Exception
 		{
-			get
-			{
-				return task.Exception;
-			}
+			get { return task.Exception; }
 		}
 	}
 }

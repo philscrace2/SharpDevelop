@@ -24,10 +24,10 @@ namespace ICSharpCode.PackageManagement.Scripting
 	{
 		void SetEnvironmentPath(string path);
 		string GetEnvironmentPath();
-		
+
 		void AddVariable(string name, object value);
 		void RemoveVariable(string name);
-		
+
 		void InvokeScript(string script);
 	}
 }

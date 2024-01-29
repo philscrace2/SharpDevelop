@@ -24,13 +24,12 @@ namespace ICSharpCode.Reporting.PageBuilder.ExportColumns
 	/// <summary>
 	/// Description of ExportCircle.
 	/// </summary>
-	public class ExportCircle:GraphicsContainer,IExportGraphics
+	public class ExportCircle : GraphicsContainer, IExportGraphics
 	{
-		
-		public DashStyle DashStyle {get;set;}
-		
-		public LineCap StartLineCap {get;set;}
-		
-		public LineCap EndLineCap {get;set;}
+		public DashStyle DashStyle { get; set; }
+
+		public LineCap StartLineCap { get; set; }
+
+		public LineCap EndLineCap { get; set; }
 	}
 }

@@ -25,30 +25,33 @@ namespace ICSharpCode.PackageManagement
 	public abstract class ViewModelBase<TModel> : INotifyPropertyChanged
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
-		
+
 		public string PropertyChangedFor<TProperty>(Expression<Func<TModel, TProperty>> expression)
 		{
 			MemberExpression memberExpression = expression.Body as MemberExpression;
 			return PropertyChangedFor(memberExpression);
 		}
-		
+
 		string PropertyChangedFor(MemberExpression memberExpression)
 		{
-			if (memberExpression != null) {
+			if (memberExpression != null)
+			{
 				return memberExpression.Member.Name;
 			}
+
 			return String.Empty;
 		}
-		
+
 		protected void OnPropertyChanged<TProperty>(Expression<Func<TModel, TProperty>> expression)
 		{
 			string propertyName = PropertyChangedFor(expression);
 			OnPropertyChanged(propertyName);
 		}
-		
+
 		protected void OnPropertyChanged(string propertyName)
 		{
-			if (PropertyChanged != null) {
+			if (PropertyChanged != null)
+			{
 				PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}

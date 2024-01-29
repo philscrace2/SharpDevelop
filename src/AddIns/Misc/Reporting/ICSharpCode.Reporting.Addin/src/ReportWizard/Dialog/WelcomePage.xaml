@@ -9,16 +9,16 @@
                  PageType="Exterior"
                  NextButtonVisibility="Visible"
                  CancelButtonVisibility="Visible">
-	
-	<xctk:WizardPage.ExteriorPanelContent >
-		<Image Name="_image" Stretch="Fill"  HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
+
+	<xctk:WizardPage.ExteriorPanelContent>
+		<Image Name="_image" Stretch="Fill" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
 	</xctk:WizardPage.ExteriorPanelContent>
-	
+
 	<Grid ShowGridLines="True">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"></RowDefinition>
 		</Grid.RowDefinitions>
-		
+
 		<TextBlock Text="{core:Localize Templates.SharpReport.NewReport}" FontSize="20"></TextBlock>
 	</Grid>
 </xctk:WizardPage>

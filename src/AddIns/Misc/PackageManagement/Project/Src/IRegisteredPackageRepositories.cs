@@ -26,10 +26,10 @@ namespace ICSharpCode.PackageManagement
 	{
 		IPackageRepository ActiveRepository { get; }
 		IRecentPackageRepository RecentPackageRepository { get; }
-		
+
 		IPackageRepository CreateRepository(PackageSource source);
 		IPackageRepository CreateAggregateRepository();
-		
+
 		bool HasMultiplePackageSources { get; }
 		PackageSource ActivePackageSource { get; set; }
 		RegisteredPackageSources PackageSources { get; }

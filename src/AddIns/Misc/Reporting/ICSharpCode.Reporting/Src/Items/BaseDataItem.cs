@@ -26,25 +26,24 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of BaseDataItem.
 	/// </summary>
-	public class BaseDataItem:BaseTextItem,IDataItem
+	public class BaseDataItem : BaseTextItem, IDataItem
 	{
 		public BaseDataItem()
 		{
 		}
-		
-		public override  IExportColumn CreateExportColumn()
+
+		public override IExportColumn CreateExportColumn()
 		{
 			var exCol = (IExportText)base.CreateExportColumn();
 			exCol.Text = DBValue;
 			return exCol;
 		}
-	
-		
-		public virtual string DBValue {get;set;}
-			
-		public virtual string ColumnName {get;set;}
-		
+
+
+		public virtual string DBValue { get; set; }
+
+		public virtual string ColumnName { get; set; }
+
 //		public string DataType {get;set;}
-		
 	}
 }

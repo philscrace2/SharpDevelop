@@ -26,10 +26,11 @@ namespace ICSharpCode.PackageManagement.Design
 	public class DesignTimePackagesViewModel : PackagesViewModel
 	{
 		public DesignTimePackagesViewModel()
-			: this(new DesignTimeRegisteredPackageRepositories(), new FakePackageManagementSolution(), new PackageManagementEvents())
+			: this(new DesignTimeRegisteredPackageRepositories(), new FakePackageManagementSolution(),
+				new PackageManagementEvents())
 		{
 		}
-		
+
 		public DesignTimePackagesViewModel(
 			DesignTimeRegisteredPackageRepositories registeredPackageRepositories,
 			FakePackageManagementSolution solution,
@@ -44,7 +45,7 @@ namespace ICSharpCode.PackageManagement.Design
 			PageSize = 3;
 			AddPackageViewModels();
 		}
-		
+
 		void AddPackageViewModels()
 		{
 			IQueryable<IPackage> packages = RegisteredPackageRepositories.ActiveRepository.GetPackages();

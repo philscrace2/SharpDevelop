@@ -47,26 +47,35 @@ namespace MSHelpSystem.Helper
 
 		public static string CurrentLanguage
 		{
-			get {
+			get
+			{
 				string output = string.Empty;
 
-				if (ProjectService.CurrentProject != null) {
+				if (ProjectService.CurrentProject != null)
+				{
 					string devLang = ProjectService.CurrentProject.Language;
-					if (string.IsNullOrEmpty(devLang)) {
+					if (string.IsNullOrEmpty(devLang))
+					{
 						throw new ArgumentNullException("devLang");
 					}
-					if (!languages.ContainsKey(devLang) || !languages.TryGetValue(devLang, out output)) {
+
+					if (!languages.ContainsKey(devLang) || !languages.TryGetValue(devLang, out output))
+					{
 						output = devLang;
 					}
-					LoggingService.Debug(string.Format("HelpViewer: Project language \"{0}\" formatted to \"{1}\"", devLang, output));
+
+					LoggingService.Debug(string.Format("HelpViewer: Project language \"{0}\" formatted to \"{1}\"",
+						devLang, output));
 				}
+
 				return output.ToLower();
 			}
 		}
 
 		public static string CurrentLanguageAsHttpParam
 		{
-			get {
+			get
+			{
 				string devLang = CurrentLanguage;
 				if (string.IsNullOrEmpty(devLang)) return string.Empty;
 				else return string.Format("&category=DevLang%3a{0}", devLang);

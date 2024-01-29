@@ -27,23 +27,27 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		{
 			this.Kind = GetProjectKind(project);
 		}
-		
+
 		string GetProjectKind(Project project)
 		{
 			string type = ProjectType.GetProjectType(project);
-			if (type == ProjectType.CSharp) {
+			if (type == ProjectType.CSharp)
+			{
 				return GetProjectKind(SD.ProjectTypeGuids.CSharp);
-			} else if (type == ProjectType.VB) {
+			}
+			else if (type == ProjectType.VB)
+			{
 				return GetProjectKind(SD.ProjectTypeGuids.VB);
 			}
+
 			return String.Empty;
 		}
-		
+
 		string GetProjectKind(Guid guid)
 		{
 			return "{" + guid.ToString().ToUpperInvariant() + "}";
 		}
-		
+
 		public string Kind { get; private set; }
 	}
 }

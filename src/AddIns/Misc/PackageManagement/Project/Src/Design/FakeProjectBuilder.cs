@@ -27,11 +27,11 @@ namespace ICSharpCode.PackageManagement.Design
 		{
 			BuildResults = new BuildResults();
 		}
-		
+
 		public IProject ProjectPassedToBuild;
-		
+
 		public BuildResults BuildResults { get; set; }
-		
+
 		public void Build(IProject project)
 		{
 			ProjectPassedToBuild = project;

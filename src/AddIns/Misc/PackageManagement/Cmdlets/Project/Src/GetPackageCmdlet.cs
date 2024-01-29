@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Management.Automation;
-
 using ICSharpCode.PackageManagement;
 using ICSharpCode.PackageManagement.Scripting;
 using ICSharpCode.SharpDevelop.Project;
@@ -34,7 +33,7 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 		int? skip;
 		int? first;
 		IRegisteredPackageRepositories registeredPackageRepositories;
-		
+
 		public GetPackageCmdlet()
 			: this(
 				PackageManagementServices.RegisteredPackageRepositories,
@@ -42,7 +41,7 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 				null)
 		{
 		}
-		
+
 		public GetPackageCmdlet(
 			IRegisteredPackageRepositories registeredPackageRepositories,
 			IPackageManagementConsoleHost consoleHost,
@@ -51,55 +50,56 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 		{
 			this.registeredPackageRepositories = registeredPackageRepositories;
 		}
-		
+
 		[Alias("Online", "Remote")]
 		[Parameter(ParameterSetName = "Available")]
 		public SwitchParameter ListAvailable { get; set; }
-		
+
 		[Parameter(ParameterSetName = "Updated")]
 		public SwitchParameter Updates { get; set; }
-		
+
 		[Parameter(ParameterSetName = "Available")]
 		[Parameter(ParameterSetName = "Updated")]
 		[Alias("Prerelease")]
 		public SwitchParameter IncludePrerelease { get; set; }
-		
+
 		[Parameter(ParameterSetName = "Available")]
 		[Parameter(ParameterSetName = "Updated")]
 		public SwitchParameter AllVersions { get; set; }
-		
-		[Parameter(Position = 0)]
-		public string Filter { get; set; }
-		
+
+		[Parameter(Position = 0)] public string Filter { get; set; }
+
 		[Parameter(Position = 1, ParameterSetName = "Project")]
 		public string ProjectName { get; set; }
-		
+
 		[Parameter(ParameterSetName = "Available")]
 		[Parameter(ParameterSetName = "Updated")]
 		public string Source { get; set; }
-		
+
 		[Parameter]
 		[ValidateRange(0, Int32.MaxValue)]
-		public int Skip {
+		public int Skip
+		{
 			get { return skip.GetValueOrDefault(); }
 			set { skip = value; }
 		}
-		
+
 		[Alias("Take")]
 		[Parameter]
 		[ValidateRange(0, Int32.MaxValue)]
-		public int First {
+		public int First
+		{
 			get { return first.GetValueOrDefault(); }
 			set { first = value; }
 		}
-		
+
 		protected override void ProcessRecord()
 		{
 			ValidateParameters();
 			IEnumerable<IPackage> packages = GetPackagesForDisplay();
 			WritePackagesToOutputPipeline(packages);
 		}
-		
+
 		IEnumerable<IPackage> GetPackagesForDisplay()
 		{
 			IQueryable<IPackage> packages = GetPackages();
@@ -107,83 +107,98 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 			IEnumerable<IPackage> distinctPackages = DistinctPackagesById(packages);
 			return SelectPackageRange(distinctPackages);
 		}
-		
+
 		IEnumerable<IPackage> DistinctPackagesById(IQueryable<IPackage> packages)
 		{
-			if (ListAvailable && !AllVersions) {
+			if (ListAvailable && !AllVersions)
+			{
 				return packages.DistinctLast<IPackage>(PackageEqualityComparer.Id);
 			}
+
 			return packages;
 		}
-		
+
 		void ValidateParameters()
 		{
-			if (ParametersRequireProject()) {
+			if (ParametersRequireProject())
+			{
 				ThrowErrorIfProjectNotOpen();
 			}
 		}
-		
+
 		bool ParametersRequireProject()
 		{
-			if (ListAvailable) {
+			if (ListAvailable)
+			{
 				return false;
 			}
+
 			return true;
 		}
-		
+
 		protected virtual void CmdletThrowTerminatingError(ErrorRecord errorRecord)
 		{
 			ThrowTerminatingError(errorRecord);
 		}
-		
+
 		IQueryable<IPackage> GetPackages()
 		{
-			if (ListAvailable) {
+			if (ListAvailable)
+			{
 				return GetAvailablePackages();
-			} else if (Updates) {
+			}
+			else if (Updates)
+			{
 				return GetUpdatedPackages();
 			}
+
 			return GetInstalledPackages();
 		}
-		
+
 		IQueryable<IPackage> OrderPackages(IQueryable<IPackage> packages)
 		{
 			return packages.OrderBy(package => package.Id);
 		}
-		
+
 		IEnumerable<IPackage> SelectPackageRange(IEnumerable<IPackage> packages)
 		{
-			if (skip.HasValue) {
+			if (skip.HasValue)
+			{
 				packages = packages.Skip(skip.Value);
 			}
-			if (first.HasValue) {
+
+			if (first.HasValue)
+			{
 				packages = packages.Take(first.Value);
 			}
+
 			return packages;
 		}
-		
+
 		IQueryable<IPackage> GetAvailablePackages()
 		{
 			IPackageRepository repository = CreatePackageRepositoryForActivePackageSource();
 			IQueryable<IPackage> packages = repository.GetPackages();
 			return FilterPackages(packages);
 		}
-		
+
 		IPackageRepository CreatePackageRepositoryForActivePackageSource()
 		{
 			PackageSource packageSource = ConsoleHost.GetActivePackageSource(Source);
 			return registeredPackageRepositories.CreateRepository(packageSource);
 		}
-		
+
 		IQueryable<IPackage> FilterPackages(IQueryable<IPackage> packages)
 		{
 			IQueryable<IPackage> filteredPackages = packages.Find(Filter);
-			if (IncludePrerelease || AllVersions) {
+			if (IncludePrerelease || AllVersions)
+			{
 				return filteredPackages;
 			}
+
 			return filteredPackages.Where(package => package.IsLatestVersion);
 		}
-		
+
 		IQueryable<IPackage> GetUpdatedPackages()
 		{
 			IPackageRepository repository = CreatePackageRepositoryForActivePackageSource();
@@ -193,60 +208,70 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 				.GetUpdatedPackages(IncludePrerelease)
 				.AsQueryable();
 		}
-		
+
 		UpdatedPackages CreateUpdatedPackages(IPackageRepository repository)
 		{
 			IPackageManagementProject project = GetSelectedProject(repository);
-			if (project != null) {
+			if (project != null)
+			{
 				return new UpdatedPackages(project, repository);
 			}
-			return new UpdatedPackages(GetPackagesInstalledIntoAnyProject(), repository, NullConstraintProvider.Instance);
+
+			return new UpdatedPackages(GetPackagesInstalledIntoAnyProject(), repository,
+				NullConstraintProvider.Instance);
 		}
-		
+
 		IQueryable<IPackage> GetPackagesInstalledIntoAnyProject()
 		{
 			return ConsoleHost.Solution.GetProjectPackages();
 		}
-		
+
 		IPackageManagementProject GetSelectedProject(IPackageRepository repository)
 		{
-			if (HasSelectedProjectName()) {
+			if (HasSelectedProjectName())
+			{
 				return ConsoleHost.GetProject(repository, ProjectName);
 			}
+
 			return null;
 		}
-		
+
 		bool HasSelectedProjectName()
 		{
 			return ProjectName != null;
 		}
-		
+
 		IQueryable<IPackage> GetInstalledPackages()
 		{
 			IQueryable<IPackage> packages = GetPackagesFromSelectedProjectOrPackagesFolder();
 			return FilterPackages(packages);
 		}
-		
+
 		IQueryable<IPackage> GetPackagesFromSelectedProjectOrPackagesFolder()
 		{
 			IPackageManagementProject project = GetSelectedProject();
-			if (project != null) {
+			if (project != null)
+			{
 				return project.GetPackages();
 			}
+
 			return ConsoleHost.Solution.GetPackages();
 		}
-		
+
 		IPackageManagementProject GetSelectedProject()
 		{
-			if (HasSelectedProjectName()) {
+			if (HasSelectedProjectName())
+			{
 				return ConsoleHost.GetProject(Source, ProjectName);
 			}
+
 			return null;
 		}
-		
+
 		void WritePackagesToOutputPipeline(IEnumerable<IPackage> packages)
 		{
-			foreach (IPackage package in packages) {
+			foreach (IPackage package in packages)
+			{
 				WriteObject(package);
 			}
 		}

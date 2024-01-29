@@ -19,7 +19,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
 using ICSharpCode.Core;
 
 namespace ICSharpCode.FiletypeRegisterer
@@ -29,33 +28,30 @@ namespace ICSharpCode.FiletypeRegisterer
 		string id;
 		string icon;
 		string text;
-		
+
 		public FiletypeAssociation(string id, string icon, string text)
 		{
 			this.id = id;
 			this.icon = icon;
 			this.text = text;
 		}
-		
-		public string Extension {
-			get {
-				return id;
-			}
+
+		public string Extension
+		{
+			get { return id; }
 		}
-		
-		public string Icon {
-			get {
-				return icon;
-			}
+
+		public string Icon
+		{
+			get { return icon; }
 		}
-		
-		public string Text {
-			get {
-				return text;
-			}
+
+		public string Text
+		{
+			get { return text; }
 		}
 	}
-	
+
 	/// <summary>
 	/// Creates FiletypeAssociation instances.
 	/// </summary>
@@ -77,17 +73,16 @@ namespace ICSharpCode.FiletypeRegisterer
 		{
 			return AddInTree.BuildItems<FiletypeAssociation>("/AddIns/FileTypeRegisterer/FileTypes", null, true);
 		}
-		
+
 		/// <summary>
 		/// Gets if the doozer handles codon conditions on its own.
 		/// If this property return false, the item is excluded when the condition is not met.
 		/// </summary>
-		public bool HandleConditions {
-			get {
-				return false;
-			}
+		public bool HandleConditions
+		{
+			get { return false; }
 		}
-		
+
 		/// <summary>
 		/// Creates an item with the specified sub items. And the current
 		/// Condition status for this item.
@@ -96,8 +91,8 @@ namespace ICSharpCode.FiletypeRegisterer
 		{
 			Codon codon = args.Codon;
 			return new FiletypeAssociation(codon.Id,
-			                               StringParser.Parse(codon.Properties["icon"]),
-			                               StringParser.Parse(codon.Properties["text"]));
+				StringParser.Parse(codon.Properties["icon"]),
+				StringParser.Parse(codon.Properties["text"]));
 		}
 	}
 }

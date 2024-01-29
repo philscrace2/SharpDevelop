@@ -26,34 +26,40 @@ namespace Microsoft.VisualStudio.Shell.Flavor
 	public class FlavoredProject : MarshalByRefObject, IVsAggregatableProject, IVsHierarchy
 	{
 		MSBuildBasedProject project;
-		
+
 		public FlavoredProject(MSBuildBasedProject project)
 		{
 			this.project = project;
 		}
-		
+
 		public int GetAggregateProjectTypeGuids(out string projTypeGuids)
 		{
 			projTypeGuids = GetProjectTypeGuidsFromProject();
-			if (projTypeGuids == null) {
+			if (projTypeGuids == null)
+			{
 				projTypeGuids = GetProjectTypeGuidsBasedOnProjectFileExtension();
 			}
+
 			return VsConstants.S_OK;
 		}
-		
+
 		string GetProjectTypeGuidsFromProject()
 		{
 			return project.GetUnevalatedProperty("ProjectTypeGuids");
 		}
-		
+
 		string GetProjectTypeGuidsBasedOnProjectFileExtension()
 		{
 			var projectType = ProjectType.GetProjectType(project);
-			if (projectType == ProjectType.CSharp) {
+			if (projectType == ProjectType.CSharp)
+			{
 				return ProjectTypeGuids.CSharp.ToString();
-			} else if (projectType == ProjectType.VB) {
+			}
+			else if (projectType == ProjectType.VB)
+			{
 				return ProjectTypeGuids.VB.ToString();
 			}
+
 			return String.Empty;
 		}
 	}

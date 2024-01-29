@@ -27,23 +27,23 @@ namespace ICSharpCode.PackageManagement
 	{
 		NuGet.PackageReferenceFile file;
 		string fileName;
-		
+
 		public PackageReferenceFile(string fileName)
 		{
 			this.fileName = fileName;
 			this.file = new NuGet.PackageReferenceFile(fileName);
 		}
-		
+
 		public IEnumerable<NuGet.PackageReference> GetPackageReferences()
 		{
 			return file.GetPackageReferences();
 		}
-		
+
 		public void DeleteEntry(string id, SemanticVersion version)
 		{
 			file.DeleteEntry(id, version);
 		}
-		
+
 		public void Delete()
 		{
 			FileService.RemoveFile(fileName, false);

@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop.Project;
 using NuGet;
@@ -32,34 +31,34 @@ namespace ICSharpCode.PackageManagement
 		public static readonly string PackageSourcesSectionName = "packageSources";
 		public static readonly string ActivePackageSourceSectionName = "activePackageSource";
 		public static readonly string DisabledPackageSourceSectionName = "disabledPackageSources";
-		
-		public static readonly PackageSource AggregatePackageSource = 
+
+		public static readonly PackageSource AggregatePackageSource =
 			new PackageSource("(Aggregate source)", "All");
-		
+
 		ISettings settings;
 		ISettingsProvider settingsProvider;
 		IPackageSourceProvider packageSourceProvider;
 		PackageSource defaultPackageSource;
 		RegisteredPackageSources packageSources;
 		PackageSource activePackageSource;
-		
+
 		public RegisteredPackageSourceSettings(ISettingsProvider settingsProvider)
 			: this(
 				settingsProvider,
 				RegisteredPackageSources.DefaultPackageSource)
 		{
 		}
-		
+
 		public RegisteredPackageSourceSettings(
 			ISettingsProvider settingsProvider,
 			PackageSource defaultPackageSource)
 		{
 			this.settingsProvider = settingsProvider;
 			this.defaultPackageSource = defaultPackageSource;
-			
+
 			settings = settingsProvider.LoadSettings();
 			packageSourceProvider = CreatePackageSourceProvider(settings);
-			
+
 			ReadActivePackageSource();
 			RegisterSolutionEvents();
 		}
@@ -68,32 +67,39 @@ namespace ICSharpCode.PackageManagement
 		{
 			settingsProvider.SettingsChanged += SettingsChanged;
 		}
-		
+
 		static IPackageSourceProvider CreatePackageSourceProvider(ISettings settings)
 		{
-			return new PackageSourceProvider(settings, new [] { RegisteredPackageSources.DefaultPackageSource });
+			return new PackageSourceProvider(settings, new[] { RegisteredPackageSources.DefaultPackageSource });
 		}
-		
+
 		void ReadActivePackageSource()
 		{
 			IList<SettingValue> packageSources = settings.GetValues(ActivePackageSourceSectionName, false);
 			activePackageSource = PackageSourceConverter.ConvertFromFirstSetting(packageSources);
 		}
-		
-		public RegisteredPackageSources PackageSources {
-			get {
-				if (packageSources == null) {
+
+		public RegisteredPackageSources PackageSources
+		{
+			get
+			{
+				if (packageSources == null)
+				{
 					TryReadPackageSources();
 				}
+
 				return packageSources;
 			}
 		}
-		
+
 		void TryReadPackageSources()
 		{
-			try {
+			try
+			{
 				ReadPackageSources();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				LoggingService.Warn("Unable to read NuGet.config file.", ex);
 
 				// Fallback to using the default package source only (nuget.org)
@@ -102,70 +108,83 @@ namespace ICSharpCode.PackageManagement
 				ReadPackageSources();
 			}
 		}
-		
+
 		void ReadPackageSources()
 		{
 			IEnumerable<PackageSource> savedPackageSources = packageSourceProvider.LoadPackageSources();
 			packageSources = new RegisteredPackageSources(savedPackageSources, defaultPackageSource);
 			packageSources.CollectionChanged += PackageSourcesChanged;
 		}
-		
+
 		void PackageSourcesChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			UpdatePackageSourceSettingsWithChanges();
 		}
-		
+
 		void UpdatePackageSourceSettingsWithChanges()
 		{
 			packageSourceProvider.SavePackageSources(packageSources);
 		}
-		
-		public PackageSource ActivePackageSource {
-			get {
-				if (activePackageSource != null) {
-					if (activePackageSource.IsAggregate()) {
+
+		public PackageSource ActivePackageSource
+		{
+			get
+			{
+				if (activePackageSource != null)
+				{
+					if (activePackageSource.IsAggregate())
+					{
 						return activePackageSource;
 					}
-					if (PackageSources.Contains(activePackageSource)) {
+
+					if (PackageSources.Contains(activePackageSource))
+					{
 						return activePackageSource;
 					}
 				}
+
 				return null;
 			}
-			set {
+			set
+			{
 				activePackageSource = value;
-				
-				if (settings is NullSettings) {
+
+				if (settings is NullSettings)
+				{
 					// NuGet failed to load settings so do not try to update them since this will fail.
 					return;
 				}
-				
-				if (activePackageSource == null) {
+
+				if (activePackageSource == null)
+				{
 					RemoveActivePackageSourceSetting();
-				} else {
+				}
+				else
+				{
 					UpdateActivePackageSourceSetting();
 				}
 			}
 		}
-		
+
 		void RemoveActivePackageSourceSetting()
 		{
 			settings.DeleteSection(ActivePackageSourceSectionName);
 		}
-		
+
 		void UpdateActivePackageSourceSetting()
 		{
 			RemoveActivePackageSourceSetting();
-			
-			KeyValuePair<string, string> activePackageSourceSetting = PackageSourceConverter.ConvertToKeyValuePair(activePackageSource);
+
+			KeyValuePair<string, string> activePackageSourceSetting =
+				PackageSourceConverter.ConvertToKeyValuePair(activePackageSource);
 			SaveActivePackageSourceSetting(activePackageSourceSetting);
 		}
-		
+
 		void SaveActivePackageSourceSetting(KeyValuePair<string, string> activePackageSource)
 		{
 			settings.SetValue(ActivePackageSourceSectionName, activePackageSource.Key, activePackageSource.Value);
 		}
-		
+
 		void SettingsChanged(object sender, EventArgs e)
 		{
 			settings = settingsProvider.LoadSettings();
@@ -173,16 +192,18 @@ namespace ICSharpCode.PackageManagement
 			ReadActivePackageSource();
 			ResetPackageSources();
 		}
-		
+
 		void ResetPackageSources()
 		{
-			if (packageSources != null) {
+			if (packageSources != null)
+			{
 				packageSources.CollectionChanged -= PackageSourcesChanged;
 				packageSources = null;
 			}
 		}
-		
-		public ISettings Settings {
+
+		public ISettings Settings
+		{
 			get { return settings; }
 		}
 	}

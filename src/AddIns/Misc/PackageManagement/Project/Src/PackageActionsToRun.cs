@@ -24,12 +24,12 @@ namespace ICSharpCode.PackageManagement
 	public class PackageActionsToRun
 	{
 		ConcurrentQueue<IPackageAction> actions = new ConcurrentQueue<IPackageAction>();
-		
+
 		public bool GetNextAction(out IPackageAction action)
 		{
 			return actions.TryDequeue(out action);
 		}
-		
+
 		public void AddAction(IPackageAction action)
 		{
 			actions.Enqueue(action);

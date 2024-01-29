@@ -22,12 +22,13 @@ namespace MSHelpSystem.Core
 {
 	public class Help3Catalog
 	{
-		public Help3Catalog(string code, string version, string locale, string name, string catPath, string contPath, string brandPackage)
+		public Help3Catalog(string code, string version, string locale, string name, string catPath, string contPath,
+			string brandPackage)
 		{
 			productCode = code;
 			productVersion = version;
 			productLocale = locale;
-			displayName = (string.IsNullOrEmpty(name)) ? code:name;
+			displayName = (string.IsNullOrEmpty(name)) ? code : name;
 			catalogPath = catPath;
 			contentPath = contPath;
 			brandingPackage = brandPackage;
@@ -45,17 +46,17 @@ namespace MSHelpSystem.Core
 		{
 			get { return productCode; }
 		}
-	
+
 		public string ProductVersion
 		{
 			get { return productVersion; }
 		}
-	
+
 		public string Locale
 		{
 			get { return productLocale.ToUpper(); }
 		}
-	
+
 		public string DisplayName
 		{
 			get { return displayName; }
@@ -65,17 +66,17 @@ namespace MSHelpSystem.Core
 		{
 			get { return string.Format(@"{0}/{1}/{2}", productCode, productVersion, productLocale); }
 		}
-	
+
 		public string CatalogPath
 		{
 			get { return catalogPath; }
 		}
-	
+
 		public string ContentPath
 		{
 			get { return contentPath; }
 		}
-	
+
 		public string BrandingPackage
 		{
 			get { return brandingPackage; }
@@ -83,12 +84,20 @@ namespace MSHelpSystem.Core
 
 		public string AsMsXHelpParam
 		{
-			get { return string.Format("product={0}&productVersion={1}&locale={2}", productCode, productVersion, productLocale); }
+			get
+			{
+				return string.Format("product={0}&productVersion={1}&locale={2}", productCode, productVersion,
+					productLocale);
+			}
 		}
 
 		public string AsCmdLineParam
 		{
-			get { return string.Format("/product {0} /version {1} /locale {2}", productCode, productVersion, productLocale); }
+			get
+			{
+				return string.Format("/product {0} /version {1} /locale {2}", productCode, productVersion,
+					productLocale);
+			}
 		}
 	}
 }

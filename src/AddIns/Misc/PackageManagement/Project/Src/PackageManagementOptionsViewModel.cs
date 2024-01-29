@@ -28,12 +28,12 @@ namespace ICSharpCode.PackageManagement
 		IRecentPackageRepository recentPackageRepository;
 		IMachinePackageCache machinePackageCache;
 		IProcess process;
-		
+
 		public PackageManagementOptionsViewModel(IRecentPackageRepository recentPackageRepository)
 			: this(PackageManagementServices.Options, recentPackageRepository, new MachinePackageCache(), new Process())
 		{
 		}
-		
+
 		public PackageManagementOptionsViewModel(
 			PackageManagementOptions options,
 			IRecentPackageRepository recentPackageRepository,
@@ -44,28 +44,28 @@ namespace ICSharpCode.PackageManagement
 			this.recentPackageRepository = recentPackageRepository;
 			this.machinePackageCache = machinePackageCache;
 			this.process = process;
-			
+
 			this.HasNoRecentPackages = !RecentPackageRepositoryHasPackages();
 			this.HasNoCachedPackages = !MachinePackageCacheHasPackages();
 			this.IsPackageRestoreEnabled = options.IsPackageRestoreEnabled;
-			
+
 			CreateCommands();
 		}
-		
+
 		public bool HasNoRecentPackages { get; private set; }
 		public bool HasNoCachedPackages { get; private set; }
 		public bool IsPackageRestoreEnabled { get; set; }
-		
+
 		bool MachinePackageCacheHasPackages()
 		{
 			return machinePackageCache.GetPackages().Any();
 		}
-		
+
 		bool RecentPackageRepositoryHasPackages()
 		{
 			return recentPackageRepository.HasRecentPackages;
 		}
-		
+
 		void CreateCommands()
 		{
 			ClearRecentPackagesCommand =
@@ -75,30 +75,30 @@ namespace ICSharpCode.PackageManagement
 			BrowseCachedPackagesCommand =
 				new DelegateCommand(param => BrowseCachedPackages(), param => !HasNoCachedPackages);
 		}
-		
+
 		public ICommand ClearRecentPackagesCommand { get; private set; }
 		public ICommand ClearCachedPackagesCommand { get; private set; }
 		public ICommand BrowseCachedPackagesCommand { get; private set; }
-		
+
 		public void ClearRecentPackages()
 		{
 			recentPackageRepository.Clear();
 			HasNoRecentPackages = true;
 			OnPropertyChanged(viewModel => viewModel.HasNoRecentPackages);
 		}
-		
+
 		public void ClearCachedPackages()
 		{
 			machinePackageCache.Clear();
 			HasNoCachedPackages = true;
 			OnPropertyChanged(viewModel => viewModel.HasNoCachedPackages);
 		}
-		
+
 		public void BrowseCachedPackages()
 		{
 			process.Start(machinePackageCache.Source);
 		}
-		
+
 		public void SaveOptions()
 		{
 			options.IsPackageRestoreEnabled = IsPackageRestoreEnabled;

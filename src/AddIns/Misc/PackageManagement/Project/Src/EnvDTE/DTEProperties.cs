@@ -24,24 +24,26 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		public Properties GetProperties(string category, string page)
 		{
-			if (IsTextEditorFontsAndColors(category, page)) {
+			if (IsTextEditorFontsAndColors(category, page))
+			{
 				return CreateTextEditorFontsAndColorsProperties();
 			}
+
 			return null;
 		}
-		
+
 		bool IsTextEditorFontsAndColors(string category, string page)
 		{
 			return
 				IsCaseInsensitiveMatch(category, "FontsAndColors") &&
 				IsCaseInsensitiveMatch(page, "TextEditor");
 		}
-		
+
 		bool IsCaseInsensitiveMatch(string a, string b)
 		{
 			return String.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
 		}
-		
+
 		Properties CreateTextEditorFontsAndColorsProperties()
 		{
 			return new Properties(new TextEditorFontsAndColorsPropertyFactory());

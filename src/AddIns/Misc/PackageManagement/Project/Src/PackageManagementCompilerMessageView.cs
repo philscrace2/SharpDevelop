@@ -29,13 +29,15 @@ namespace ICSharpCode.PackageManagement
 			MessageViewCategory.Create(ref view, categoryName, categoryDisplayName);
 			return new PackageManagementMessageViewCategory(view);
 		}
-		
+
 		public IMessageViewCategory GetExisting(string categoryName)
 		{
 			MessageViewCategory view = CompilerMessageView.Instance.GetCategory(categoryName);
-			if (view != null) {
+			if (view != null)
+			{
 				return new PackageManagementMessageViewCategory(view);
 			}
+
 			return null;
 		}
 	}

@@ -28,7 +28,7 @@ namespace ICSharpCode.TextTemplating
 			var processor = CreateTextTemplatingFilePreprocessor(item, context);
 			processor.PreprocessTemplate();
 		}
-		
+
 		protected virtual ITextTemplatingFilePreprocessor CreateTextTemplatingFilePreprocessor(
 			FileProjectItem templateFile,
 			CustomToolContext context)

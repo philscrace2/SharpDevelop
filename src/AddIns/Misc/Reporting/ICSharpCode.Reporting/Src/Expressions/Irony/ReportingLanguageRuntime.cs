@@ -27,12 +27,12 @@ namespace ICSharpCode.Reporting.Expressions.Irony
 	/// <summary>
 	/// Description of ReportingLanguageRuntime.
 	/// </summary>
-	public class ReportingLanguageRuntime:LanguageRuntime
+	public class ReportingLanguageRuntime : LanguageRuntime
 	{
-		public ReportingLanguageRuntime(LanguageData language):base(language)
+		public ReportingLanguageRuntime(LanguageData language) : base(language)
 		{
 		}
-		
+
 		public override void Init()
 		{
 			base.Init();
@@ -44,9 +44,9 @@ namespace ICSharpCode.Reporting.Expressions.Irony
 			BuiltIns.ImportStaticMembers(typeof(Environment));
 			BuiltIns.ImportStaticMembers(typeof(System.DateTime));
 			//Aggregates
-			BuiltIns.AddSpecialForm(ImportAggregates.Sum,"sum",1,1);
+			BuiltIns.AddSpecialForm(ImportAggregates.Sum, "sum", 1, 1);
 		}
-		
+
 		/*
 		private object BuiltInPrintMethod(ScriptThread thread, object[] args) {
 			string text = string.Empty;
@@ -64,7 +64,7 @@ namespace ICSharpCode.Reporting.Expressions.Irony
 			return null;
 		}
 		*/
-		
+
 		/*
 		private object BuiltInFormatMethod(ScriptThread thread, object[] args) {
 			if (args == null || args.Length == 0) return null;
@@ -76,7 +76,7 @@ namespace ICSharpCode.Reporting.Expressions.Irony
 			var formatArgs = args.Skip(1).ToArray();
 			var text = string.Format(template, formatArgs);
 			return text;
-			
+
 		}
 		*/
 	}

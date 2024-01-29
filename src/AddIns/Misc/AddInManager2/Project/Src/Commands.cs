@@ -33,7 +33,7 @@ namespace ICSharpCode.AddInManager2
 			}
 		}
 	}
-	
+
 	public class AddInManagerInitializationCommand : SimpleCommand
 	{
 		public override void Execute(object parameter)
@@ -42,7 +42,7 @@ namespace ICSharpCode.AddInManager2
 			AddInManagerServices.Setup.RemoveUnreferencedNuGetPackages();
 		}
 	}
-	
+
 	public class AddInManagerVisualInitializationCommand : SimpleCommand
 	{
 		public override void Execute(object parameter)

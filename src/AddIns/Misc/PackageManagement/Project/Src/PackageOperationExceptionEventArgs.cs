@@ -26,7 +26,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			Exception = ex;
 		}
-		
+
 		public Exception Exception { get; private set; }
 	}
 }

@@ -32,22 +32,22 @@ namespace ICSharpCode.PackageManagement.Scripting
 		IScriptingConsole ScriptingConsole { get; set; }
 		IPackageManagementSolution Solution { get; }
 		bool IsRunning { get; }
-		
+
 		void Clear();
 		void WritePrompt();
 		void Run();
 		void ShutdownConsole();
 		void ExecuteCommand(string command);
-		
+
 		void SetDefaultRunspace();
-		
+
 		IConsoleHostFileConflictResolver CreateFileConflictResolver(FileConflictAction fileConflictAction);
 		IDisposable CreateLogger(ICmdletLogger logger);
-		
+
 		IPackageManagementProject GetProject(string packageSource, string projectName);
 		IPackageManagementProject GetProject(IPackageRepository sourceRepository, string projectName);
 		PackageSource GetActivePackageSource(string source);
-		
+
 		IPackageRepository GetPackageRepository(PackageSource packageSource);
 	}
 }

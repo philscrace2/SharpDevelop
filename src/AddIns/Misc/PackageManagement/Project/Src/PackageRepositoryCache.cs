@@ -30,9 +30,10 @@ namespace ICSharpCode.PackageManagement
 		PackageManagementOptions options;
 		IList<RecentPackageInfo> recentPackages;
 		IRecentPackageRepository recentPackageRepository;
+
 		ConcurrentDictionary<string, IPackageRepository> repositories =
 			new ConcurrentDictionary<string, IPackageRepository>();
-		
+
 		public PackageRepositoryCache(
 			PackageManagementOptions options,
 			ISharpDevelopPackageRepositoryFactory factory)
@@ -57,98 +58,114 @@ namespace ICSharpCode.PackageManagement
 			this.recentPackages = recentPackages;
 			this.packageSources = packageSources;
 		}
-		
+
 		public event EventHandler<PackageRepositoryFactoryEventArgs> RepositoryCreated;
-		
+
 		public IPackageRepository CreateRepository(string packageSource)
 		{
 			IPackageRepository repository = GetExistingRepository(packageSource);
-			if (repository != null) {
+			if (repository != null)
+			{
 				return repository;
 			}
+
 			return CreateNewCachedRepository(packageSource);
 		}
-		
+
 		IPackageRepository GetExistingRepository(string packageSource)
 		{
 			IPackageRepository repository = null;
-			if (repositories.TryGetValue(packageSource, out repository)) {
+			if (repositories.TryGetValue(packageSource, out repository))
+			{
 				return repository;
 			}
+
 			return null;
 		}
-		
+
 		IPackageRepository CreateNewCachedRepository(string packageSource)
 		{
 			IPackageRepository repository = factory.CreateRepository(packageSource);
 			repositories.TryAdd(packageSource, repository);
-			
+
 			OnPackageRepositoryCreated(repository);
-			
+
 			return repository;
 		}
-		
+
 		void OnPackageRepositoryCreated(IPackageRepository repository)
 		{
-			if (RepositoryCreated != null) {
+			if (RepositoryCreated != null)
+			{
 				RepositoryCreated(this, new PackageRepositoryFactoryEventArgs(repository));
 			}
 		}
-		
-		public ISharedPackageRepository CreateSharedRepository(IPackagePathResolver pathResolver, IFileSystem fileSystem, IFileSystem configSettingsFileSystem)
+
+		public ISharedPackageRepository CreateSharedRepository(IPackagePathResolver pathResolver,
+			IFileSystem fileSystem, IFileSystem configSettingsFileSystem)
 		{
 			return factory.CreateSharedRepository(pathResolver, fileSystem, configSettingsFileSystem);
 		}
-		
+
 		public IPackageRepository CreateAggregateRepository()
 		{
 			IEnumerable<IPackageRepository> allRepositories = CreateAllEnabledRepositories();
 			return CreateAggregateRepository(allRepositories);
 		}
-		
+
 		IEnumerable<IPackageRepository> CreateAllEnabledRepositories()
 		{
-			foreach (PackageSource source in PackageSources.GetEnabledPackageSources()) {
+			foreach (PackageSource source in PackageSources.GetEnabledPackageSources())
+			{
 				yield return CreateRepository(source.Source);
 			}
 		}
 
-		RegisteredPackageSources PackageSources {
-			get {
-				if (packageSources != null) {
+		RegisteredPackageSources PackageSources
+		{
+			get
+			{
+				if (packageSources != null)
+				{
 					return packageSources;
 				}
+
 				return options.PackageSources;
 			}
 		}
-		
+
 		public IPackageRepository CreateAggregateRepository(IEnumerable<IPackageRepository> repositories)
 		{
 			return factory.CreateAggregateRepository(repositories);
 		}
-		
-		public IRecentPackageRepository RecentPackageRepository {
-			get {
+
+		public IRecentPackageRepository RecentPackageRepository
+		{
+			get
+			{
 				CreateRecentPackageRepository();
 				return recentPackageRepository;
 			}
 		}
-		
+
 		void CreateRecentPackageRepository()
 		{
-			if (recentPackageRepository == null) {
+			if (recentPackageRepository == null)
+			{
 				IPackageRepository aggregateRepository = CreateAggregateRepository();
 				CreateRecentPackageRepository(recentPackages, aggregateRepository);
 			}
 		}
-		
+
 		public IRecentPackageRepository CreateRecentPackageRepository(
 			IList<RecentPackageInfo> recentPackages,
 			IPackageRepository aggregateRepository)
 		{
-			if (recentPackageRepository == null) {
+			if (recentPackageRepository == null)
+			{
 				recentPackageRepository = factory.CreateRecentPackageRepository(recentPackages, aggregateRepository);
 			}
+
 			return recentPackageRepository;
 		}
 	}

@@ -28,30 +28,36 @@ namespace ICSharpCode.PackageManagement
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is Boolean) {
+			if (value is Boolean)
+			{
 				Boolean fontIsBold = (Boolean)value;
 				return ConvertToFontWeight(fontIsBold);
 			}
+
 			return DependencyProperty.UnsetValue;
 		}
-		
+
 		FontWeight ConvertToFontWeight(Boolean bold)
 		{
-			if (bold) {
+			if (bold)
+			{
 				return FontWeights.Bold;
 			}
+
 			return FontWeights.Normal;
 		}
-		
+
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			if (value is FontWeight) {
+			if (value is FontWeight)
+			{
 				FontWeight fontWeight = (FontWeight)value;
 				return ConvertToBoolean(fontWeight);
 			}
+
 			return DependencyProperty.UnsetValue;
 		}
-		
+
 		bool ConvertToBoolean(FontWeight fontWeight)
 		{
 			return fontWeight == FontWeights.Bold;

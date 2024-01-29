@@ -34,23 +34,25 @@ namespace ICSharpCode.TextTemplating
 			: base(host, templateFile, context)
 		{
 		}
-		
+
 		public void Dispose()
 		{
 			Host.Dispose();
 		}
-		
+
 		public void ProcessTemplate()
 		{
 			ClearTasksExceptCommentTasks();
 			SetNamespaceHint();
-			if (TryGenerateOutputFileForTemplate()) {
+			if (TryGenerateOutputFileForTemplate())
+			{
 				AddOutputFileToProjectIfRequired();
 			}
+
 			AddAnyErrorsToTaskList();
 			BringErrorsToFrontIfRequired();
 		}
-		
+
 		void SetNamespaceHint()
 		{
 			var namespaceHint = new NamespaceHint(TemplateFile);
@@ -63,12 +65,12 @@ namespace ICSharpCode.TextTemplating
 			string outputFileName = GetOutputFileName(inputFileName);
 			return TryProcessingTemplate(inputFileName, outputFileName);
 		}
-		
+
 		void AddOutputFileToProjectIfRequired()
 		{
 			AddOutputFileToProjectIfRequired(Host.OutputFile);
 		}
-		
+
 		string GetOutputFileName(string inputFileName)
 		{
 			return Path.ChangeExtension(inputFileName, ".cs");
@@ -76,12 +78,16 @@ namespace ICSharpCode.TextTemplating
 
 		bool TryProcessingTemplate(string inputFileName, string outputFileName)
 		{
-			try {
+			try
+			{
 				return Host.ProcessTemplate(inputFileName, outputFileName);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				AddCompilerErrorToTemplatingHost(ex, inputFileName);
 				DebugLogException(ex, inputFileName);
 			}
+
 			return false;
 		}
 	}

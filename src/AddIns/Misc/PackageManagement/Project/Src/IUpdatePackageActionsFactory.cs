@@ -24,12 +24,12 @@ namespace ICSharpCode.PackageManagement
 	public interface IUpdatePackageActionsFactory
 	{
 		IUpdatePackageActions CreateUpdateAllPackagesInProject(IPackageManagementProject project);
-		
+
 		IUpdatePackageActions CreateUpdateAllPackagesInSolution(
 			IPackageManagementSolution solution,
 			IPackageRepository sourceRepository);
-		
-		 IUpdatePackageActions CreateUpdatePackageInAllProjects(
+
+		IUpdatePackageActions CreateUpdatePackageInAllProjects(
 			PackageReference packageReference,
 			IPackageManagementSolution solution,
 			IPackageRepository sourceRepository);

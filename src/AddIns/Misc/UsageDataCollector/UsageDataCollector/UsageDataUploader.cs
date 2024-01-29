@@ -27,7 +27,6 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Xml;
-
 using ICSharpCode.UsageDataCollector.Contracts;
 using UdcProxy = ICSharpCode.UsageDataCollector.ServiceReference;
 
@@ -40,7 +39,7 @@ namespace ICSharpCode.UsageDataCollector
 	{
 		string databaseFileName;
 		string productName;
-		
+
 		/// <summary>
 		/// Creates a new UsageDataUploader.
 		/// </summary>
@@ -53,12 +52,12 @@ namespace ICSharpCode.UsageDataCollector
 			this.databaseFileName = databaseFileName;
 			this.productName = productName;
 		}
-		
+
 		/// <summary>
 		/// Gets/Sets environment data that is sent with the dummy session on the first upload.
 		/// </summary>
 		public IEnumerable<UsageDataEnvironmentProperty> EnvironmentDataForDummySession { get; set; }
-		
+
 		SQLiteConnection OpenConnection()
 		{
 			SQLiteConnectionStringBuilder conn = new SQLiteConnectionStringBuilder();
@@ -67,7 +66,7 @@ namespace ICSharpCode.UsageDataCollector
 			connection.Open();
 			return connection;
 		}
-		
+
 		/// <summary>
 		/// Retrieves all stored data as XML text.
 		/// </summary>
@@ -76,22 +75,28 @@ namespace ICSharpCode.UsageDataCollector
 		public string GetTextForStoredData()
 		{
 			UsageDataMessage message;
-			using (SQLiteConnection connection = OpenConnection()) {
-				using (SQLiteTransaction transaction = connection.BeginTransaction()) {
+			using (SQLiteConnection connection = OpenConnection())
+			{
+				using (SQLiteTransaction transaction = connection.BeginTransaction())
+				{
 					CheckDatabaseVersion(connection);
 					message = FetchDataForUpload(connection, true);
 				}
 			}
-			using (StringWriter w = new StringWriter(CultureInfo.InvariantCulture)) {
-				using (XmlTextWriter xmlWriter = new XmlTextWriter(w)) {
+
+			using (StringWriter w = new StringWriter(CultureInfo.InvariantCulture))
+			{
+				using (XmlTextWriter xmlWriter = new XmlTextWriter(w))
+				{
 					xmlWriter.Formatting = Formatting.Indented;
 					DataContractSerializer serializer = new DataContractSerializer(typeof(UsageDataMessage));
 					serializer.WriteObject(xmlWriter, message);
 				}
+
 				return w.ToString();
 			}
 		}
-		
+
 		/// <summary>
 		/// Starts the upload of the usage data.
 		/// </summary>
@@ -106,7 +111,7 @@ namespace ICSharpCode.UsageDataCollector
 			binding.MessageEncoding = WSMessageEncoding.Mtom;
 			StartUpload(binding, epa);
 		}
-		
+
 		/// <summary>
 		/// Starts the upload of the usage data.
 		/// </summary>
@@ -116,24 +121,33 @@ namespace ICSharpCode.UsageDataCollector
 		{
 			UsageDataMessage message;
 			bool addDummySession = false;
-			using (SQLiteConnection connection = OpenConnection()) {
-				using (SQLiteTransaction transaction = connection.BeginTransaction()) {
+			using (SQLiteConnection connection = OpenConnection())
+			{
+				using (SQLiteTransaction transaction = connection.BeginTransaction())
+				{
 					CheckDatabaseVersion(connection);
 					HasUploadedTodayStatus status = HasAlreadyUploadedToday(connection);
-					if (status == HasUploadedTodayStatus.Yes) {
+					if (status == HasUploadedTodayStatus.Yes)
+					{
 						message = null;
-					} else {
+					}
+					else
+					{
 						message = FetchDataForUpload(connection, false);
 						if (status == HasUploadedTodayStatus.NeverUploaded)
 							addDummySession = true;
 					}
+
 					transaction.Commit();
 				}
 			}
-			if (message != null) {
+
+			if (message != null)
+			{
 				string commaSeparatedSessionIDList = GetCommaSeparatedIDList(message.Sessions);
-				
-				if (addDummySession) {
+
+				if (addDummySession)
+				{
 					// A dummy session is used for the first upload to notify the server of the user's environment.
 					// Without this, we couldn't tell the version of a user who tries SharpDevelop once but doesn't use it long
 					// enough for an actual session to be uploaded.
@@ -145,72 +159,91 @@ namespace ICSharpCode.UsageDataCollector
 						dummySession.EnvironmentProperties.AddRange(this.EnvironmentDataForDummySession);
 					message.Sessions.Add(dummySession);
 				}
-				
+
 				DataContractSerializer serializer = new DataContractSerializer(typeof(UsageDataMessage));
 				byte[] data;
-				using (MemoryStream ms = new MemoryStream()) {
-					using (GZipStream zip = new GZipStream(ms, CompressionMode.Compress)) {
+				using (MemoryStream ms = new MemoryStream())
+				{
+					using (GZipStream zip = new GZipStream(ms, CompressionMode.Compress))
+					{
 						serializer.WriteObject(zip, message);
 					}
+
 					data = ms.ToArray();
 				}
-				
+
 				UdcProxy.UDCUploadServiceClient client = new UdcProxy.UDCUploadServiceClient(binding, endpoint);
-				try {
+				try
+				{
 					client.BeginUploadUsageData(productName, new MemoryStream(data),
-					                            ar => UsageDataUploaded(ar, client, commaSeparatedSessionIDList), null);
-				} catch (CommunicationException) {
+						ar => UsageDataUploaded(ar, client, commaSeparatedSessionIDList), null);
+				}
+				catch (CommunicationException)
+				{
 					// ignore error (maybe currently not connected to network)
-				} catch (TimeoutException) {
+				}
+				catch (TimeoutException)
+				{
 					// ignore error (network connection trouble?)
 				}
 			}
 		}
-		
-		void UsageDataUploaded(IAsyncResult result, UdcProxy.UDCUploadServiceClient client, string commaSeparatedSessionIDList)
+
+		void UsageDataUploaded(IAsyncResult result, UdcProxy.UDCUploadServiceClient client,
+			string commaSeparatedSessionIDList)
 		{
 			bool success = false;
-			try {
+			try
+			{
 				client.EndUploadUsageData(result);
 				success = true;
-			} catch (CommunicationException) {
+			}
+			catch (CommunicationException)
+			{
 				// ignore error (maybe currently not connected to network)
-			} catch (TimeoutException) {
+			}
+			catch (TimeoutException)
+			{
 				// ignore error (network connection trouble?)
 			}
+
 			client.Close();
-			
-			if (success) {
+
+			if (success)
+			{
 				RemoveUploadedData(commaSeparatedSessionIDList);
 			}
 		}
-		
+
 		Version expectedDBVersion = new Version(1, 0, 1);
-		
+
 		void CheckDatabaseVersion(SQLiteConnection connection)
 		{
-			using (SQLiteCommand cmd = connection.CreateCommand()) {
+			using (SQLiteCommand cmd = connection.CreateCommand())
+			{
 				cmd.CommandText = "SELECT value FROM Properties WHERE name = 'dbVersion';";
 				string version = (string)cmd.ExecuteScalar();
 				if (version == null)
 					throw new InvalidOperationException("Error retrieving database version");
 				Version actualDBVersion = new Version(version);
-				if (actualDBVersion != expectedDBVersion) {
+				if (actualDBVersion != expectedDBVersion)
+				{
 					throw new IncompatibleDatabaseException(expectedDBVersion, actualDBVersion);
 				}
 			}
 		}
-		
+
 		enum HasUploadedTodayStatus
 		{
 			No,
 			Yes,
 			NeverUploaded
 		}
-		
+
 		static HasUploadedTodayStatus HasAlreadyUploadedToday(SQLiteConnection connection)
 		{
-			using (SQLiteCommand cmd = connection.CreateCommand()) {
+			using (SQLiteCommand cmd = connection.CreateCommand())
+			{
 				cmd.CommandText = "SELECT value > datetime('now','-1 day') FROM Properties WHERE name='lastUpload';";
 				object result = cmd.ExecuteScalar();
 				if (result == null)
@@ -218,31 +251,40 @@ namespace ICSharpCode.UsageDataCollector
 				return (long)result > 0 ? HasUploadedTodayStatus.Yes : HasUploadedTodayStatus.No;
 			}
 		}
-		
+
 		#region FetchDataForUpload
+
 		static UsageDataMessage FetchDataForUpload(SQLiteConnection connection, bool fetchIncompleteSessions)
 		{
 			UsageDataMessage message = new UsageDataMessage();
 			// Retrieve the User ID
-			using (SQLiteCommand cmd = connection.CreateCommand()) {
+			using (SQLiteCommand cmd = connection.CreateCommand())
+			{
 				cmd.CommandText = "SELECT value FROM Properties WHERE name = 'userID';";
 				string userID = (string)cmd.ExecuteScalar();
 				message.UserID = new Guid(userID);
 			}
-			
+
 			// Retrieve the list of sessions
-			using (SQLiteCommand cmd = connection.CreateCommand()) {
-				if (fetchIncompleteSessions) {
+			using (SQLiteCommand cmd = connection.CreateCommand())
+			{
+				if (fetchIncompleteSessions)
+				{
 					cmd.CommandText = @"SELECT id, startTime, endTime FROM Sessions;";
-				} else {
+				}
+				else
+				{
 					// Fetch all sessions which are either closed or inactive for more than 24 hours
 					cmd.CommandText = @"SELECT id, startTime, endTime FROM Sessions
 						WHERE (endTime IS NOT NULL)
 							OR (ifnull((SELECT max(time) FROM FeatureUses WHERE FeatureUses.session = Sessions.id), Sessions.startTime)
 								< datetime('now','-1 day'));";
 				}
-				using (SQLiteDataReader reader = cmd.ExecuteReader()) {
-					while (reader.Read()) {
+
+				using (SQLiteDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
 						UsageDataSession session = new UsageDataSession();
 						session.SessionID = reader.GetInt64(0);
 						session.StartTime = reader.GetDateTime(1);
@@ -252,30 +294,41 @@ namespace ICSharpCode.UsageDataCollector
 					}
 				}
 			}
+
 			string commaSeparatedSessionIDList = GetCommaSeparatedIDList(message.Sessions);
-			
+
 			StringInterner stringInterning = new StringInterner();
 			// Retrieve the environment
-			using (SQLiteCommand cmd = connection.CreateCommand()) {
-				cmd.CommandText = "SELECT session, name, value FROM Environment WHERE session IN (" + commaSeparatedSessionIDList + ");";
-				using (SQLiteDataReader reader = cmd.ExecuteReader()) {
-					while (reader.Read()) {
+			using (SQLiteCommand cmd = connection.CreateCommand())
+			{
+				cmd.CommandText = "SELECT session, name, value FROM Environment WHERE session IN (" +
+				                  commaSeparatedSessionIDList + ");";
+				using (SQLiteDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
 						long sessionID = reader.GetInt64(0);
 						UsageDataSession session = message.FindSession(sessionID);
 						session.EnvironmentProperties.Add(
-							new UsageDataEnvironmentProperty {
+							new UsageDataEnvironmentProperty
+							{
 								Name = stringInterning.Intern(reader.GetString(1)),
 								Value = stringInterning.Intern(reader.GetString(2))
 							});
 					}
 				}
 			}
-			
+
 			// Retrieve the feature uses
-			using (SQLiteCommand cmd = connection.CreateCommand()) {
-				cmd.CommandText = "SELECT session, time, endTime, feature, activationMethod FROM FeatureUses WHERE session IN (" + commaSeparatedSessionIDList + ");";
-				using (SQLiteDataReader reader = cmd.ExecuteReader()) {
-					while (reader.Read()) {
+			using (SQLiteCommand cmd = connection.CreateCommand())
+			{
+				cmd.CommandText =
+					"SELECT session, time, endTime, feature, activationMethod FROM FeatureUses WHERE session IN (" +
+					commaSeparatedSessionIDList + ");";
+				using (SQLiteDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
 						long sessionID = reader.GetInt64(0);
 						UsageDataSession session = message.FindSession(sessionID);
 						UsageDataFeatureUse featureUse = new UsageDataFeatureUse();
@@ -289,12 +342,16 @@ namespace ICSharpCode.UsageDataCollector
 					}
 				}
 			}
-			
+
 			// Retrieve the exceptions
-			using (SQLiteCommand cmd = connection.CreateCommand()) {
-				cmd.CommandText = "SELECT session, time, type, stackTrace FROM Exceptions WHERE session IN (" + commaSeparatedSessionIDList + ");";
-				using (SQLiteDataReader reader = cmd.ExecuteReader()) {
-					while (reader.Read()) {
+			using (SQLiteCommand cmd = connection.CreateCommand())
+			{
+				cmd.CommandText = "SELECT session, time, type, stackTrace FROM Exceptions WHERE session IN (" +
+				                  commaSeparatedSessionIDList + ");";
+				using (SQLiteDataReader reader = cmd.ExecuteReader())
+				{
+					while (reader.Read())
+					{
 						long sessionID = reader.GetInt64(0);
 						UsageDataSession session = message.FindSession(sessionID);
 						UsageDataException exception = new UsageDataException();
@@ -306,27 +363,32 @@ namespace ICSharpCode.UsageDataCollector
 					}
 				}
 			}
-			
+
 			return message;
 		}
+
 		#endregion
-		
+
 		static string GetCommaSeparatedIDList(IEnumerable<UsageDataSession> sessions)
 		{
 			return string.Join(
 				",",
 				sessions.Select(s => s.SessionID.ToString(CultureInfo.InvariantCulture)).ToArray());
 		}
-		
+
 		#region RemoveUploadedData
+
 		/// <summary>
 		/// Removes the data that was successfully uploaded and sets the 'lastUpload' property.
 		/// </summary>
 		void RemoveUploadedData(string commaSeparatedSessionIDList)
 		{
-			using (SQLiteConnection connection = OpenConnection()) {
-				using (SQLiteTransaction transaction = connection.BeginTransaction()) {
-					using (SQLiteCommand cmd = connection.CreateCommand()) {
+			using (SQLiteConnection connection = OpenConnection())
+			{
+				using (SQLiteTransaction transaction = connection.BeginTransaction())
+				{
+					using (SQLiteCommand cmd = connection.CreateCommand())
+					{
 						cmd.CommandText = @"DELETE FROM Sessions WHERE id IN (" + commaSeparatedSessionIDList + @");
 							DELETE FROM Environment WHERE session IN (" + commaSeparatedSessionIDList + @");
 							DELETE FROM FeatureUses WHERE session IN (" + commaSeparatedSessionIDList + @");
@@ -335,12 +397,14 @@ namespace ICSharpCode.UsageDataCollector
 						";
 						cmd.ExecuteNonQuery();
 					}
+
 					transaction.Commit();
 				}
 			}
 		}
+
 		#endregion
-		
+
 		/// <summary>
 		/// Helps keep the memory usage during data preparation down (there are lots of duplicate strings, and we don't
 		/// want to keep them in RAM repeatedly).
@@ -348,15 +412,17 @@ namespace ICSharpCode.UsageDataCollector
 		sealed class StringInterner
 		{
 			Dictionary<string, string> cache = new Dictionary<string, string>();
-			
+
 			public string Intern(string input)
 			{
-				if (input != null) {
+				if (input != null)
+				{
 					string result;
 					if (cache.TryGetValue(input, out result))
 						return result;
 					cache.Add(input, input);
 				}
+
 				return input;
 			}
 		}

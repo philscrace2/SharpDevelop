@@ -31,17 +31,9 @@ namespace ICSharpCode.AddInManager2.Model
 			AddIn = addIn;
 			PreviousVersionRemains = false;
 		}
-		
-		public AddIn AddIn
-		{
-			get;
-			private set;
-		}
-		
-		public bool PreviousVersionRemains
-		{
-			get;
-			set;
-		}
+
+		public AddIn AddIn { get; private set; }
+
+		public bool PreviousVersionRemains { get; set; }
 	}
 }

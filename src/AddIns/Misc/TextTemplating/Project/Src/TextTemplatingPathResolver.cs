@@ -24,12 +24,12 @@ namespace ICSharpCode.TextTemplating
 	{
 		ITextTemplatingVariables templatingVariables;
 		ITextTemplatingEnvironment environment;
-		
+
 		public TextTemplatingPathResolver()
 			: this(new TextTemplatingVariables(), new TextTemplatingEnvironment())
 		{
 		}
-		
+
 		public TextTemplatingPathResolver(
 			ITextTemplatingVariables templatingVariables,
 			ITextTemplatingEnvironment environment)
@@ -37,7 +37,7 @@ namespace ICSharpCode.TextTemplating
 			this.templatingVariables = templatingVariables;
 			this.environment = environment;
 		}
-		
+
 		public string ResolvePath(string path)
 		{
 			path = environment.ExpandEnvironmentVariables(path);

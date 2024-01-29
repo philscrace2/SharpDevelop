@@ -28,11 +28,12 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			this.Project = project;
 			References = new References(project);
 		}
-		
+
 		public global::EnvDTE.References References { get; private set; }
 		public global::EnvDTE.Project Project { get; private set; }
-		
-		public global::EnvDTE.DTE DTE {
+
+		public global::EnvDTE.DTE DTE
+		{
 			get { return Project.DTE; }
 		}
 	}

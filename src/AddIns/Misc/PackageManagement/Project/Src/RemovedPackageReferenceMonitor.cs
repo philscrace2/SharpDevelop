@@ -26,24 +26,25 @@ namespace ICSharpCode.PackageManagement
 	{
 		ISharpDevelopProjectManager projectManager;
 		List<IPackage> packagesRemoved = new List<IPackage>();
-		
+
 		public RemovedPackageReferenceMonitor(ISharpDevelopProjectManager projectManager)
 		{
 			this.projectManager = projectManager;
 			projectManager.PackageReferenceRemoved += PackageReferenceRemoved;
 		}
-		
+
 		void PackageReferenceRemoved(object sender, PackageOperationEventArgs e)
 		{
 			packagesRemoved.Add(e.Package);
 		}
-		
+
 		public void Dispose()
 		{
 			projectManager.PackageReferenceRemoved -= PackageReferenceRemoved;
 		}
-		
-		public List<IPackage> PackagesRemoved {
+
+		public List<IPackage> PackagesRemoved
+		{
 			get { return packagesRemoved; }
 		}
 	}

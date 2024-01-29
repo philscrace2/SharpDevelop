@@ -39,43 +39,43 @@ namespace ICSharpCode.AddInManager2.ViewModel
 		private bool _isExpandedinView;
 		private bool _showPackageSources;
 		private string _lastSelectedId;
-		
+
 		private ObservableCollection<PackageRepository> _packageRepositories;
-		
+
 		public event EventHandler AddInsListUpdated;
-		
+
 		public AddInsViewModelBase()
-			:base()
+			: base()
 		{
 			Initialize();
 		}
-		
+
 		public AddInsViewModelBase(IAddInManagerServices services)
 			: base(services)
 		{
 			Initialize();
 		}
-		
+
 		private void Initialize()
 		{
 			_activePackageRepository = null;
 			_isReadingPackages = false;
 			_isExpandedinView = false;
-			
+
 			// Initialization of internal lists
 			_pages = new Pages();
 			_highlightCount = 0;
 			AddInPackages = new ObservableCollection<AddInPackageViewModelBase>();
 			_packageRepositories = new ObservableCollection<PackageRepository>();
 			ErrorMessage = String.Empty;
-			
+
 			// Update package sources list and ensure that it's updated automatically from now
 			UpdatePackageSources();
 			AddInManager.Events.PackageSourcesChanged += AddInManager_Events_PackageSourcesChanged;
-			
+
 			CreateCommands();
 		}
-		
+
 		private void CreateCommands()
 		{
 			ShowNextPageCommand = new DelegateCommand(param => ShowNextPage());
@@ -86,7 +86,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 			UpdatePrereleaseFilterCommand = new DelegateCommand(param => UpdatePrereleaseFilter());
 			InstallFromArchiveCommand = new DelegateCommand(param => InstallFromArchive());
 		}
-		
+
 		private void OnAddInsListUpdated()
 		{
 			if (AddInsListUpdated != null)
@@ -94,83 +94,40 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				AddInsListUpdated(this, new EventArgs());
 			}
 		}
-		
-		public ICommand ShowNextPageCommand
-		{
-			get;
-			private set;
-		}
-		
-		public ICommand ShowPreviousPageCommand
-		{
-			get;
-			private set;
-		}
-		
-		public ICommand ShowPageCommand
-		{
-			get;
-			private set;
-		}
-		
-		public ICommand SearchCommand
-		{
-			get;
-			private set;
-		}
-		
-		public ICommand UpdatePreinstalledFilterCommand
-		{
-			get;
-			private set;
-		}
-		
-		public ICommand UpdatePrereleaseFilterCommand
-		{
-			get;
-			private set;
-		}
-		
-		public ICommand InstallFromArchiveCommand
-		{
-			get;
-			private set;
-		}
-		
+
+		public ICommand ShowNextPageCommand { get; private set; }
+
+		public ICommand ShowPreviousPageCommand { get; private set; }
+
+		public ICommand ShowPageCommand { get; private set; }
+
+		public ICommand SearchCommand { get; private set; }
+
+		public ICommand UpdatePreinstalledFilterCommand { get; private set; }
+
+		public ICommand UpdatePrereleaseFilterCommand { get; private set; }
+
+		public ICommand InstallFromArchiveCommand { get; private set; }
+
 		public void Dispose()
 		{
 			OnDispose();
 			IsDisposed = true;
 		}
-		
+
 		protected virtual void OnDispose()
 		{
 		}
-		
-		public bool IsDisposed
-		{
-			get;
-			protected set;
-		}
-		
-		public bool HasError
-		{
-			get;
-			protected set;
-		}
-		
-		public string ErrorMessage
-		{
-			get;
-			protected set;
-		}
-		
+
+		public bool IsDisposed { get; protected set; }
+
+		public bool HasError { get; protected set; }
+
+		public string ErrorMessage { get; protected set; }
+
 		public int HighlightCount
 		{
-			get
-			{
-				return _highlightCount;
-			}
+			get { return _highlightCount; }
 			protected set
 			{
 				_highlightCount = value;
@@ -179,21 +136,15 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				OnPropertyChanged(vm => vm.TitleWithHighlight);
 			}
 		}
-		
+
 		public bool HasHighlightCount
 		{
-			get
-			{
-				return (_highlightCount > 0);
-			}
+			get { return (_highlightCount > 0); }
 		}
-		
+
 		public string Title
 		{
-			get
-			{
-				return _title;
-			}
+			get { return _title; }
 			set
 			{
 				_title = value;
@@ -202,7 +153,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				OnPropertyChanged(vm => vm.TitleWithHighlight);
 			}
 		}
-		
+
 		public string TitleWithHighlight
 		{
 			get
@@ -217,76 +168,60 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
-		public ObservableCollection<AddInPackageViewModelBase> AddInPackages
-		{
-			get;
-			private set;
-		}
-		
+
+		public ObservableCollection<AddInPackageViewModelBase> AddInPackages { get; private set; }
+
 		public ObservableCollection<Page> Pages
 		{
-			get
-			{
-				return _pages;
-			}
+			get { return _pages; }
 		}
-		
+
 		protected Pages PagesCollection
 		{
-			get
-			{
-				return _pages;
-			}
+			get { return _pages; }
 		}
-		
+
 		public bool IsReadingPackages
 		{
-			get
-			{
-				return _isReadingPackages;
-			}
+			get { return _isReadingPackages; }
 			protected set
 			{
 				_isReadingPackages = value;
 				OnPropertyChanged(m => m.IsReadingPackages);
 			}
 		}
-		
+
 		public bool IsExpandedInView
 		{
-			get
-			{
-				return _isExpandedinView;
-			}
+			get { return _isExpandedinView; }
 			set
 			{
 				_isExpandedinView = value;
 				OnPropertyChanged(m => m.IsExpandedInView);
 			}
 		}
-		
+
 		public virtual void ReadPackages()
 		{
 			_pages.SelectedPageNumber = 1;
 		}
-		
+
 		protected void SaveError(AggregateException ex)
 		{
 			HasError = true;
 			ErrorMessage = GetErrorMessage(ex);
 			ICSharpCode.Core.LoggingService.Debug(ex);
-			
+
 			SD.Log.DebugFormatted("[AddInManager2] Showing error: {0}", ex.Message);
 		}
-		
+
 		protected string GetErrorMessage(AggregateException ex)
 		{
 			StringBuilder errorMessage = new StringBuilder();
 			BuildErrorMessage(ex.InnerExceptions, errorMessage);
 			return errorMessage.ToString().TrimEnd();
 		}
-		
+
 		private void BuildErrorMessage(IEnumerable<Exception> exceptions, StringBuilder errorMessage)
 		{
 			foreach (Exception ex in exceptions)
@@ -302,7 +237,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		protected void UpdatePackageViewModels(IEnumerable<AddInPackageViewModelBase> newPackageViewModels)
 		{
 			StoreSelection();
@@ -311,18 +246,15 @@ namespace ICSharpCode.AddInManager2.ViewModel
 			UpdateInstallationState();
 			RestoreSelection();
 		}
-		
+
 		protected void ClearPackages()
 		{
 			AddInPackages.Clear();
 		}
-		
+
 		public virtual int SelectedPageNumber
 		{
-			get
-			{
-				return _pages.SelectedPageNumber;
-			}
+			get { return _pages.SelectedPageNumber; }
 			set
 			{
 				if (_pages.SelectedPageNumber != value)
@@ -331,167 +263,116 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public int PageSize
 		{
-			get
-			{
-				return _pages.PageSize;
-			}
-			set
-			{
-				_pages.PageSize = value;
-			}
+			get { return _pages.PageSize; }
+			set { _pages.PageSize = value; }
 		}
-		
+
 		public bool IsPaged
 		{
-			get
-			{
-				return _pages.IsPaged;
-			}
+			get { return _pages.IsPaged; }
 		}
-		
+
 		public bool HasPreviousPage
 		{
-			get
-			{
-				return _pages.HasPreviousPage;
-			}
+			get { return _pages.HasPreviousPage; }
 		}
-		
+
 		public bool HasNextPage
 		{
-			get
-			{
-				return _pages.HasNextPage;
-			}
+			get { return _pages.HasNextPage; }
 		}
-		
+
 		public int MaximumSelectablePages
 		{
-			get
-			{
-				return _pages.MaximumSelectablePages;
-			}
-			set
-			{
-				_pages.MaximumSelectablePages = value;
-			}
+			get { return _pages.MaximumSelectablePages; }
+			set { _pages.MaximumSelectablePages = value; }
 		}
-		
-		public int TotalItems
-		{
-			get;
-			protected set;
-		}
-		
+
+		public int TotalItems { get; protected set; }
+
 		public void ShowNextPage()
 		{
 			SelectedPageNumber += 1;
 		}
-		
+
 		public void ShowPreviousPage()
 		{
 			SelectedPageNumber -= 1;
 		}
-		
+
 		private void ExecuteShowPageCommand(object param)
 		{
 			int pageNumber = (int)param;
 			ShowPage(pageNumber);
 		}
-		
+
 		public void ShowPage(int pageNumber)
 		{
 			SelectedPageNumber = pageNumber;
 		}
-		
-		public bool IsSearchable
-		{
-			get;
-			set;
-		}
-		
-		public bool HasFilterForPreinstalled
-		{
-			get;
-			set;
-		}
-		
-		public bool HasFilterForPrereleases
-		{
-			get;
-			set;
-		}
-		
-		public bool AllowInstallFromArchive
-		{
-			get;
-			set;
-		}
-		
-		public string SearchTerms
-		{
-			get;
-			set;
-		}
-		
+
+		public bool IsSearchable { get; set; }
+
+		public bool HasFilterForPreinstalled { get; set; }
+
+		public bool HasFilterForPrereleases { get; set; }
+
+		public bool AllowInstallFromArchive { get; set; }
+
+		public string SearchTerms { get; set; }
+
 		public void Search()
 		{
 			ReadPackages();
 			OnPropertyChanged(null);
 		}
-		
+
 		protected virtual void UpdatePreinstalledFilter()
 		{
 		}
-		
+
 		protected virtual void UpdatePrereleaseFilter()
 		{
 		}
-		
+
 		protected virtual void InstallFromArchive()
 		{
 		}
-		
+
 		public bool ShowPackageSources
 		{
-			get
-			{
-				return _showPackageSources;
-			}
+			get { return _showPackageSources; }
 			set
 			{
 				_showPackageSources = value;
 				UpdatePackageSources();
 			}
 		}
-		
+
 		public ObservableCollection<PackageRepository> PackageRepositories
 		{
-			get
-			{
-				return _packageRepositories;
-			}
+			get { return _packageRepositories; }
 		}
-		
+
 		private void UpdatePackageSources()
 		{
 			if (!ShowPackageSources)
 			{
 				return;
 			}
-			
+
 			PackageRepository oldValue = SelectedPackageSource;
-			
+
 			// Refill package sources list
 			_packageRepositories.Clear();
 			foreach (PackageSource packageSource in AddInManager.Repositories.RegisteredPackageSources)
 			{
 				_packageRepositories.Add(new PackageRepository(AddInManager, packageSource));
 			}
-			
+
 			// Try to select the same active source, again
 			if ((oldValue != null) && _packageRepositories.Contains(oldValue) && (oldValue != SelectedPackageSource))
 			{
@@ -503,51 +384,40 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				SelectedPackageSource = _packageRepositories.FirstOrDefault();
 			}
 		}
-		
+
 		public PackageRepository SelectedPackageSource
 		{
-			get
-			{
-				return _activePackageSource;
-			}
+			get { return _activePackageSource; }
 			set
 			{
-				SD.Log.DebugFormatted("[AddInManager2] AddInsViewModelBase: Changed package source to {0}", (value != null) ? value.Name : "<null>");
-				
+				SD.Log.DebugFormatted("[AddInManager2] AddInsViewModelBase: Changed package source to {0}",
+					(value != null) ? value.Name : "<null>");
+
 				_activePackageSource = value;
 				if (_activePackageSource != null)
 				{
-					_activePackageRepository = AddInManager.Repositories.GetRepositoryFromSource(_activePackageSource.ToPackageSource());
+					_activePackageRepository =
+						AddInManager.Repositories.GetRepositoryFromSource(_activePackageSource.ToPackageSource());
 				}
 				else
 				{
 					_activePackageRepository = null;
 				}
+
 				ReadPackages();
 				OnPropertyChanged(m => m.SelectedPackageSource);
 			}
 		}
-		
+
 		public IPackageRepository ActiveRepository
 		{
-			get
-			{
-				return _activePackageRepository;
-			}
+			get { return _activePackageRepository; }
 		}
-		
-		public bool ShowPreinstalledAddIns
-		{
-			get;
-			set;
-		}
-		
-		public bool ShowPrereleases
-		{
-			get;
-			set;
-		}
-		
+
+		public bool ShowPreinstalledAddIns { get; set; }
+
+		public bool ShowPrereleases { get; set; }
+
 		public void UpdateInstallationState()
 		{
 			// Update installation-state-related properties of all AddIn items in here
@@ -556,28 +426,31 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				packageViewModel.UpdateInstallationState();
 			}
 		}
-		
-		
+
+
 		private void AddInManager_Events_PackageSourcesChanged(object sender, EventArgs e)
 		{
 			// Update the list of package sources
 			UpdatePackageSources();
 		}
-		
+
 		private void StoreSelection()
 		{
 			AddInPackageViewModelBase selectedModel = AddInPackages.FirstOrDefault(m => m.IsSelected);
-			if (selectedModel != null) {
+			if (selectedModel != null)
+			{
 				_lastSelectedId = selectedModel.Id;
 			}
 		}
-		
+
 		private void RestoreSelection()
 		{
 			AddInPackageViewModelBase modelToSelect = AddInPackages.FirstOrDefault(m => m.Id == _lastSelectedId);
-			if (modelToSelect != null) {
+			if (modelToSelect != null)
+			{
 				modelToSelect.IsSelected = true;
 			}
+
 			_lastSelectedId = null;
 		}
 	}

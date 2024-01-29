@@ -23,33 +23,31 @@ using System.Windows.Documents;
 
 namespace ICSharpCode.Reporting.WpfReportViewer
 {
-	
 	public interface IWpfReportViewer
 	{
-		IDocumentPaginatorSource Document {set;}
-		void SetBinding (PreviewViewModel model);
+		IDocumentPaginatorSource Document { set; }
+		void SetBinding(PreviewViewModel model);
 	}
+
 	/// <summary>
 	/// Interaction logic for WpfReportViewer.xaml
 	/// </summary>
-	
-	public partial class WpfReportViewer : UserControl,IWpfReportViewer
+	public partial class WpfReportViewer : UserControl, IWpfReportViewer
 	{
 		public WpfReportViewer()
 		{
 			InitializeComponent();
 		}
-		
-		public void SetBinding (PreviewViewModel model)
+
+		public void SetBinding(PreviewViewModel model)
 		{
 			this.DataContext = model;
 		}
-		
-		
-		public IDocumentPaginatorSource Document {
-			set {
-				this.DocumentViewer.Document = value;
-			}
+
+
+		public IDocumentPaginatorSource Document
+		{
+			set { this.DocumentViewer.Document = value; }
 		}
 	}
 }

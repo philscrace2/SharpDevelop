@@ -15,102 +15,102 @@
 	Width="480"
 	MinHeight="300"
 	MinWidth="300">
-	
+
 	<Window.Resources>
-		<Style TargetType="Button" BasedOn="{x:Static core:GlobalStyles.ButtonStyle}"/>
-		<BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-		<pm:OpenHyperlinkCommand x:Key="OpenHyperlinkCommand"/>
-	
+		<Style TargetType="Button" BasedOn="{x:Static core:GlobalStyles.ButtonStyle}" />
+		<BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+		<pm:OpenHyperlinkCommand x:Key="OpenHyperlinkCommand" />
+
 		<DataTemplate x:Key="ListBoxItemTemplate">
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="Auto" />
 					<ColumnDefinition />
 				</Grid.ColumnDefinitions>
 				<StackPanel Margin="4">
-					<TextBlock 
+					<TextBlock
 						FontWeight="Bold"
-						Text="{Binding Id}"/>
+						Text="{Binding Id}" />
 					<TextBlock>
 						<Hyperlink
 							Command="{StaticResource OpenHyperlinkCommand}"
 							CommandParameter="{Binding Path=LicenseUrl}">
-							<TextBlock Text="View License Terms"/>
+							<TextBlock Text="View License Terms" />
 						</Hyperlink>
 					</TextBlock>
 				</StackPanel>
-				<TextBlock 
+				<TextBlock
 					Grid.Column="1"
 					Margin="4"
 					TextTrimming="CharacterEllipsis"
 					TextWrapping="Wrap"
 					MaxHeight="40"
-					Text="{Binding Summary}"/>
+					Text="{Binding Summary}" />
 			</Grid>
 		</DataTemplate>
 	</Window.Resources>
-	
-	<Grid 
+
+	<Grid
 		d:DataContext="{d:DesignInstance pmd:DesignTimeLicenseAcceptanceViewModel, IsDesignTimeCreatable=True}">
-		
+
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" />
 			<RowDefinition />
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
 		</Grid.RowDefinitions>
-	
+
 		<StackPanel
 			Margin="4, 2">
-			<TextBlock 
+			<TextBlock
 				Visibility="{Binding Path=HasMultiplePackages, Converter={StaticResource BoolToVisibility}}"
 				TextWrapping="Wrap"
-				Text="The following packages require a click-to-accept license:"/>
-			<TextBlock 
+				Text="The following packages require a click-to-accept license:" />
+			<TextBlock
 				Visibility="{Binding Path=HasOnePackage, Converter={StaticResource BoolToVisibility}}"
 				TextWrapping="Wrap"
-				Text="The following package requires a click-to-accept license:"/>
+				Text="The following package requires a click-to-accept license:" />
 		</StackPanel>
-		<Border 
+		<Border
 			Grid.Row="1"
 			BorderThickness="1"
 			BorderBrush="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}">
-			<ScrollViewer 
+			<ScrollViewer
 				VerticalScrollBarVisibility="Auto"
 				HorizontalScrollBarVisibility="Disabled">
 				<ItemsControl
 					Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
 					ItemTemplate="{StaticResource ListBoxItemTemplate}"
-					ItemsSource="{Binding Path=Packages}"/>
+					ItemsSource="{Binding Path=Packages}" />
 			</ScrollViewer>
 		</Border>
 		<StackPanel
 			Grid.Row="2"
 			Margin="4">
-			<TextBlock 
+			<TextBlock
 				Visibility="{Binding Path=HasMultiplePackages, Converter={StaticResource BoolToVisibility}}"
 				TextWrapping="Wrap">
-				By clicking "I Accept" you agree to the license terms for the packages listed above. 
+				By clicking "I Accept" you agree to the license terms for the packages listed above.
 				If you do not agree to the license terms click "I Decline".
 			</TextBlock>
-			<TextBlock 
+			<TextBlock
 				Visibility="{Binding Path=HasOnePackage, Converter={StaticResource BoolToVisibility}}"
 				TextWrapping="Wrap">
-				By clicking "I Accept" you agree to the license terms for the package listed above. 
+				By clicking "I Accept" you agree to the license terms for the package listed above.
 				If you do not agree to the license terms click "I Decline".
 			</TextBlock>
 		</StackPanel>
-		<StackPanel 
+		<StackPanel
 			Grid.Row="3"
 			Margin="4"
 			Orientation="Horizontal"
 			HorizontalAlignment="Right">
-			<Button 
+			<Button
 				Content="I _Decline"
-				IsCancel="True"/>
-			<Button 
-				Content="I _Accept" 
-				Click="AcceptButtonClick"/>
+				IsCancel="True" />
+			<Button
+				Content="I _Accept"
+				Click="AcceptButtonClick" />
 		</StackPanel>
 	</Grid>
 </Window>

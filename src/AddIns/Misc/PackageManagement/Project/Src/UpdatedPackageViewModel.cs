@@ -31,36 +31,39 @@ namespace ICSharpCode.PackageManagement
 			IPackageActionRunner actionRunner,
 			ILogger logger)
 			: base(
-				parent, 
-				package, 
-				selectedProjects, 
-				packageManagementEvents, 
-				actionRunner, 
+				parent,
+				package,
+				selectedProjects,
+				packageManagementEvents,
+				actionRunner,
 				logger)
 		{
 			this.selectedProjects = selectedProjects;
 		}
-		
+
 		SelectedProjectsForUpdatedPackages selectedProjects;
-		
+
 		protected override void InstallPackageIntoSolution()
 		{
 			UpdatePackageInSolution();
 		}
-		
-		protected override ProcessPackageAction CreatePackageManageAction(IPackageManagementSelectedProject selectedProject)
+
+		protected override ProcessPackageAction CreatePackageManageAction(
+			IPackageManagementSelectedProject selectedProject)
 		{
-			if (selectedProject.IsSelected) {
+			if (selectedProject.IsSelected)
+			{
 				return CreateUpdatePackageManageActionForSelectedProject(selectedProject);
 			}
+
 			return null;
 		}
-		
+
 		protected override IDisposable StartInstallOperation(IPackageFromRepository package)
 		{
 			return package.StartUpdateOperation();
 		}
-		
+
 		protected override ProcessPackageOperationsAction CreateInstallPackageAction(IPackageManagementProject project)
 		{
 			return project.CreateUpdatePackageAction();

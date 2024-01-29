@@ -27,21 +27,21 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of ReportContainer.
 	/// </summary>
-	public class ReportContainer:PrintableItem,IReportContainer
+	public class ReportContainer : PrintableItem, IReportContainer
 	{
-		
 		public ReportContainer()
 		{
 			items = new List<IPrintableObject>();
 		}
-		
+
 		private List<IPrintableObject> items;
-		
-		public List<IPrintableObject> Items {
+
+		public List<IPrintableObject> Items
+		{
 			get { return items; }
 		}
 
-		
+
 		public override IExportColumn CreateExportColumn()
 		{
 			var export = new ExportContainer();

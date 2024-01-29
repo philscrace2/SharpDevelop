@@ -29,40 +29,49 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: base(context, typeDefinition, typeDefinition.TypeArguments.ToArray())
 		{
 		}
-		
+
 		public CodeClass()
 		{
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementClass; }
 		}
-		
-		public virtual global::EnvDTE.CodeElements ImplementedInterfaces {
-			get {
+
+		public virtual global::EnvDTE.CodeElements ImplementedInterfaces
+		{
+			get
+			{
 				var interfaces = new CodeElementsList<CodeType>();
-				foreach (IType baseType in typeDefinition.DirectBaseTypes.Where(t => t.Kind == TypeKind.Interface)) {
+				foreach (IType baseType in typeDefinition.DirectBaseTypes.Where(t => t.Kind == TypeKind.Interface))
+				{
 					CodeType element = Create(context, baseType);
-					if (element != null) {
+					if (element != null)
+					{
 						interfaces.Add(element);
 					}
 				}
+
 				return interfaces;
 			}
 		}
-		
-		public virtual global::EnvDTE.CodeVariable AddVariable(string name, object type, object Position = null, global::EnvDTE.vsCMAccess Access = global::EnvDTE.vsCMAccess.vsCMAccessPublic, object Location = null)
+
+		public virtual global::EnvDTE.CodeVariable AddVariable(string name, object type, object Position = null,
+			global::EnvDTE.vsCMAccess Access = global::EnvDTE.vsCMAccess.vsCMAccessPublic, object Location = null)
 		{
 			IType fieldType = FindType((string)type);
-			
+
 			context.CodeGenerator.AddFieldAtStart(typeDefinition, Access.ToAccessibility(), fieldType, name);
-			
+
 			ReloadTypeDefinition();
-			
+
 			IField field = typeDefinition.Fields.FirstOrDefault(f => f.Name == name);
-			if (field != null) {
+			if (field != null)
+			{
 				return new CodeVariable(context, field);
 			}
+
 			return null;
 		}
 	}

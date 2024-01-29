@@ -18,7 +18,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-
 using ICSharpCode.Reporting.PageBuilder.ExportColumns;
 
 namespace ICSharpCode.Reporting.Interfaces
@@ -28,9 +27,10 @@ namespace ICSharpCode.Reporting.Interfaces
 	/// </summary>
 	public interface IReportCreator
 	{
-		void BuildExportList ();
-		Collection<ExportPage> Pages {get;}
-		 event EventHandler<SectionEventArgs> SectionRendering;
+		void BuildExportList();
+		Collection<ExportPage> Pages { get; }
+
+		event EventHandler<SectionEventArgs> SectionRendering;
 //		PagesCollection Pages{get;}
 //		event EventHandler<PageCreatedEventArgs> PageCreated;
 //		event EventHandler<SectionRenderEventArgs> SectionRendering;

@@ -28,24 +28,23 @@ namespace ICSharpCode.Reporting.Items
 	/// <summary>
 	/// Description of ReportSettings.
 	/// </summary>
-	
-	public class ReportSettings:Component,IReportSettings
+	public class ReportSettings : Component, IReportSettings
 	{
-		
-		public ReportSettings(){
-		
+		public ReportSettings()
+		{
 			this.pageSize = GlobalValues.DefaultPageSize;
 			BaseValues();
 			var x = PdfSharp.PageSizeConverter.ToSize(PdfSharp.PageSize.A4);
 			//http://www.sizepaper.com/a-series/a4
 			//http://www.sizepaper.com/american-loose
-			
+
 			var paperProp = new System.Drawing.Printing.PageSettings();
 			var p = paperProp.PaperSize.PaperName.ToString();
 		}
-		
-		
-		void BaseValues(){
+
+
+		void BaseValues()
+		{
 //			this.UseStandardPrinter = true;
 //			this.GraphicsUnit = GraphicsUnit.Pixel;
 //			this.Padding = new Padding(5);
@@ -69,95 +68,95 @@ namespace ICSharpCode.Reporting.Items
 			GroupColumnsCollection = new GroupColumnCollection();
 			ParameterCollection = new ParameterCollection();
 //			this.sqlParameters = new SqlParameterCollection();
-			
+
 //			this.NoDataMessage = "No Data for this Report";
 		}
-		
+
 		#region BaseSettings
-		
+
 		string reportName;
-		
+
 //		[Category("Base Settings")]
 //		[DefaultValueAttribute ("")]
-		public string ReportName{
-			get {
-				if (string.IsNullOrEmpty(reportName)) {
+		public string ReportName
+		{
+			get
+			{
+				if (string.IsNullOrEmpty(reportName))
+				{
 					reportName = GlobalValues.DefaultReportName;
 				}
+
 				return reportName;
 			}
-			set {
-				reportName = value;
-			}
+			set { reportName = value; }
 		}
-		
+
 		string fileName;
-		
+
 //		[Category("Base Settings")]
 //		[XmlIgnoreAttribute]
-		public string FileName{
-			get {
-				if (String.IsNullOrEmpty(fileName)) {
+		public string FileName
+		{
+			get
+			{
+				if (String.IsNullOrEmpty(fileName))
+				{
 					fileName = GlobalValues.PlainFileName;
 				}
+
 				return Path.GetFullPath(fileName);
 			}
-			set {
-				fileName = value;
-			}
+			set { fileName = value; }
 		}
-		
+
 
 		[Browsable(true), Category("Base Settings")]
-		public PushPullModel DataModel {get;set;}
-		
+		public PushPullModel DataModel { get; set; }
+
 		#endregion
-		
+
 		#region Pagesettings
-		
+
 //		[Category("Page Settings")]
-		public int BottomMargin {get;set;}
-			
-		
+		public int BottomMargin { get; set; }
+
+
 //		[Category("Page Settings")]
-		public int TopMargin  {get;set;}
-		
-		
-		
+		public int TopMargin { get; set; }
+
+
 //		[Category("Page Settings")]
-		public int LeftMargin {get;set;}
-		
-		
-		
+		public int LeftMargin { get; set; }
+
+
 //		[Category("Page Settings")]
-		public int RightMargin  {get;set;}
-			
-		
+		public int RightMargin { get; set; }
+
+
 		Size pageSize;
-		
+
 //		[Category("Page Settings")]
-		public Size PageSize {
-			get {
-				return !Landscape ? pageSize : new Size(pageSize.Height, pageSize.Width);
-			}
+		public Size PageSize
+		{
+			get { return !Landscape ? pageSize : new Size(pageSize.Height, pageSize.Width); }
 //			set { pageSize = value; }
 		}
-		
-		
+
+
 //		[Category("Page Settings")]
-		public bool Landscape {get;set;}
-		
-		
+		public bool Landscape { get; set; }
+
 		#endregion
-		
+
 		#region
-		
-		public ParameterCollection ParameterCollection {get; private set;}
-	
-		public SortColumnCollection SortColumnsCollection {get;private set;}
-		
-		public GroupColumnCollection GroupColumnsCollection {get;private set;}
-		
+
+		public ParameterCollection ParameterCollection { get; private set; }
+
+		public SortColumnCollection SortColumnsCollection { get; private set; }
+
+		public GroupColumnCollection GroupColumnsCollection { get; private set; }
+
 		#endregion
 	}
 }

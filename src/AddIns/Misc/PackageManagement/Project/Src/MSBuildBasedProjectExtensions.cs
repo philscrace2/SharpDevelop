@@ -28,63 +28,71 @@ namespace ICSharpCode.PackageManagement
 	{
 		public static bool IsWebProject(this MSBuildBasedProject project)
 		{
-			return project.HasProjectType(ProjectTypeGuids.WebApplication) || project.HasProjectType(ProjectTypeGuids.WebSite);
+			return project.HasProjectType(ProjectTypeGuids.WebApplication) ||
+			       project.HasProjectType(ProjectTypeGuids.WebSite);
 		}
-		
+
 		public static void AddImportIfMissing(
 			this MSBuildBasedProject project,
 			string importedProjectFile,
 			ProjectImportLocation importLocation)
 		{
-			lock (project.SyncRoot) {
+			lock (project.SyncRoot)
+			{
 				if (project.ImportExists(importedProjectFile))
 					return;
-				
-				ProjectImportElement import = AddImport(project.MSBuildProjectFile, importedProjectFile, importLocation);
+
+				ProjectImportElement import = AddImport(project.MSBuildProjectFile, importedProjectFile,
+					importLocation);
 				import.Condition = GetCondition(importedProjectFile);
 			}
 		}
-		
+
 		static ProjectImportElement AddImport(
 			ProjectRootElement projectRoot,
 			string importedProjectFile,
 			ProjectImportLocation importLocation)
 		{
-			if (importLocation == ProjectImportLocation.Top) {
+			if (importLocation == ProjectImportLocation.Top)
+			{
 				return AddImportAtTop(projectRoot, importedProjectFile);
 			}
+
 			return projectRoot.AddImport(importedProjectFile);
 		}
-		
+
 		static ProjectImportElement AddImportAtTop(ProjectRootElement projectRoot, string importedProjectFile)
 		{
 			ProjectImportElement import = projectRoot.CreateImportElement(importedProjectFile);
 			projectRoot.InsertBeforeChild(import, projectRoot.FirstChild);
 			return import;
 		}
-		
+
 		static string GetCondition(string importedProjectFile)
 		{
 			return String.Format("Exists('{0}')", importedProjectFile);
 		}
-		
+
 		public static bool ImportExists(this MSBuildBasedProject project, string importedProjectFile)
 		{
-			lock (project.SyncRoot) {
+			lock (project.SyncRoot)
+			{
 				return project.FindImport(importedProjectFile) != null;
 			}
 		}
-		
+
 		public static void RemoveImport(this MSBuildBasedProject project, string importedProjectFile)
 		{
-			lock (project.SyncRoot) {
+			lock (project.SyncRoot)
+			{
 				ProjectImportElement import = project.FindImport(importedProjectFile);
-				if (import != null) {
+				if (import != null)
+				{
 					import.Parent.RemoveChild(import);
 				}
 			}
 		}
-		
+
 		static ProjectImportElement FindImport(this MSBuildBasedProject project, string importedProjectFile)
 		{
 			return project.MSBuildProjectFile.FindImport(importedProjectFile);

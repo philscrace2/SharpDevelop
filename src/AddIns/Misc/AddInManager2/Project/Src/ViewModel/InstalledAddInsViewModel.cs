@@ -36,13 +36,13 @@ namespace ICSharpCode.AddInManager2.ViewModel
 		{
 			Initialize();
 		}
-		
+
 		public InstalledAddInsViewModel(IAddInManagerServices services)
 			: base(services)
 		{
 			Initialize();
 		}
-		
+
 		private void Initialize()
 		{
 			AllowInstallFromArchive = true;
@@ -51,43 +51,44 @@ namespace ICSharpCode.AddInManager2.ViewModel
 
 			// Load preinstalled AddIn filter
 			LoadPreinstalledAddInFilter();
-			
+
 			AddInManager.Events.AddInInstalled += InstalledAddInsChanged;
 			AddInManager.Events.AddInUninstalled += InstalledAddInsChanged;
 			AddInManager.Events.AddInStateChanged += InstalledAddInStateChanged;
 		}
-		
+
 		protected override void OnDispose()
 		{
 			AddInManager.Events.AddInInstalled -= InstalledAddInsChanged;
 			AddInManager.Events.AddInUninstalled -= InstalledAddInsChanged;
 			AddInManager.Events.AddInStateChanged -= InstalledAddInStateChanged;
 		}
-		
+
 		protected override IQueryable<IPackage> GetAllPackages()
 		{
 			return AddInManager.NuGet.Packages.LocalRepository.GetPackages();
 		}
-		
-		protected override IEnumerable<IPackage> GetFilteredPackagesBeforePagingResults(IQueryable<IPackage> allPackages)
+
+		protected override IEnumerable<IPackage> GetFilteredPackagesBeforePagingResults(
+			IQueryable<IPackage> allPackages)
 		{
 			return base.GetFilteredPackagesBeforePagingResults(allPackages)
 				.Where(package => package.IsReleaseVersion())
 				.DistinctLast<IPackage>(PackageEqualityComparer.Id);
 		}
-		
+
 		protected override void UpdatePackageViewModels(IEnumerable<IPackage> packages)
 		{
 			IEnumerable<AddInPackageViewModelBase> offlineAddInViewModels = GetInstalledAddIns(packages);
 //			IEnumerable<AddInPackageViewModelBase> nuGetViewModels = ConvertToAddInViewModels(packages);
-			
+
 			// Merge lists of offline entries (internal AddIn objects) and online entries (installed NuGet packages)
 //			IEnumerable<AddInPackageViewModelBase> viewModels = CombineOnlineAndOfflineAddIns(nuGetViewModels, offlineAddInViewModels);
 //			UpdatePackageViewModels(viewModels.OrderBy(vm => vm.Name));
-			
+
 			UpdatePackageViewModels(offlineAddInViewModels.OrderBy(vm => vm.Name));
 		}
-		
+
 		private IEnumerable<AddInPackageViewModelBase> CombineOnlineAndOfflineAddIns(
 			IEnumerable<AddInPackageViewModelBase> onlineAddIns, IEnumerable<AddInPackageViewModelBase> offlineAddIns)
 		{
@@ -97,11 +98,11 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				onlinevm => onlinevm.Id,
 				(offlinevm, e) => e.ElementAtOrDefault(0) ?? offlinevm);
 		}
-		
+
 		private IEnumerable<AddInPackageViewModelBase> GetInstalledAddIns(IEnumerable<IPackage> installedPackages)
 		{
 			AddInPackageViewModelBase addInPackage;
-			
+
 			// Fill set of ID of installed NuGet packages, so we can later quickly check, whether NuGet package is installed for an AddIn
 			HashSet<string> nuGetPackageIDs = new HashSet<string>();
 			foreach (IPackage package in installedPackages)
@@ -111,24 +112,23 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					nuGetPackageIDs.Add(package.Id);
 				}
 			}
-			
+
 			List<ManagedAddIn> addInList = new List<ManagedAddIn>(AddInManager.Setup.AddInsWithMarkedForInstallation);
-			addInList.Sort(delegate(ManagedAddIn a, ManagedAddIn b)
-			               {
-			               	return a.AddIn.Name.CompareTo(b.AddIn.Name);
-			               });
+			addInList.Sort(delegate(ManagedAddIn a, ManagedAddIn b) { return a.AddIn.Name.CompareTo(b.AddIn.Name); });
 			foreach (ManagedAddIn addIn in addInList)
 			{
-				if (string.Equals(addIn.AddIn.Properties["addInManagerHidden"], "true", StringComparison.OrdinalIgnoreCase))
+				if (string.Equals(addIn.AddIn.Properties["addInManagerHidden"], "true",
+					    StringComparison.OrdinalIgnoreCase))
 				{
 					// This excludes the SharpDevelop application appearing as AddIn in the tree
 					continue;
 				}
+
 				if (!ShowPreinstalledAddIns && AddInManager.Setup.IsAddInPreinstalled(addIn.AddIn))
 				{
 					continue;
 				}
-				
+
 				string nuGetPackageID = addIn.LinkedNuGetPackageID;
 				if (!string.IsNullOrEmpty(nuGetPackageID))
 				{
@@ -137,46 +137,46 @@ namespace ICSharpCode.AddInManager2.ViewModel
 						addIn.InstallationSource = AddInInstallationSource.NuGetRepository;
 					}
 				}
-				
+
 				addInPackage = new OfflineAddInsViewModel(AddInManager, addIn);
 				yield return addInPackage;
 			}
 		}
-		
+
 		protected override void UpdatePreinstalledFilter()
 		{
 			// Save the preinstalled AddIn filter
 			SavePreinstalledAddInFilter();
-			
+
 			// Update the list
 			Search();
 		}
-		
+
 		private void InstalledAddInsChanged(object sender, AddInInstallationEventArgs e)
 		{
 			ReadPackages();
 		}
-		
+
 		private void InstalledAddInStateChanged(object sender, AddInInstallationEventArgs e)
 		{
 			UpdateInstallationState();
 		}
-		
+
 		private void LoadPreinstalledAddInFilter()
 		{
 			ShowPreinstalledAddIns = AddInManager.Settings.ShowPreinstalledAddIns;
 		}
-		
+
 		private void SavePreinstalledAddInFilter()
 		{
 			AddInManager.Settings.ShowPreinstalledAddIns = ShowPreinstalledAddIns;
 		}
-		
+
 		protected override void InstallFromArchive()
 		{
 			// Notify about new operation
 			AddInManager.Events.OnOperationStarted();
-			
+
 			OpenFileDialog dlg = new OpenFileDialog();
 			dlg.Filter = SD.ResourceService.GetString("AddInManager2.SDAddInFileFilter");
 			dlg.Multiselect = true;

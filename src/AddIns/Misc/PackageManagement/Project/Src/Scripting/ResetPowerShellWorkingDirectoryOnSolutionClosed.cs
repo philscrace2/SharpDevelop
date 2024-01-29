@@ -23,7 +23,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class ResetPowerShellWorkingDirectoryOnSolutionClosed
 	{
 		IPackageManagementConsoleHost consoleHost;
-		
+
 		public ResetPowerShellWorkingDirectoryOnSolutionClosed(
 			IPackageManagementProjectService projectService,
 			IPackageManagementConsoleHost consoleHost)
@@ -31,14 +31,15 @@ namespace ICSharpCode.PackageManagement.Scripting
 			this.consoleHost = consoleHost;
 			projectService.SolutionClosed += SolutionClosed;
 		}
-		
+
 		void SolutionClosed(object sender, EventArgs e)
 		{
-			if (consoleHost.IsRunning) {
+			if (consoleHost.IsRunning)
+			{
 				UpdateWorkingDirectory();
 			}
 		}
-		
+
 		void UpdateWorkingDirectory()
 		{
 			string command = "Invoke-UpdateWorkingDirectory";

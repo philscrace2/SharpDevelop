@@ -21,7 +21,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Reflection;
-
 using ICSharpCode.Core;
 
 namespace ICSharpCode.Reporting.Addin.Services
@@ -31,7 +30,7 @@ namespace ICSharpCode.Reporting.Addin.Services
 		public TypeDiscoveryService()
 		{
 		}
-		
+
 		/// <summary>
 		/// Returns the list of available types.
 		/// </summary>
@@ -41,42 +40,50 @@ namespace ICSharpCode.Reporting.Addin.Services
 		public ICollection GetTypes(Type baseType, bool excludeGlobalTypes)
 		{
 			var types = new List<Type>();
-			
-			if (baseType == null) {
+
+			if (baseType == null)
+			{
 				baseType = typeof(object);
 			}
-			
+
 			LoggingService.Debug("TypeDiscoveryService.GetTypes for " + baseType.FullName
-			                     + "excludeGlobalTypes=" + excludeGlobalTypes.ToString());
+			                                                          + "excludeGlobalTypes=" +
+			                                                          excludeGlobalTypes.ToString());
 			//seek in all assemblies
 			//allow to work designers like columns editor in datagridview
 			// Searching types can cause additional assemblies to be loaded, so we need to use
 			// ToArray to prevent an exception if the collection changes.
-			
-			foreach (Assembly asm in TypeResolutionService.DesignerAssemblies.ToArray()) {
-				if (excludeGlobalTypes) {
+
+			foreach (Assembly asm in TypeResolutionService.DesignerAssemblies.ToArray())
+			{
+				if (excludeGlobalTypes)
+				{
 //					if (GacInterop.IsWithinGac(asm.Location)) {
 //						continue;
 //					}
 				}
+
 				AddDerivedTypes(baseType, asm, types);
 			}
+
 			LoggingService.Debug("TypeDiscoveryService returns " + types.Count + " types");
-			
+
 			// TODO - Don't look in all assemblies.
 			// Should use the current project and its referenced assemblies
 			// as well as System.Windows.Forms.
-			
+
 			return types;
 		}
-		
+
 		/// <summary>
 		/// Gets the types derived from baseType from the assembly and adds them to the list.
 		/// </summary>
 		void AddDerivedTypes(Type baseType, Assembly assembly, IList<Type> list)
 		{
-			foreach (Type t in assembly.GetExportedTypes()) {
-				if (t.IsSubclassOf(baseType)) {
+			foreach (Type t in assembly.GetExportedTypes())
+			{
+				if (t.IsSubclassOf(baseType))
+				{
 					//LoggingService.Debug("TypeDiscoveryService.  Adding type=" + t.FullName);
 					list.Add(t);
 				}

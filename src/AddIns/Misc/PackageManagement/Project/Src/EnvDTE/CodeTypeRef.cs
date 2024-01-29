@@ -29,51 +29,62 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		protected readonly CodeModelContext context;
 		protected readonly CodeElement parent;
 		protected readonly IType type;
-		
+
 		public CodeTypeRef()
 		{
 		}
-		
+
 		public CodeTypeRef(CodeModelContext context, CodeElement parent, IType type)
 		{
 			this.context = context;
 			this.parent = parent;
 			this.type = type;
 		}
-		
-		public virtual string AsFullName {
+
+		public virtual string AsFullName
+		{
 			get { return CodeType.FullName; }
 		}
-		
-		public virtual string AsString {
-			get {
-				if (TypeKind != global::EnvDTE.vsCMTypeRef.vsCMTypeRefCodeType) {
+
+		public virtual string AsString
+		{
+			get
+			{
+				if (TypeKind != global::EnvDTE.vsCMTypeRef.vsCMTypeRefCodeType)
+				{
 					return new CSharpAmbience().ConvertType(type);
 				}
+
 				return AsFullName;
 			}
 		}
-		
-		public virtual global::EnvDTE.CodeElement Parent {
+
+		public virtual global::EnvDTE.CodeElement Parent
+		{
 			get { return parent; }
 		}
-		
-		public virtual global::EnvDTE.CodeType CodeType {
-			get {
-				return EnvDTE.CodeType.Create(context, type);
-			}
+
+		public virtual global::EnvDTE.CodeType CodeType
+		{
+			get { return EnvDTE.CodeType.Create(context, type); }
 		}
-		
-		public virtual global::EnvDTE.vsCMTypeRef TypeKind {
-			get {
-				switch (type.Kind) {
+
+		public virtual global::EnvDTE.vsCMTypeRef TypeKind
+		{
+			get
+			{
+				switch (type.Kind)
+				{
 					case NRefactory.TypeSystem.TypeKind.Class:
 						return GetClassType(type);
 					case NRefactory.TypeSystem.TypeKind.Struct:
 						ITypeDefinition typeDef = type.GetDefinition();
-						if (typeDef != null) {
+						if (typeDef != null)
+						{
 							return GetStructTypeKind(typeDef.KnownTypeCode);
-						} else {
+						}
+						else
+						{
 							return global::EnvDTE.vsCMTypeRef.vsCMTypeRefOther;
 						}
 					case NRefactory.TypeSystem.TypeKind.Delegate:
@@ -87,29 +98,38 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 					case NRefactory.TypeSystem.TypeKind.Pointer:
 						return global::EnvDTE.vsCMTypeRef.vsCMTypeRefPointer;
 					default:
-						if (type.IsReferenceType == true) {
+						if (type.IsReferenceType == true)
+						{
 							return global::EnvDTE.vsCMTypeRef.vsCMTypeRefObject;
-						} else {
+						}
+						else
+						{
 							return global::EnvDTE.vsCMTypeRef.vsCMTypeRefOther;
 						}
 				}
 			}
 		}
-		
+
 		global::EnvDTE.vsCMTypeRef GetClassType(IType type)
 		{
-			if (type.IsKnownType(KnownTypeCode.String)) {
+			if (type.IsKnownType(KnownTypeCode.String))
+			{
 				return global::EnvDTE.vsCMTypeRef.vsCMTypeRefString;
-			} else if (type.IsKnownType(KnownTypeCode.Object)) {
+			}
+			else if (type.IsKnownType(KnownTypeCode.Object))
+			{
 				return global::EnvDTE.vsCMTypeRef.vsCMTypeRefObject;
-			} else {
+			}
+			else
+			{
 				return global::EnvDTE.vsCMTypeRef.vsCMTypeRefCodeType;
 			}
 		}
-		
+
 		global::EnvDTE.vsCMTypeRef GetStructTypeKind(KnownTypeCode knownTypeCode)
 		{
-			switch (knownTypeCode) {
+			switch (knownTypeCode)
+			{
 				case KnownTypeCode.Boolean:
 					return global::EnvDTE.vsCMTypeRef.vsCMTypeRefBool;
 				case KnownTypeCode.Char:

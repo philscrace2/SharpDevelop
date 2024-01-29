@@ -24,18 +24,18 @@ namespace ICSharpCode.PackageManagement.Cmdlets
 	public class CmdletTerminatingError : ICmdletTerminatingError
 	{
 		ITerminatingCmdlet cmdlet;
-		
+
 		public CmdletTerminatingError(ITerminatingCmdlet cmdlet)
 		{
 			this.cmdlet = cmdlet;
 		}
-		
+
 		public void ThrowNoProjectOpenError()
 		{
 			ErrorRecord error = CreateInvalidOperationErrorRecord("NoProjectOpen");
 			cmdlet.ThrowTerminatingError(error);
 		}
-		
+
 		ErrorRecord CreateInvalidOperationErrorRecord(string errorId)
 		{
 			return new ErrorRecord(

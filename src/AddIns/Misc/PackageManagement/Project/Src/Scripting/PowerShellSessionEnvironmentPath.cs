@@ -23,36 +23,39 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class PowerShellSessionEnvironmentPath
 	{
 		IPackageScriptSession session;
-		
+
 		public PowerShellSessionEnvironmentPath(IPackageScriptSession session)
 		{
 			this.session = session;
 		}
-		
+
 		public void Append(string path)
 		{
 			string environmentPath = GetEnvironmentPath();
 			environmentPath = AppendPathSeparatorIfMissing(environmentPath);
 			SetEnvironmentPath(environmentPath + path);
 		}
-		
+
 		string GetEnvironmentPath()
 		{
 			return session.GetEnvironmentPath();
 		}
-		
+
 		string AppendPathSeparatorIfMissing(string path)
 		{
-			if (String.IsNullOrEmpty(path)) {
+			if (String.IsNullOrEmpty(path))
+			{
 				return String.Empty;
 			}
-			
-			if (path.EndsWith(";")) {
+
+			if (path.EndsWith(";"))
+			{
 				return path;
 			}
+
 			return path + ";";
 		}
-		
+
 		void SetEnvironmentPath(string path)
 		{
 			session.SetEnvironmentPath(path);

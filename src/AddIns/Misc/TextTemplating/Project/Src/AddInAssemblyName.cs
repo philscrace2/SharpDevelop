@@ -24,25 +24,26 @@ namespace ICSharpCode.TextTemplating
 	public class AddInAssemblyName
 	{
 		string assemblyShortName;
-		
+
 		public AddInAssemblyName(string assemblyFullName)
 		{
 			GetAssemblyShortName(assemblyFullName);
 		}
-		
+
 		void GetAssemblyShortName(string assemblyFullName)
 		{
-			if (assemblyFullName != null) {
+			if (assemblyFullName != null)
+			{
 				var domAssemblyName = new DomAssemblyName(assemblyFullName);
 				assemblyShortName = "ICSharpCode." + domAssemblyName.ShortName;
 			}
 		}
-		
+
 		public bool Matches(IAddIn addIn)
 		{
 			return CompareIgnoringCase(assemblyShortName, addIn.PrimaryIdentity);
 		}
-		
+
 		bool CompareIgnoringCase(string a, string b)
 		{
 			return String.Equals(a, b, StringComparison.OrdinalIgnoreCase);

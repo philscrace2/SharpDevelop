@@ -25,8 +25,9 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		public Window()
 		{
 		}
-		
-		public global::EnvDTE.Document Document {
+
+		public global::EnvDTE.Document Document
+		{
 			get { throw new NotImplementedException(); }
 		}
 	}

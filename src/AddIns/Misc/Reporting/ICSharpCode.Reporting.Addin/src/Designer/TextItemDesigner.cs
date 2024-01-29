@@ -3,9 +3,10 @@
  * User: Peter Forstmeier
  * Date: 21.03.2014
  * Time: 20:24
- * 
+ *
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
+
 using System;
 using System.Collections;
 using ICSharpCode.Reporting.Addin.TypeProvider;
@@ -16,18 +17,17 @@ namespace ICSharpCode.Reporting.Addin.Designer
 	/// <summary>
 	/// Description of TextItemDesigner.
 	/// </summary>
-	class TextItemDesigner:AbstractDesigner
+	class TextItemDesigner : AbstractDesigner
 	{
-		
-
-		protected override void PostFilterProperties(IDictionary properties){
+		protected override void PostFilterProperties(IDictionary properties)
+		{
 			TypeProviderHelper.RemoveProperties(properties);
 			base.PostFilterProperties(properties);
 		}
-		
-		
+
+
 		#region SmartTag
-		
+
 //		public override DesignerActionListCollection ActionLists {
 //			get {
 //				var actions = new DesignerActionListCollection ();
@@ -35,10 +35,11 @@ namespace ICSharpCode.Reporting.Addin.Designer
 //				return actions;
 //			}
 //		}
-		
+
 		#endregion
-		
+
 		#region ContextMenu
+
 		/*
 		public override DesignerVerbCollection Verbs {
 			get {
@@ -48,8 +49,8 @@ namespace ICSharpCode.Reporting.Addin.Designer
 				return verbs;
 			}
 		}
-		
-		
+
+
 		private void OnRunTextEditor (object sender,EventArgs e)
 		{
 			IStringBasedEditorDialog ed = new TextEditorDialog (ctrl.Text,ctrl.Name);
@@ -58,8 +59,8 @@ namespace ICSharpCode.Reporting.Addin.Designer
 				this.SetProperty ("Name",ed.TextValue);
 			}
 		}
-		
-		
+
+
 		private void SetProperty (string prop, object value)
 		{
 			PropertyDescriptor p = TypeDescriptor.GetProperties(Control)[prop];
@@ -69,9 +70,9 @@ namespace ICSharpCode.Reporting.Addin.Designer
 				p.SetValue (Control,value);
 			}
 		}
-		
+
 		*/
+
 		#endregion
-		
 	}
 }

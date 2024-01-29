@@ -31,14 +31,16 @@ namespace ICSharpCode.PackageManagement
 		PackageManagementConsoleViewModel packageManagementConsoleViewModel;
 		IPackageManagementSolution solution;
 		IRegisteredPackageRepositories registeredPackageRepositories;
-		
-		public ManagePackagesViewModel ManagePackagesViewModel {
-			get {
+
+		public ManagePackagesViewModel ManagePackagesViewModel
+		{
+			get
+			{
 				CreateManagePackagesViewModel();
 				return managePackagesViewModel;
 			}
 		}
-		
+
 		void CreateManagePackagesViewModel()
 		{
 			CreateRegisteredPackageRepositories();
@@ -46,42 +48,50 @@ namespace ICSharpCode.PackageManagement
 			ThreadSafePackageManagementEvents packageManagementEvents = CreateThreadSafePackageManagementEvents();
 			PackagesViewModels packagesViewModels = CreatePackagesViewModels(packageManagementEvents);
 
-			managePackagesViewModel = 
+			managePackagesViewModel =
 				new ManagePackagesViewModel(
 					packagesViewModels,
 					new ManagePackagesViewTitle(solution),
 					packageManagementEvents,
 					new ManagePackagesUserPrompts(packageManagementEvents));
 		}
-		
+
 		void CreateRegisteredPackageRepositories()
 		{
-			if (registeredPackageRepositories == null) {
-				if (IsInDesignMode()) {
+			if (registeredPackageRepositories == null)
+			{
+				if (IsInDesignMode())
+				{
 					registeredPackageRepositories = new DesignTimeRegisteredPackageRepositories();
-				} else {
+				}
+				else
+				{
 					registeredPackageRepositories = PackageManagementServices.RegisteredPackageRepositories;
 				}
 			}
 		}
-		
+
 		void CreateSolution()
 		{
-			if (solution == null) {
-				if (IsInDesignMode()) {
+			if (solution == null)
+			{
+				if (IsInDesignMode())
+				{
 					solution = new FakePackageManagementSolution();
-				} else {
+				}
+				else
+				{
 					solution = PackageManagementServices.Solution;
 				}
 			}
 		}
-		
+
 		ThreadSafePackageManagementEvents CreateThreadSafePackageManagementEvents()
 		{
 			return new ThreadSafePackageManagementEvents(
 				PackageManagementServices.PackageManagementEvents);
 		}
-		
+
 		PackagesViewModels CreatePackagesViewModels(IThreadSafePackageManagementEvents packageManagementEvents)
 		{
 			return new PackagesViewModels(
@@ -91,73 +101,92 @@ namespace ICSharpCode.PackageManagement
 				PackageManagementServices.PackageActionRunner,
 				new PackageManagementTaskFactory());
 		}
-		
+
 		bool IsInDesignMode()
 		{
 			return WpfDesigner.IsInDesignMode();
 		}
-		
-		public RegisteredPackageSourcesViewModel RegisteredPackageSourcesViewModel {
-			get {
-				if (registeredPackageSourcesViewModel == null) {
+
+		public RegisteredPackageSourcesViewModel RegisteredPackageSourcesViewModel
+		{
+			get
+			{
+				if (registeredPackageSourcesViewModel == null)
+				{
 					RegisteredPackageSources packageSources = GetRegisteredPackageSources();
-					registeredPackageSourcesViewModel = 
+					registeredPackageSourcesViewModel =
 						CreateRegisteredPackageSourcesViewModel(packageSources);
 				}
+
 				return registeredPackageSourcesViewModel;
 			}
 		}
-		
+
 		RegisteredPackageSources GetRegisteredPackageSources()
 		{
-			if (IsInDesignMode()) {
+			if (IsInDesignMode())
+			{
 				return CreateDesignTimeRegisteredPackageSources();
-			} else {
+			}
+			else
+			{
 				return PackageManagementServices.Options.PackageSources;
 			}
 		}
-		
+
 		RegisteredPackageSources CreateDesignTimeRegisteredPackageSources()
 		{
 			return new RegisteredPackageSources(new PackageSource[0]);
 		}
-		
-		RegisteredPackageSourcesViewModel CreateRegisteredPackageSourcesViewModel(RegisteredPackageSources packageSources)
+
+		RegisteredPackageSourcesViewModel CreateRegisteredPackageSourcesViewModel(
+			RegisteredPackageSources packageSources)
 		{
 			CreateRegisteredPackageRepositories();
-			if (IsInDesignMode()) {
+			if (IsInDesignMode())
+			{
 				return new DesignTimeRegisteredPackageSourcesViewModel();
-			} else {
+			}
+			else
+			{
 				return new RegisteredPackageSourcesViewModel(registeredPackageRepositories);
 			}
 		}
-		
-		public PackageManagementOptionsViewModel PackageManagementOptionsViewModel {
-			get {
-				if (packageManagementOptionsViewModel == null) {
+
+		public PackageManagementOptionsViewModel PackageManagementOptionsViewModel
+		{
+			get
+			{
+				if (packageManagementOptionsViewModel == null)
+				{
 					CreateRegisteredPackageRepositories();
 					IRecentPackageRepository recentRepository = registeredPackageRepositories.RecentPackageRepository;
 					packageManagementOptionsViewModel = new PackageManagementOptionsViewModel(recentRepository);
 				}
+
 				return packageManagementOptionsViewModel;
 			}
 		}
-		
-		public PackageManagementConsoleViewModel PackageManagementConsoleViewModel {
-			get { 
-				if (packageManagementConsoleViewModel == null) {
+
+		public PackageManagementConsoleViewModel PackageManagementConsoleViewModel
+		{
+			get
+			{
+				if (packageManagementConsoleViewModel == null)
+				{
 					CreatePackageManagementConsoleViewModel();
 				}
+
 				return packageManagementConsoleViewModel;
 			}
 		}
-		
+
 		void CreatePackageManagementConsoleViewModel()
 		{
 			CreateSolution();
 			CreateRegisteredPackageRepositories();
 			var consoleHost = PackageManagementServices.ConsoleHost;
-			packageManagementConsoleViewModel = 
+			packageManagementConsoleViewModel =
 				new PackageManagementConsoleViewModel(
 					registeredPackageRepositories.PackageSources,
 					PackageManagementServices.ProjectService,

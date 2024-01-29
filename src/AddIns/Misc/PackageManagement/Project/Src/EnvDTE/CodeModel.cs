@@ -28,55 +28,66 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 		Project project;
 		CodeElementsInNamespace codeElements;
 		CodeModelContext context;
-		
+
 		public CodeModel(CodeModelContext context, Project project)
 		{
 			this.context = context;
 			this.project = project;
 		}
-		
-		public global::EnvDTE.CodeElements CodeElements {
-			get {
-				if (codeElements == null) {
+
+		public global::EnvDTE.CodeElements CodeElements
+		{
+			get
+			{
+				if (codeElements == null)
+				{
 					codeElements = new CodeElementsInNamespace(context);
 				}
+
 				return codeElements;
 			}
 		}
-		
+
 		public global::EnvDTE.CodeType CodeTypeFromFullName(string name)
 		{
 			ITypeDefinition typeDefinition = GetTypeDefinition(name);
-			if (typeDefinition != null) {
+			if (typeDefinition != null)
+			{
 				return CreateCodeTypeForTypeDefinition(typeDefinition);
 			}
+
 			return null;
 		}
-		
+
 		ITypeDefinition GetTypeDefinition(string name)
 		{
 			ICompilation compilation = project.GetCompilationUnit();
 			var typeName = new TopLevelTypeName(name);
-			
-			foreach (IAssembly assembly in compilation.Assemblies) {
+
+			foreach (IAssembly assembly in compilation.Assemblies)
+			{
 				ITypeDefinition typeDefinition = assembly.GetTypeDefinition(typeName);
-				if (typeDefinition != null) {
+				if (typeDefinition != null)
+				{
 					return typeDefinition;
 				}
 			}
-			
+
 			return null;
 		}
-		
+
 		CodeType CreateCodeTypeForTypeDefinition(ITypeDefinition typeDefinition)
 		{
-			if (typeDefinition.Kind == TypeKind.Interface) {
+			if (typeDefinition.Kind == TypeKind.Interface)
+			{
 				return new CodeInterface(context, typeDefinition);
 			}
+
 			return new CodeClass2(context, typeDefinition);
 		}
-		
-		public string Language {
+
+		public string Language
+		{
 			get { return project.MSBuildProject.GetCodeModelLanguage(); }
 		}
 	}

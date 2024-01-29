@@ -24,27 +24,29 @@ namespace ICSharpCode.PackageManagement
 {
 	public class SelectProjectsViewModel
 	{
-		ObservableCollection<IPackageManagementSelectedProject> projects = 
+		ObservableCollection<IPackageManagementSelectedProject> projects =
 			new ObservableCollection<IPackageManagementSelectedProject>();
-		
+
 		public SelectProjectsViewModel(IEnumerable<IPackageManagementSelectedProject> projects)
 		{
 			AddProjects(projects);
 		}
-		
+
 		void AddProjects(IEnumerable<IPackageManagementSelectedProject> projects)
 		{
-			foreach (IPackageManagementSelectedProject project in projects) {
+			foreach (IPackageManagementSelectedProject project in projects)
+			{
 				AddProject(project);
 			}
 		}
-		
+
 		void AddProject(IPackageManagementSelectedProject project)
 		{
 			projects.Add(project);
 		}
-		
-		public ObservableCollection<IPackageManagementSelectedProject> Projects {
+
+		public ObservableCollection<IPackageManagementSelectedProject> Projects
+		{
 			get { return projects; }
 		}
 	}

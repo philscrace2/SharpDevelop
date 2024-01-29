@@ -29,7 +29,7 @@ namespace MSHelpSystem.Controls
 	{
 		public HelpLibraryManagerNotFoundForm()
 			: base(StringParser.Parse("${res:AddIns.HelpViewer.HLMNotAvailableDownloadWinSDK}"),
-			       "http://www.microsoft.com/en-us/download/details.aspx?id=8279", null)
+				"http://www.microsoft.com/en-us/download/details.aspx?id=8279", null)
 		{
 		}
 	}

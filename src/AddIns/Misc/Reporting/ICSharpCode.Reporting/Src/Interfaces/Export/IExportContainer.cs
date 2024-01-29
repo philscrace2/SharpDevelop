@@ -24,9 +24,8 @@ namespace ICSharpCode.Reporting.Interfaces.Export
 	/// <summary>
 	/// Description of IExportContainer.
 	/// </summary>
-	public interface IExportContainer:IExportColumn
+	public interface IExportContainer : IExportColumn
 	{
-		List<IExportColumn> ExportedItems {get;}
-		
+		List<IExportColumn> ExportedItems { get; }
 	}
 }

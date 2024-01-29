@@ -19,7 +19,6 @@
 using System;
 using System.Linq;
 using System.Threading;
-
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
@@ -31,34 +30,38 @@ namespace ICSharpCode.PackageManagement
 	{
 		ManualResetEvent buildCompleteEvent = new ManualResetEvent(false);
 		TimeSpan DefaultBuildTimeout = new TimeSpan(0, 5, 0);
-		
+
 		public ProjectBuilder()
 		{
 		}
-		
+
 		public BuildResults BuildResults { get; private set; }
-		
+
 		public void Build(IProject project)
 		{
 			var build = new BuildProject(project);
 			build.BuildComplete += BuildComplete;
 			buildCompleteEvent.Reset();
 			SD.MainThread.InvokeAsyncAndForget(() => build.Run());
-			if (buildCompleteEvent.WaitOne(DefaultBuildTimeout)) {
+			if (buildCompleteEvent.WaitOne(DefaultBuildTimeout))
+			{
 				BuildResults = build.LastBuildResults;
-			} else {
+			}
+			else
+			{
 				BuildResults = GetBuildTimeoutResult();
 			}
+
 			build.BuildComplete -= BuildComplete;
 		}
-		
+
 		BuildResults GetBuildTimeoutResult()
 		{
 			var results = new BuildResults { Result = BuildResultCode.Error };
 			results.Add(new BuildError(String.Empty, "Timed out waiting for build to complete."));
 			return results;
 		}
-		
+
 		void BuildComplete(object sender, EventArgs e)
 		{
 			buildCompleteEvent.Set();

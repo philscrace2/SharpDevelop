@@ -23,9 +23,9 @@ using System.Windows.Input;
 namespace ICSharpCode.AddInManager2.ViewModel
 {
 	public class OpenHyperlinkCommand : ICommand
-	{	
+	{
 		public event EventHandler CanExecuteChanged;
-		
+
 		protected virtual void OnCanExecuteChanged()
 		{
 			if (CanExecuteChanged != null)
@@ -33,12 +33,12 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				CanExecuteChanged(this, new EventArgs());
 			}
 		}
-		
+
 		public bool CanExecute(object parameter)
 		{
 			return true;
 		}
-		
+
 		public void Execute(object parameter)
 		{
 			Uri uri = parameter as Uri;
@@ -51,7 +51,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				StartProcess(parameter as string);
 			}
 		}
-		
+
 		protected virtual void StartProcess(string fileName)
 		{
 			try

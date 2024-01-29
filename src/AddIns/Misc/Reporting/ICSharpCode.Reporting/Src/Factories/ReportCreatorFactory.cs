@@ -26,30 +26,30 @@ namespace ICSharpCode.Reporting.Factories
 	/// <summary>
 	/// Description of ReportCreatorFactory.
 	/// </summary>
-	static class ReportCreatorFactory {
-		
+	static class ReportCreatorFactory
+	{
 		public static IReportCreator ExporterFactory(IReportModel reportModel)
 		{
 			IReportCreator reportCreator = null;
-			switch (reportModel.ReportSettings.DataModel) {
+			switch (reportModel.ReportSettings.DataModel)
+			{
 				case PushPullModel.FormSheet:
-					{
-						reportCreator = new FormPageBuilder(reportModel);
-						break;
-					}
+				{
+					reportCreator = new FormPageBuilder(reportModel);
+					break;
+				}
 
 				case PushPullModel.PullData:
-					{
-						break;
-					}
+				{
+					break;
+				}
 
 				case PushPullModel.PushData:
-					{
-						
-						break;
-					}
-
+				{
+					break;
+				}
 			}
+
 			return reportCreator;
 		}
 	}

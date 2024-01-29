@@ -30,150 +30,184 @@ namespace ICSharpCode.Reporting.Pdf
 	/// <summary>
 	/// Description of PdfVisitor.
 	/// </summary>
-	class PdfVisitor: AbstractVisitor
+	class PdfVisitor : AbstractVisitor
 	{
 		readonly PdfDocument pdfDocument;
 		XGraphics xGraphics;
 		XTextFormatter textFormatter;
 		Point containerLocation;
-		
-		public PdfVisitor(PdfDocument pdfDocument){
+
+		public PdfVisitor(PdfDocument pdfDocument)
+		{
 			this.pdfDocument = pdfDocument;
 		}
-		
-		
-		public override void Visit(ExportPage page){
+
+
+		public override void Visit(ExportPage page)
+		{
 			PdfPage = pdfDocument.AddPage();
 			xGraphics = XGraphics.FromPdfPage(PdfPage);
-			textFormatter  = new XTextFormatter(xGraphics);
+			textFormatter = new XTextFormatter(xGraphics);
 			base.Visit(page);
 		}
-		
-		
-		public override void Visit(ExportContainer exportContainer){
-			foreach (var element in exportContainer.ExportedItems) {
-				if (IsContainer(element)) {
+
+
+		public override void Visit(ExportContainer exportContainer)
+		{
+			foreach (var element in exportContainer.ExportedItems)
+			{
+				if (IsContainer(element))
+				{
 					var container = element as ExportContainer;
 					containerLocation = PdfHelper.LocationRelToParent(container);
 					RenderRow(container);
-				} else {
+				}
+				else
+				{
 					containerLocation = PdfHelper.LocationRelToParent(exportContainer);
 					var acceptor = element as IAcceptor;
 					acceptor.Accept(this);
 				}
 			}
 		}
-		
-		
-		void RenderRow(IExportContainer container){
-			if (IsGraphicsContainer(container)) {
+
+
+		void RenderRow(IExportContainer container)
+		{
+			if (IsGraphicsContainer(container))
+			{
 				RenderGraphicsContainer(container);
-			} else {
+			}
+			else
+			{
 				RenderDataRow(container);
 			}
 		}
-		
-		
-		void RenderGraphicsContainer(IExportColumn column){
+
+
+		void RenderGraphicsContainer(IExportColumn column)
+		{
 			var graphicsContainer = column as GraphicsContainer;
-			if (graphicsContainer != null) {
+			if (graphicsContainer != null)
+			{
 				var rect = column as ExportRectangle;
-				if (rect != null) {
+				if (rect != null)
+				{
 					Visit(rect);
 				}
-				
+
 				var circle = column as ExportCircle;
-				if (circle != null) {
+				if (circle != null)
+				{
 					Visit(circle);
 				}
 			}
 		}
-		
-		
-		void RenderDataRow (IExportContainer row) {
-			var r = new Rectangle(containerLocation,row.DisplayRectangle.Size).ToXRect();
-			PdfHelper.FillRectangle(r,row.BackColor,xGraphics);
-			foreach (var element in row.ExportedItems) {
+
+
+		void RenderDataRow(IExportContainer row)
+		{
+			var r = new Rectangle(containerLocation, row.DisplayRectangle.Size).ToXRect();
+			PdfHelper.FillRectangle(r, row.BackColor, xGraphics);
+			foreach (var element in row.ExportedItems)
+			{
 				var acceptor = element as IAcceptor;
 				acceptor.Accept(this);
 			}
 		}
-		
-		
-		public override void Visit(ExportText exportText){
-			var columnLocation = new Point(containerLocation.X + exportText.Location.X,containerLocation.Y + exportText.Location.Y);
-			var columnRect = new Rectangle(columnLocation,exportText.DisplayRectangle.Size).ToXRect();
-			if (ShouldSetBackcolor(exportText)) {
-				PdfHelper.FillRectangle(columnRect,exportText.BackColor,xGraphics);
+
+
+		public override void Visit(ExportText exportText)
+		{
+			var columnLocation = new Point(containerLocation.X + exportText.Location.X,
+				containerLocation.Y + exportText.Location.Y);
+			var columnRect = new Rectangle(columnLocation, exportText.DisplayRectangle.Size).ToXRect();
+			if (ShouldSetBackcolor(exportText))
+			{
+				PdfHelper.FillRectangle(columnRect, exportText.BackColor, xGraphics);
 			}
-			
-			if (HasFrame(exportText)) {
-				PdfHelper.DrawBorder(columnRect,exportText,xGraphics);
+
+			if (HasFrame(exportText))
+			{
+				PdfHelper.DrawBorder(columnRect, exportText, xGraphics);
 			}
-			PdfHelper.WriteText(textFormatter,columnLocation, exportText);
+
+			PdfHelper.WriteText(textFormatter, columnLocation, exportText);
 		}
 
-		
+
 		public override void Visit(ExportImage exportImage)
 		{
 			XImage image = XImage.FromGdiPlusImage(exportImage.Image);
 			var location = PdfHelper.LocationRelToParent(exportImage);
-			if (exportImage.ScaleImageToSize) {
-				xGraphics.DrawImage(image, location.X.ToPoint(), location.Y.ToPoint(), 
-				                    exportImage.Size.Width.ToPoint(),exportImage.Size.Height.ToPoint());
-			} else {
-				xGraphics.DrawImage(image, location.X.ToPoint(), location.Y.ToPoint(), 
-				                    exportImage.Image.Size.Width.ToPoint(),exportImage.Image.Size.Height.ToPoint());
+			if (exportImage.ScaleImageToSize)
+			{
+				xGraphics.DrawImage(image, location.X.ToPoint(), location.Y.ToPoint(),
+					exportImage.Size.Width.ToPoint(), exportImage.Size.Height.ToPoint());
+			}
+			else
+			{
+				xGraphics.DrawImage(image, location.X.ToPoint(), location.Y.ToPoint(),
+					exportImage.Image.Size.Width.ToPoint(), exportImage.Image.Size.Height.ToPoint());
 			}
 		}
-		
-		
-		public override void Visit(ExportLine element){
+
+
+		public override void Visit(ExportLine element)
+		{
 			var pen = PdfHelper.CreatePen(element);
 			var fromPoint = PdfHelper.LocationRelToParent(element);
-			var toPoint = new Point(fromPoint.X + element.Size.Width,fromPoint.Y);
-			xGraphics.DrawLine(pen,fromPoint.ToXPoints(),toPoint.ToXPoints());
+			var toPoint = new Point(fromPoint.X + element.Size.Width, fromPoint.Y);
+			xGraphics.DrawLine(pen, fromPoint.ToXPoints(), toPoint.ToXPoints());
 		}
-		
-		
-		public override void Visit (ExportRectangle exportRectangle) {
+
+
+		public override void Visit(ExportRectangle exportRectangle)
+		{
 			var savedLocation = containerLocation;
 			xGraphics.DrawRectangle(PdfHelper.CreatePen(exportRectangle),
-			                        PdfHelper.CreateBrush(exportRectangle.BackColor),
-			                        new XRect(containerLocation.ToXPoints(),
-			                                  exportRectangle.Size.ToXSize()));
-			RenderContainerInternal(exportRectangle,savedLocation);
+				PdfHelper.CreateBrush(exportRectangle.BackColor),
+				new XRect(containerLocation.ToXPoints(),
+					exportRectangle.Size.ToXSize()));
+			RenderContainerInternal(exportRectangle, savedLocation);
 		}
-			
-		
-		public override void Visit(ExportCircle exportCircle){
+
+
+		public override void Visit(ExportCircle exportCircle)
+		{
 			var savedLocation = containerLocation;
 			var pen = PdfHelper.CreatePen(exportCircle);
 			xGraphics.DrawEllipse(pen,
-			                      PdfHelper.CreateBrush(exportCircle.BackColor) ,
-			                      new XRect(containerLocation.ToXPoints(),
-			                                exportCircle.Size.ToXSize()));
-			RenderContainerInternal (exportCircle,savedLocation);
+				PdfHelper.CreateBrush(exportCircle.BackColor),
+				new XRect(containerLocation.ToXPoints(),
+					exportCircle.Size.ToXSize()));
+			RenderContainerInternal(exportCircle, savedLocation);
 		}
 
-		
-		void RenderContainerInternal(IExportContainer graphicsContainer,Point savedLocation){
-			if (graphicsContainer.ExportedItems.Count > 0) {
-				foreach (var element in graphicsContainer.ExportedItems) {
-					if (IsGraphicsContainer(element)) {
+
+		void RenderContainerInternal(IExportContainer graphicsContainer, Point savedLocation)
+		{
+			if (graphicsContainer.ExportedItems.Count > 0)
+			{
+				foreach (var element in graphicsContainer.ExportedItems)
+				{
+					if (IsGraphicsContainer(element))
+					{
 						var loc = new Point(containerLocation.X + element.Location.X,
-						                    containerLocation.Y + element.Location.Y);
+							containerLocation.Y + element.Location.Y);
 						containerLocation = loc;
 						RenderGraphicsContainer(element);
 						containerLocation = savedLocation;
-					} else {
+					}
+					else
+					{
 						var acceptor = AsAcceptor(element);
 						acceptor.Accept(this);
 					}
 				}
 			}
 		}
-		
-		public PdfPage PdfPage {get; private set;}
+
+		public PdfPage PdfPage { get; private set; }
 	}
 }

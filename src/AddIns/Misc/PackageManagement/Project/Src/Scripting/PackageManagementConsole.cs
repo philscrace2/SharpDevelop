@@ -26,7 +26,7 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class PackageManagementConsole : ThreadSafeScriptingConsole
 	{
 		TextEditor textEditor;
-		
+
 		public PackageManagementConsole()
 			: this(TextEditorFactory.CreateTextEditor())
 		{
@@ -37,18 +37,19 @@ namespace ICSharpCode.PackageManagement.Scripting
 		{
 			this.textEditor = textEditor;
 		}
-		
+
 		public PackageManagementConsole(IScriptingConsoleTextEditor textEditor, IControlDispatcher dispatcher)
 			: this(new ScriptingConsole(textEditor), dispatcher)
 		{
 		}
-		
+
 		public PackageManagementConsole(IScriptingConsole scriptingConsole, IControlDispatcher dispatcher)
 			: base(scriptingConsole, dispatcher)
 		{
 		}
-		
-		public TextEditor TextEditor {
+
+		public TextEditor TextEditor
+		{
 			get { return textEditor; }
 		}
 	}

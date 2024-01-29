@@ -26,7 +26,7 @@ namespace ICSharpCode.TextTemplating
 			: this(String.Empty, 0, 0)
 		{
 		}
-		
+
 		public TextTemplatingVariableLocation(
 			string variableName,
 			int index,
@@ -36,7 +36,7 @@ namespace ICSharpCode.TextTemplating
 			this.Index = index;
 			this.Length = length;
 		}
-		
+
 		public static TextTemplatingVariableLocation CreateFromString(
 			string text,
 			int unexpandedVariableStartIndex,
@@ -47,43 +47,48 @@ namespace ICSharpCode.TextTemplating
 			string variableName = text.Substring(variableNameStart, unexpandedVariableEndIndex - variableNameStart);
 			return new TextTemplatingVariableLocation(variableName, unexpandedVariableStartIndex, unexpandedLength);
 		}
-		
+
 		public string VariableName { get; set; }
 		public int Index { get; set; }
 		public int Length { get; set; }
-		
+
 		public override bool Equals(object obj)
 		{
 			var rhs = obj as TextTemplatingVariableLocation;
-			if (rhs != null) {
+			if (rhs != null)
+			{
 				return (VariableName == rhs.VariableName) &&
-					(Index == rhs.Index) &&
-					(Length == rhs.Length);
+				       (Index == rhs.Index) &&
+				       (Length == rhs.Length);
 			}
+
 			return false;
 		}
-		
+
 		public override int GetHashCode()
 		{
 			return base.GetHashCode();
 		}
-		
+
 		public override string ToString()
 		{
 			return String.Format(
 				"VariableName: {0}, Index: {1}, Length: {2}",
 				VariableName, Index, Length);
 		}
-		
+
 		public static TextTemplatingVariableLocation FindVariable(string text, int startSearchIndex)
 		{
 			int start = text.IndexOf("$(", startSearchIndex);
-			if (start >= 0) {
+			if (start >= 0)
+			{
 				int end = text.IndexOf(")", start);
-				if (end >= 0) {
+				if (end >= 0)
+				{
 					return CreateFromString(text, start, end);
 				}
 			}
+
 			return null;
 		}
 	}

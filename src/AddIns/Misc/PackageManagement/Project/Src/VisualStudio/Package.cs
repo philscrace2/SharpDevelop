@@ -29,15 +29,23 @@ namespace Microsoft.VisualStudio.Shell
 	{
 		public static object GetGlobalService(Type serviceType)
 		{
-			if (serviceType == typeof(global::EnvDTE.DTE)) {
+			if (serviceType == typeof(global::EnvDTE.DTE))
+			{
 				return new DTE();
-			} else if (serviceType == typeof(SVsExtensionManager)) {
+			}
+			else if (serviceType == typeof(SVsExtensionManager))
+			{
 				return new SVsExtensionManager();
-			} else if (serviceType == typeof(IVsSolution)) {
+			}
+			else if (serviceType == typeof(IVsSolution))
+			{
 				return new VsSolution();
-			} else if (serviceType == typeof(SComponentModel)) {
+			}
+			else if (serviceType == typeof(SComponentModel))
+			{
 				return new ComponentModel();
 			}
+
 			return null;
 		}
 	}

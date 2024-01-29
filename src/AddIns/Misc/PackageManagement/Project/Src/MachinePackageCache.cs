@@ -28,13 +28,14 @@ namespace ICSharpCode.PackageManagement
 		{
 			return MachineCache.Default.GetPackages();
 		}
-		
+
 		public void Clear()
 		{
 			MachineCache.Default.Clear();
 		}
-		
-		public string Source {
+
+		public string Source
+		{
 			get { return MachineCache.Default.Source; }
 		}
 	}

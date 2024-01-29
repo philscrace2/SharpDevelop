@@ -28,14 +28,14 @@ namespace ICSharpCode.PackageManagement
 		IPackageActionRunner consolePackageActionRunner;
 		IPackageManagementEvents packageManagementEvents;
 		IPowerShellDetection powerShellDetection;
-		
+
 		public PackageActionRunner(
 			IPackageActionRunner consolePackageActionRunner,
 			IPackageManagementEvents packageManagementEvents)
 			: this(consolePackageActionRunner, packageManagementEvents, new PowerShellDetection())
 		{
 		}
-		
+
 		public PackageActionRunner(
 			IPackageActionRunner consolePackageActionRunner,
 			IPackageManagementEvents packageManagementEvents,
@@ -45,52 +45,67 @@ namespace ICSharpCode.PackageManagement
 			this.packageManagementEvents = packageManagementEvents;
 			this.powerShellDetection = powerShellDetection;
 		}
-		
+
 		public void Run(IEnumerable<IPackageAction> actions)
 		{
-			if (ShouldRunActionsInConsole(actions)) {
+			if (ShouldRunActionsInConsole(actions))
+			{
 				consolePackageActionRunner.Run(actions);
-			} else {
-				foreach (ProcessPackageAction action in actions) {
+			}
+			else
+			{
+				foreach (ProcessPackageAction action in actions)
+				{
 					action.Execute();
 				}
 			}
 		}
-		
+
 		bool ShouldRunActionsInConsole(IEnumerable<IPackageAction> actions)
 		{
-			foreach (IPackageAction action in actions) {
-				if (ShouldRunActionInConsole(action)) {
+			foreach (IPackageAction action in actions)
+			{
+				if (ShouldRunActionInConsole(action))
+				{
 					return true;
 				}
 			}
+
 			return false;
 		}
-		
+
 		public void Run(IPackageAction action)
 		{
-			if (ShouldRunActionInConsole(action)) {
+			if (ShouldRunActionInConsole(action))
+			{
 				consolePackageActionRunner.Run(action);
-			} else {
+			}
+			else
+			{
 				action.Execute();
 			}
 		}
-		
+
 		bool ShouldRunActionInConsole(IPackageAction action)
 		{
-			if (action.HasPackageScriptsToRun()) {
-				if (powerShellDetection.IsPowerShell2Installed()) {
+			if (action.HasPackageScriptsToRun())
+			{
+				if (powerShellDetection.IsPowerShell2Installed())
+				{
 					return true;
-				} else {
+				}
+				else
+				{
 					ReportPowerShellIsNotInstalled();
 				}
 			}
+
 			return false;
 		}
-		
+
 		void ReportPowerShellIsNotInstalled()
 		{
-			string message = 
+			string message =
 				"PowerShell is not installed. PowerShell scripts will not be run for the package.";
 			packageManagementEvents.OnPackageOperationMessageLogged(MessageLevel.Warning, message);
 		}

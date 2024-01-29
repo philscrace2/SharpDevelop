@@ -32,7 +32,7 @@ namespace ICSharpCode.PackageManagement
 		IPackageManagementProjectService projectService;
 		IMessageService messageService;
 		ILoggingService loggingService;
-		
+
 		public InstallProjectTemplatePackagesCommand()
 			: this(
 				PackageManagementServices.PackageRepositoryCache,
@@ -41,7 +41,7 @@ namespace ICSharpCode.PackageManagement
 				SD.Log)
 		{
 		}
-		
+
 		public InstallProjectTemplatePackagesCommand(
 			IPackageRepositoryCache packageRepositoryCache,
 			IPackageManagementProjectService projectService,
@@ -53,46 +53,51 @@ namespace ICSharpCode.PackageManagement
 			this.messageService = messageService;
 			this.loggingService = loggingService;
 		}
-		
+
 		public override void Run()
 		{
-			try {
+			try
+			{
 				InstallPackages();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				DisplayError(ex);
 			}
 		}
-		
+
 		void DisplayError(Exception ex)
 		{
 			loggingService.Error(null, ex);
 			messageService.ShowError(ex.Message);
 		}
-		
+
 		void InstallPackages()
 		{
-			foreach (MSBuildBasedProject project in GetCreatedProjects()) {
+			foreach (MSBuildBasedProject project in GetCreatedProjects())
+			{
 				IPackageReferencesForProject packageReferences = CreatePackageReferencesForProject(project);
 				packageReferences.RemovePackageReferences();
 				packageReferences.InstallPackages();
 			}
 		}
-		
+
 		IEnumerable<MSBuildBasedProject> GetCreatedProjects()
 		{
 			var createInfo = Owner as ProjectTemplateResult;
-			if (createInfo == null) {
+			if (createInfo == null)
+			{
 				return Enumerable.Empty<MSBuildBasedProject>();
 			}
-				
+
 			return createInfo.NewProjects.OfType<MSBuildBasedProject>();
 		}
-		
+
 		IPackageReferencesForProject CreatePackageReferencesForProject(MSBuildBasedProject project)
 		{
 			return CreatePackageReferencesForProject(project, packageRepositoryCache);
 		}
-		
+
 		protected virtual IPackageReferencesForProject CreatePackageReferencesForProject(
 			MSBuildBasedProject project,
 			IPackageRepositoryCache packageRepositoryCache)

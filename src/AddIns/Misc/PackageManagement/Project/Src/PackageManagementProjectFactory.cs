@@ -26,12 +26,12 @@ namespace ICSharpCode.PackageManagement
 	{
 		SharpDevelopPackageManagerFactory factory = new SharpDevelopPackageManagerFactory();
 		IPackageManagementEvents packageManagementEvents;
-		
+
 		public PackageManagementProjectFactory(IPackageManagementEvents packageManagementEvents)
 		{
 			this.packageManagementEvents = packageManagementEvents;
 		}
-		
+
 		public IPackageManagementProject CreateProject(
 			IPackageRepository sourceRepository,
 			MSBuildBasedProject project)

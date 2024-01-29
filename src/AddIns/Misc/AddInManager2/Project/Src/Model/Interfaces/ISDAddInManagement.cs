@@ -29,23 +29,11 @@ namespace ICSharpCode.AddInManager2.Model
 	/// </summary>
 	public interface ISDAddInManagement
 	{
-		IReadOnlyList<AddIn> AddIns
-		{
-			get;
-		}
-		string TempInstallDirectory
-		{
-			get;
-		}
-		string UserInstallDirectory
-		{
-			get;
-		}
-		string ConfigDirectory
-		{
-			get;
-		}
-		
+		IReadOnlyList<AddIn> AddIns { get; }
+		string TempInstallDirectory { get; }
+		string UserInstallDirectory { get; }
+		string ConfigDirectory { get; }
+
 		void AddToTree(AddIn addIn);
 		void AbortRemoveUserAddInOnNextStart(string identity);
 		void Enable(IList<AddIn> addIns);

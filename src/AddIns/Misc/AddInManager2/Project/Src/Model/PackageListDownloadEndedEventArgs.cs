@@ -27,17 +27,9 @@ namespace ICSharpCode.AddInManager2.Model
 			this.WasSuccessful = wasSuccessful;
 			this.WasCancelled = wasCancelled;
 		}
-		
-		public bool WasSuccessful
-		{
-			get;
-			set;
-		}
-		
-		public bool WasCancelled
-		{
-			get;
-			set;
-		}
+
+		public bool WasSuccessful { get; set; }
+
+		public bool WasCancelled { get; set; }
 	}
 }

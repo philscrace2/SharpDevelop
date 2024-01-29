@@ -28,13 +28,13 @@ namespace ICSharpCode.PackageManagement.Scripting
 			var scriptFileName = new PackageInitializeScriptFileName(packageInstallDirectory);
 			return new PackageInitializeScript(package, scriptFileName);
 		}
-		
+
 		public IPackageScript CreatePackageUninstallScript(IPackage package, string packageInstallDirectory)
 		{
 			var scriptFileName = new PackageUninstallScriptFileName(packageInstallDirectory);
 			return new PackageUninstallScript(package, scriptFileName);
 		}
-		
+
 		public IPackageScript CreatePackageInstallScript(IPackage package, string packageInstallDirectory)
 		{
 			var scriptFileName = new PackageInstallScriptFileName(packageInstallDirectory);

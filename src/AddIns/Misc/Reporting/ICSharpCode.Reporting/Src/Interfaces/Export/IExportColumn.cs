@@ -25,12 +25,12 @@ namespace ICSharpCode.Reporting.Interfaces.Export
 	/// <summary>
 	/// Description of IExportColumn.
 	/// </summary>
-	public interface IExportColumn:IReportObject
+	public interface IExportColumn : IReportObject
 	{
 		IArrangeStrategy GetArrangeStrategy();
-		IMeasurementStrategy MeasurementStrategy ();
-		Size DesiredSize {get;set;}
-		IExportColumn Parent {get;set;}
-		Rectangle DisplayRectangle {get;}
+		IMeasurementStrategy MeasurementStrategy();
+		Size DesiredSize { get; set; }
+		IExportColumn Parent { get; set; }
+		Rectangle DisplayRectangle { get; }
 	}
 }

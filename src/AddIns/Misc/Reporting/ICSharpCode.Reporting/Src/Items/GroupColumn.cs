@@ -26,23 +26,24 @@ namespace ICSharpCode.Reporting.Items
 	/// </summary>
 	public class GroupColumn : SortColumn
 	{
-
-		public GroupColumn():this("",0,ListSortDirection.Ascending)
+		public GroupColumn() : this("", 0, ListSortDirection.Ascending)
 		{
 		}
-		
-		public GroupColumn(string columnName,int groupLevel, ListSortDirection sortDirection):base(columnName,sortDirection)
+
+		public GroupColumn(string columnName, int groupLevel, ListSortDirection sortDirection) : base(columnName,
+			sortDirection)
 		{
-			if (groupLevel < 0) {
+			if (groupLevel < 0)
+			{
 				throw new ArgumentException("groupLevel");
 			}
-			this.GroupLevel = groupLevel;
-			
-		}
-		
 
-		public int GroupLevel {get;private set;}
-	
-		public SortColumn GroupSortColumn {get;set;}
+			this.GroupLevel = groupLevel;
+		}
+
+
+		public int GroupLevel { get; private set; }
+
+		public SortColumn GroupSortColumn { get; set; }
 	}
 }

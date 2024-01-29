@@ -24,23 +24,25 @@ namespace ICSharpCode.PackageManagement.Scripting
 	public class PackageInitializationScriptsConsole
 	{
 		readonly IPackageManagementConsoleHost consoleHost;
-		
+
 		public PackageInitializationScriptsConsole(
 			IPackageManagementConsoleHost consoleHost)
 		{
 			this.consoleHost = consoleHost;
 		}
-		
+
 		public void ExecuteCommand(string command)
 		{
-			if (consoleHost.IsRunning) {
+			if (consoleHost.IsRunning)
+			{
 				consoleHost.ExecuteCommand(command);
 			}
 		}
-		
+
 		public void WriteError(string message)
 		{
-			if (consoleHost.IsRunning) {
+			if (consoleHost.IsRunning)
+			{
 				consoleHost.ScriptingConsole.WriteLine(message, ScriptingStyle.Error);
 				consoleHost.WritePrompt();
 			}

@@ -42,17 +42,14 @@ namespace ICSharpCode.Reporting.DataSource
 
 		public object this[Type type, string fieldName]
 		{
-			get
-			{
-				return types[MakeIndex(type, fieldName)];
-			}
+			get { return types[MakeIndex(type, fieldName)]; }
 			set
 			{
 				if (value == null)
 					return;
 				string key = MakeIndex(type, fieldName);
 				if (!types.Contains(key))
-					types.Add(key, value);				
+					types.Add(key, value);
 			}
 		}
 

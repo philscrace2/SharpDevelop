@@ -28,7 +28,7 @@ namespace ICSharpCode.PackageManagement
 		IPackageActionRunner packageActionRunner;
 		IPackageManagementProjectFactory projectFactory;
 		IPackageRepositoryCache packageRepositoryCache;
-		
+
 		public PackageReferenceInstaller(IPackageRepositoryCache packageRepositoryCache)
 			: this(
 				packageRepositoryCache,
@@ -36,7 +36,7 @@ namespace ICSharpCode.PackageManagement
 				new PackageManagementProjectFactory(PackageManagementServices.PackageManagementEvents))
 		{
 		}
-		
+
 		public PackageReferenceInstaller(
 			IPackageRepositoryCache packageRepositoryCache,
 			IPackageActionRunner packageActionRunner,
@@ -46,7 +46,7 @@ namespace ICSharpCode.PackageManagement
 			this.packageActionRunner = packageActionRunner;
 			this.projectFactory = projectFactory;
 		}
-		
+
 		public void InstallPackages(
 			IEnumerable<PackageReference> packageReferences,
 			MSBuildBasedProject project)
@@ -54,28 +54,29 @@ namespace ICSharpCode.PackageManagement
 			List<InstallPackageAction> actions = GetInstallPackageActions(packageReferences, project);
 			packageActionRunner.Run(actions);
 		}
-		
+
 		List<InstallPackageAction> GetInstallPackageActions(
 			IEnumerable<PackageReference> packageReferences,
 			MSBuildBasedProject project)
 		{
 			var actions = new List<InstallPackageAction>();
-			
+
 			IPackageManagementProject packageManagementProject = CreatePackageManagementProject(project);
-			foreach (PackageReference packageReference in packageReferences) {
+			foreach (PackageReference packageReference in packageReferences)
+			{
 				InstallPackageAction action = CreateInstallPackageAction(packageManagementProject, packageReference);
 				actions.Add(action);
 			}
-			
+
 			return actions;
 		}
-		
+
 		IPackageManagementProject CreatePackageManagementProject(MSBuildBasedProject project)
 		{
 			IPackageRepository repository = packageRepositoryCache.CreateAggregateRepository();
 			return projectFactory.CreateProject(repository, project);
 		}
-		
+
 		InstallPackageAction CreateInstallPackageAction(
 			IPackageManagementProject project,
 			PackageReference packageReference)

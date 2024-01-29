@@ -39,7 +39,7 @@ namespace ICSharpCode.AddInManager2
 		private NotifyIcon _notifyIcon;
 		private bool _hasNotified;
 		private PackageRepository _firstRepositoryWithUpdates;
-		
+
 		public UpdateNotifier()
 			: this(AddInManagerServices.Services)
 		{
@@ -52,12 +52,12 @@ namespace ICSharpCode.AddInManager2
 			_updatedAddInViewModel = new UpdatedAddInsViewModel(services);
 			_services.Events.PackageListDownloadEnded += Events_PackageListDownloadEnded;
 		}
-		
+
 		private void NotifyIcon_Click(object sender, EventArgs e)
 		{
 			// Remove the notify icon
 			DestroyIcon();
-			
+
 			// Show AddInManager window on click
 			using (AddInManagerView view = AddInManagerView.Create())
 			{
@@ -67,29 +67,31 @@ namespace ICSharpCode.AddInManager2
 					// Activate update view explicitly
 					viewModel.UpdatedAddInsViewModel.IsExpandedInView = true;
 					var firstRepositoryWithUpdates =
-						viewModel.UpdatedAddInsViewModel.PackageRepositories.FirstOrDefault(pr => pr.SourceUrl == _firstRepositoryWithUpdates.SourceUrl);
+						viewModel.UpdatedAddInsViewModel.PackageRepositories.FirstOrDefault(pr =>
+							pr.SourceUrl == _firstRepositoryWithUpdates.SourceUrl);
 					if (firstRepositoryWithUpdates != null)
 					{
 						// Directly go to first repository containing an update
 						viewModel.UpdatedAddInsViewModel.SelectedPackageSource = firstRepositoryWithUpdates;
 					}
 				}
+
 				_firstRepositoryWithUpdates = null;
 				view.ShowDialog();
 			}
 		}
-		
+
 		private void DestroyIcon()
 		{
 			if (_notifyIcon != null)
 			{
 				_notifyIcon.Dispose();
 				_notifyIcon = null;
-				
+
 				_services.Events.AddInManagerViewOpened -= Events_AddInManagerViewOpened;
 			}
 		}
-		
+
 		private void Detach()
 		{
 			if (!_isDetached)
@@ -98,7 +100,7 @@ namespace ICSharpCode.AddInManager2
 				_isDetached = true;
 			}
 		}
-		
+
 		public void StartUpdateLookup()
 		{
 			if (!_isDetached && !_hasNotified)
@@ -107,53 +109,55 @@ namespace ICSharpCode.AddInManager2
 				_updatedAddInViewModel.ReadPackages();
 			}
 		}
-		
+
 		private void Events_AddInManagerViewOpened(object sender, EventArgs e)
 		{
 			// AddInManager dialog has been opened through menu, not through the NotifyIcon -> hide the icon
 			DestroyIcon();
 		}
-		
+
 		private void Events_PackageListDownloadEnded(object sender, PackageListDownloadEndedEventArgs e)
 		{
 			if (sender != _updatedAddInViewModel)
 			{
 				return;
 			}
-			
+
 			if (e.WasCancelled)
 			{
 				return;
 			}
-			
+
 			// Do we have any new updates? Collect this information from all configured repositories
 			if (e.WasSuccessful)
 			{
-				_firstRepositoryWithUpdates = _updatedAddInViewModel.PackageRepositories.FirstOrDefault(pr => pr.HasHighlightCount);
+				_firstRepositoryWithUpdates =
+					_updatedAddInViewModel.PackageRepositories.FirstOrDefault(pr => pr.HasHighlightCount);
 				if (_firstRepositoryWithUpdates != null)
 				{
 					// There must be updates, show an update notification
 					_hasNotified = true;
 					Detach();
-					
+
 					_services.Events.AddInManagerViewOpened += Events_AddInManagerViewOpened;
-					
+
 					_notifyIcon = new NotifyIcon();
 					_notifyIcon.Icon = Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location);
 					_notifyIcon.Click += NotifyIcon_Click;
 					_notifyIcon.BalloonTipClicked += NotifyIcon_Click;
-					
+
 					_notifyIcon.Text = SD.ResourceService.GetString("AddInManager2.UpdateNotifier.BubbleTitle");
 					_notifyIcon.BalloonTipTitle = _notifyIcon.Text;
-					_notifyIcon.BalloonTipText = SD.ResourceService.GetString("AddInManager2.UpdateNotifier.BubbleText");
-					
+					_notifyIcon.BalloonTipText =
+						SD.ResourceService.GetString("AddInManager2.UpdateNotifier.BubbleText");
+
 					_notifyIcon.Visible = true;
 					_notifyIcon.ShowBalloonTip(40000);
-					
+
 					return;
 				}
 			}
-			
+
 			Detach();
 		}
 	}

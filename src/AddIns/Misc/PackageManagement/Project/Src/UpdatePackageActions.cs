@@ -27,16 +27,16 @@ namespace ICSharpCode.PackageManagement
 		public bool UpdateDependencies { get; set; }
 		public bool AllowPrereleaseVersions { get; set; }
 		public IPackageScriptRunner PackageScriptRunner { get; set; }
-		
+
 		public abstract IEnumerable<UpdatePackageAction> CreateActions();
-		
+
 		protected UpdatePackageAction CreateDefaultUpdatePackageAction(IPackageManagementProject project)
 		{
 			UpdatePackageAction action = project.CreateUpdatePackageAction();
 			SetUpdatePackageActionProperties(action);
 			return action;
 		}
-		
+
 		void SetUpdatePackageActionProperties(UpdatePackageAction action)
 		{
 			action.PackageScriptRunner = PackageScriptRunner;

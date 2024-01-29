@@ -24,7 +24,7 @@ namespace ICSharpCode.PackageManagement
 	{
 		public int Number { get; set; }
 		public bool IsSelected { get; set; }
-		
+
 		public override string ToString()
 		{
 			return String.Format("[Page] Number={0}, IsSelected={1}", Number, IsSelected);

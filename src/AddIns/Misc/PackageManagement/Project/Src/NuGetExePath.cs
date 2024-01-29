@@ -27,7 +27,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			return Path.Combine(GetDirectory(), "NuGet.exe");
 		}
-		
+
 		static string GetDirectory()
 		{
 			return Path.GetDirectoryName(typeof(NuGetExePath).Assembly.Location);

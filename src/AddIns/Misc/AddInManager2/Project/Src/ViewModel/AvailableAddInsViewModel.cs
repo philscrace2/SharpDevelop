@@ -32,24 +32,24 @@ namespace ICSharpCode.AddInManager2.ViewModel
 		{
 			Initialize();
 		}
-		
+
 		public AvailableAddInsViewModel(IAddInManagerServices services)
 			: base(services)
 		{
 			Initialize();
 		}
-		
+
 		private void Initialize()
 		{
 			IsSearchable = true;
 			ShowPackageSources = true;
 			Title = SD.ResourceService.GetString("AddInManager2.Views.Available");
-			
+
 			AddInManager.Events.AddInInstalled += AddInInstallationStateChanged;
 			AddInManager.Events.AddInUninstalled += AddInInstallationStateChanged;
 			AddInManager.Events.AddInStateChanged += AddInInstallationStateChanged;
 		}
-		
+
 		protected override void OnDispose()
 		{
 			AddInManager.Events.AddInInstalled -= AddInInstallationStateChanged;
@@ -62,19 +62,20 @@ namespace ICSharpCode.AddInManager2.ViewModel
 			return (ActiveRepository ?? AddInManager.Repositories.AllRegistered).GetPackages()
 				.Where(package => package.IsLatestVersion);
 		}
-		
-		protected override IEnumerable<IPackage> GetFilteredPackagesBeforePagingResults(IQueryable<IPackage> allPackages)
+
+		protected override IEnumerable<IPackage> GetFilteredPackagesBeforePagingResults(
+			IQueryable<IPackage> allPackages)
 		{
 			return base.GetFilteredPackagesBeforePagingResults(allPackages)
 				.OrderByDescending(package => package.DownloadCount)
 				.ThenBy(package => package.Id);
 		}
-		
+
 		protected override void UpdatePrereleaseFilter()
 		{
 			ReadPackages();
 		}
-		
+
 		private void AddInInstallationStateChanged(object sender, AddInInstallationEventArgs e)
 		{
 			UpdateInstallationState();

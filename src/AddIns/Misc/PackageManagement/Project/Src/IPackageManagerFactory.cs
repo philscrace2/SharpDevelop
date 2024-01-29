@@ -25,7 +25,7 @@ namespace ICSharpCode.PackageManagement
 	public interface IPackageManagerFactory
 	{
 		ISharpDevelopPackageManager CreatePackageManager(
-			IPackageRepository sourceRepository, 
+			IPackageRepository sourceRepository,
 			MSBuildBasedProject project);
 	}
 }

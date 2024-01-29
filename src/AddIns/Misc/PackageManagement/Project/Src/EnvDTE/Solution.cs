@@ -28,7 +28,7 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		IPackageManagementProjectService projectService;
 		SD.ISolution solution;
-		
+
 		public Solution(IPackageManagementProjectService projectService)
 		{
 			this.projectService = projectService;
@@ -38,68 +38,78 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			this.SolutionBuild = new SolutionBuild(this, projectService.ProjectBuilder);
 			CreateProperties();
 		}
-		
+
 		void CreateProperties()
 		{
 			var propertyFactory = new SolutionPropertyFactory(this);
 			Properties = new Properties(propertyFactory);
 		}
-		
-		public string FullName {
+
+		public string FullName
+		{
 			get { return FileName; }
 		}
-		
-		public string FileName {
+
+		public string FileName
+		{
 			get { return solution.FileName; }
 		}
-		
-		public bool IsOpen {
+
+		public bool IsOpen
+		{
 			get { return projectService.OpenSolution == solution; }
 		}
-		
+
 		public global::EnvDTE.Projects Projects { get; private set; }
 		public global::EnvDTE.Globals Globals { get; private set; }
-		
-		internal ICollection<SD.SolutionSection> Sections {
+
+		internal ICollection<SD.SolutionSection> Sections
+		{
 			get { return solution.GlobalSections; }
 		}
-		
+
 		internal void Save()
 		{
 			projectService.Save(solution);
 		}
-		
+
 		public global::EnvDTE.ProjectItem FindProjectItem(string fileName)
 		{
-			foreach (Project project in Projects) {
+			foreach (Project project in Projects)
+			{
 				ProjectItem item = project.FindProjectItem(fileName);
-				if (item != null) {
+				if (item != null)
+				{
 					return item;
 				}
 			}
+
 			return null;
 		}
-		
+
 		public global::EnvDTE.SolutionBuild SolutionBuild { get; private set; }
 		public global::EnvDTE.Properties Properties { get; private set; }
-		
+
 		internal Project GetStartupProject()
 		{
 			var project = solution.StartupProject as MSBuildBasedProject;
-			if (project != null) {
+			if (project != null)
+			{
 				return new Project(project);
 			}
+
 			return null;
 		}
-		
+
 		internal IEnumerable<string> GetAllPropertyNames()
 		{
-			return new string[] {
+			return new string[]
+			{
 				"Path",
 				"StartupProject"
 			};
 		}
-		
+
 		internal SolutionConfiguration GetActiveConfiguration()
 		{
 			return new SolutionConfiguration(solution);

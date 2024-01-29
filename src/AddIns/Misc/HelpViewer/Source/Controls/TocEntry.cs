@@ -50,39 +50,55 @@ namespace MSHelpSystem.Controls
 
 			client.DownloadStringCompleted += (_, e) =>
 			{
-				try {
+				try
+				{
 					LoggingService.Debug(string.Format("HelpViewer: TocEntry \"{0}\" found", Title));
 					var children = XElement.Parse(e.Result);
-					Children     = children.Elements("topic")
-						.Select(link => new TocEntry(link.Attribute("id").Value) { Title = WebUtility.HtmlDecode(link.Element("title").Value) })
+					Children = children.Elements("topic")
+						.Select(link => new TocEntry(link.Attribute("id").Value)
+							{ Title = WebUtility.HtmlDecode(link.Element("title").Value) })
 						.ToArray();
-				} catch (TargetInvocationException ex) {
+				}
+				catch (TargetInvocationException ex)
+				{
 					// Exception when fetching e.Result:
 					LoggingService.Error(ex.ToString());
 					this.children = defaultChild;
 				}
+
 				client.Dispose();
 			};
 			RaisePropertyChanged("Children");
 		}
 
 		public string Title { get; set; }
-		public string Id { get { return id; } }
+
+		public string Id
+		{
+			get { return id; }
+		}
 
 		static object[] defaultChild = new object[] { null };
 		IEnumerable children;
 
 		public IEnumerable Children
 		{
-			get {
-				if (Help3Service.ActiveCatalog != null) {
-					if (children == null && !client.IsBusy && HelpLibraryAgent.PortIsReady) {
-						client.DownloadStringAsync(new Uri(Help3Environment.GetHttpFromMsXHelp(string.Format(url, Help3Service.ActiveCatalog.AsMsXHelpParam, id))));
+			get
+			{
+				if (Help3Service.ActiveCatalog != null)
+				{
+					if (children == null && !client.IsBusy && HelpLibraryAgent.PortIsReady)
+					{
+						client.DownloadStringAsync(new Uri(
+							Help3Environment.GetHttpFromMsXHelp(string.Format(url,
+								Help3Service.ActiveCatalog.AsMsXHelpParam, id))));
 					}
 				}
+
 				return children ?? defaultChild;
 			}
-			private set {
+			private set
+			{
 				children = value;
 				RaisePropertyChanged("Children");
 			}
@@ -95,5 +111,5 @@ namespace MSHelpSystem.Controls
 			System.ComponentModel.PropertyChangedEventHandler handler = PropertyChanged;
 			if (handler != null) handler(this, new System.ComponentModel.PropertyChangedEventArgs(name));
 		}
-  	}
+	}
 }

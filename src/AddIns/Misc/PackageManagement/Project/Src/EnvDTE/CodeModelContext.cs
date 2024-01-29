@@ -26,35 +26,43 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		ICodeGenerator codeGenerator;
 		IDocumentLoader documentLoader;
-		
+
 		public Project DteProject { get; set; }
 		public IProject CurrentProject { get; set; }
-		
-		public IDocumentLoader DocumentLoader {
-			get {
-				if (documentLoader == null) {
+
+		public IDocumentLoader DocumentLoader
+		{
+			get
+			{
+				if (documentLoader == null)
+				{
 					documentLoader = new DocumentLoader();
 				}
+
 				return documentLoader;
 			}
-			
+
 			set { documentLoader = value; }
 		}
-		
-		public ICodeGenerator CodeGenerator {
-			get {
-				if (codeGenerator == null) {
+
+		public ICodeGenerator CodeGenerator
+		{
+			get
+			{
+				if (codeGenerator == null)
+				{
 					codeGenerator = new ThreadSafeCodeGenerator(CurrentProject.LanguageBinding.CodeGenerator);
 				}
+
 				return codeGenerator;
 			}
 		}
-		
+
 		/// <summary>
 		/// Specifies the file name if this code model context refers to
 		/// </summary>
 		public string FilteredFileName { get; set; }
-		
+
 		public CodeModelContext WithFilteredFileName(string fileName)
 		{
 			var newContext = (CodeModelContext)MemberwiseClone();

@@ -21,34 +21,34 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
-
 using NuGet;
 
 namespace ICSharpCode.PackageManagement
 {
 	public class RegisteredPackageSourcesViewModel : ViewModelBase<RegisteredPackageSourcesViewModel>
 	{
-		ObservableCollection<PackageSourceViewModel> packageSourceViewModels = 
+		ObservableCollection<PackageSourceViewModel> packageSourceViewModels =
 			new ObservableCollection<PackageSourceViewModel>();
+
 		RegisteredPackageSources packageSources;
 		IRegisteredPackageRepositories registeredPackageRepositories;
 		IFolderBrowser folderBrowser;
-		
+
 		DelegateCommand addPackageSourceCommmand;
 		DelegateCommand removePackageSourceCommand;
 		DelegateCommand movePackageSourceUpCommand;
 		DelegateCommand movePackageSourceDownCommand;
 		DelegateCommand browsePackageFolderCommand;
-		
+
 		RegisteredPackageSource newPackageSource = new RegisteredPackageSource();
 		PackageSourceViewModel selectedPackageSourceViewModel;
-		
+
 		public RegisteredPackageSourcesViewModel(
 			IRegisteredPackageRepositories registeredPackageRepositories)
 			: this(registeredPackageRepositories, new FolderBrowser())
 		{
 		}
-		
+
 		public RegisteredPackageSourcesViewModel(
 			IRegisteredPackageRepositories registeredPackageRepositories,
 			IFolderBrowser folderBrowser)
@@ -58,215 +58,237 @@ namespace ICSharpCode.PackageManagement
 			this.folderBrowser = folderBrowser;
 			CreateCommands();
 		}
-		
+
 		void CreateCommands()
 		{
 			addPackageSourceCommmand =
 				new DelegateCommand(param => AddPackageSource(),
 					param => CanAddPackageSource);
-			
+
 			removePackageSourceCommand =
 				new DelegateCommand(param => RemovePackageSource(),
 					param => CanRemovePackageSource);
-			
+
 			movePackageSourceUpCommand =
 				new DelegateCommand(param => MovePackageSourceUp(),
 					param => CanMovePackageSourceUp);
-			
+
 			movePackageSourceDownCommand =
 				new DelegateCommand(param => MovePackageSourceDown(),
 					param => CanMovePackageSourceDown);
-			
+
 			browsePackageFolderCommand =
 				new DelegateCommand(param => BrowsePackageFolder());
 		}
-		
-		public ICommand AddPackageSourceCommand {
+
+		public ICommand AddPackageSourceCommand
+		{
 			get { return addPackageSourceCommmand; }
 		}
-		
-		public ICommand RemovePackageSourceCommand {
+
+		public ICommand RemovePackageSourceCommand
+		{
 			get { return removePackageSourceCommand; }
 		}
-		
-		public ICommand MovePackageSourceUpCommand {
+
+		public ICommand MovePackageSourceUpCommand
+		{
 			get { return movePackageSourceUpCommand; }
 		}
-		
-		public ICommand MovePackageSourceDownCommand {
+
+		public ICommand MovePackageSourceDownCommand
+		{
 			get { return movePackageSourceDownCommand; }
 		}
-		
-		public ICommand BrowsePackageFolderCommand {
+
+		public ICommand BrowsePackageFolderCommand
+		{
 			get { return browsePackageFolderCommand; }
 		}
-		
-		public ObservableCollection<PackageSourceViewModel> PackageSourceViewModels {
+
+		public ObservableCollection<PackageSourceViewModel> PackageSourceViewModels
+		{
 			get { return packageSourceViewModels; }
 		}
-		
+
 		public void Load()
 		{
-			foreach (PackageSource packageSource in packageSources) {
+			foreach (PackageSource packageSource in packageSources)
+			{
 				AddPackageSourceToViewModel(packageSource);
 			}
 		}
-		
+
 		void AddPackageSourceToViewModel(PackageSource packageSource)
 		{
 			var packageSourceViewModel = new PackageSourceViewModel(packageSource);
 			packageSourceViewModels.Add(packageSourceViewModel);
 		}
-		
+
 		public void Save()
 		{
 			registeredPackageRepositories.UpdatePackageSources(
- 				packageSourceViewModels.Select(viewModel => viewModel.GetPackageSource()));
+				packageSourceViewModels.Select(viewModel => viewModel.GetPackageSource()));
 		}
-		
-		public string NewPackageSourceName {
+
+		public string NewPackageSourceName
+		{
 			get { return newPackageSource.Name; }
-			set {
+			set
+			{
 				newPackageSource.Name = value;
 				OnPropertyChanged(viewModel => viewModel.NewPackageSourceName);
 			}
 		}
-		
-		public string NewPackageSourceUrl {
+
+		public string NewPackageSourceUrl
+		{
 			get { return newPackageSource.Source; }
-			set {
+			set
+			{
 				newPackageSource.Source = value;
 				OnPropertyChanged(viewModel => viewModel.NewPackageSourceUrl);
 			}
 		}
-		
-		public PackageSourceViewModel SelectedPackageSourceViewModel {
+
+		public PackageSourceViewModel SelectedPackageSourceViewModel
+		{
 			get { return selectedPackageSourceViewModel; }
-			set {
+			set
+			{
 				selectedPackageSourceViewModel = value;
 				OnPropertyChanged(viewModel => viewModel.SelectedPackageSourceViewModel);
 				OnPropertyChanged(viewModel => viewModel.CanAddPackageSource);
 			}
 		}
-		
+
 		public void AddPackageSource()
 		{
 			AddNewPackageSourceToViewModel();
 			SelectLastPackageSourceViewModel();
 		}
-		
+
 		void AddNewPackageSourceToViewModel()
 		{
 			var packageSource = newPackageSource.ToPackageSource();
 			AddPackageSourceToViewModel(packageSource);
 		}
-		
+
 		void SelectLastPackageSourceViewModel()
 		{
 			SelectedPackageSourceViewModel = GetLastPackageSourceViewModel();
 		}
-		
-		public bool CanAddPackageSource {
+
+		public bool CanAddPackageSource
+		{
 			get { return NewPackageSourceHasUrl && NewPackageSourceHasName; }
 		}
-		
-		bool NewPackageSourceHasUrl {
+
+		bool NewPackageSourceHasUrl
+		{
 			get { return !String.IsNullOrEmpty(NewPackageSourceUrl); }
 		}
-		
-		bool NewPackageSourceHasName {
+
+		bool NewPackageSourceHasName
+		{
 			get { return !String.IsNullOrEmpty(NewPackageSourceName); }
 		}
-		
+
 		public void RemovePackageSource()
 		{
 			RemoveSelectedPackageSourceViewModel();
 		}
-		
-		public bool CanRemovePackageSource {
+
+		public bool CanRemovePackageSource
+		{
 			get { return IsPackageSourceSelected(); }
 		}
-		
+
 		void RemoveSelectedPackageSourceViewModel()
 		{
 			packageSourceViewModels.Remove(selectedPackageSourceViewModel);
 		}
-		
+
 		public void MovePackageSourceUp()
 		{
 			int selectedPackageSourceIndex = GetSelectedPackageSourceViewModelIndex();
 			int destinationPackageSourceIndex = selectedPackageSourceIndex--;
 			packageSourceViewModels.Move(selectedPackageSourceIndex, destinationPackageSourceIndex);
 		}
-		
+
 		int GetSelectedPackageSourceViewModelIndex()
 		{
 			return packageSourceViewModels.IndexOf(selectedPackageSourceViewModel);
 		}
-		
-		public bool CanMovePackageSourceUp {
-			get {
+
+		public bool CanMovePackageSourceUp
+		{
+			get
+			{
 				return HasAtLeastTwoPackageSources() &&
-					IsPackageSourceSelected() &&
-					!IsFirstPackageSourceSelected();
+				       IsPackageSourceSelected() &&
+				       !IsFirstPackageSourceSelected();
 			}
 		}
-		
+
 		bool IsPackageSourceSelected()
 		{
 			return selectedPackageSourceViewModel != null;
 		}
-		
+
 		bool IsFirstPackageSourceSelected()
 		{
 			return selectedPackageSourceViewModel == packageSourceViewModels[0];
 		}
-		
+
 		public void MovePackageSourceDown()
 		{
 			int selectedPackageSourceIndex = GetSelectedPackageSourceViewModelIndex();
 			int destinationPackageSourceIndex = selectedPackageSourceIndex++;
-			packageSourceViewModels.Move(selectedPackageSourceIndex, destinationPackageSourceIndex);			
+			packageSourceViewModels.Move(selectedPackageSourceIndex, destinationPackageSourceIndex);
 		}
-		
-		public bool CanMovePackageSourceDown {
-			get {
+
+		public bool CanMovePackageSourceDown
+		{
+			get
+			{
 				return HasAtLeastTwoPackageSources() &&
-					IsPackageSourceSelected() &&
-					!IsLastPackageSourceSelected();
+				       IsPackageSourceSelected() &&
+				       !IsLastPackageSourceSelected();
 			}
 		}
-		
+
 		bool HasAtLeastTwoPackageSources()
 		{
 			return packageSourceViewModels.Count >= 2;
 		}
-		
+
 		bool IsLastPackageSourceSelected()
 		{
 			PackageSourceViewModel lastViewModel = GetLastPackageSourceViewModel();
 			return lastViewModel == selectedPackageSourceViewModel;
 		}
-		
+
 		PackageSourceViewModel GetLastPackageSourceViewModel()
 		{
 			return packageSourceViewModels.Last();
 		}
-		
+
 		public void BrowsePackageFolder()
 		{
 			string folder = folderBrowser.SelectFolder();
-			if (folder != null) {
+			if (folder != null)
+			{
 				UpdateNewPackageSourceUsingSelectedFolder(folder);
 			}
 		}
-		
+
 		void UpdateNewPackageSourceUsingSelectedFolder(string folder)
 		{
 			NewPackageSourceUrl = folder;
 			NewPackageSourceName = GetPackageSourceNameFromFolder(folder);
 		}
-		
+
 		string GetPackageSourceNameFromFolder(string folder)
 		{
 			return Path.GetFileName(folder);

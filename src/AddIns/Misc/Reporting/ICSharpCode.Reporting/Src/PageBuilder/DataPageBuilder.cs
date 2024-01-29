@@ -21,7 +21,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-
 using ICSharpCode.Reporting.DataManager.Listhandling;
 using ICSharpCode.Reporting.Exporter.Visitors;
 using ICSharpCode.Reporting.Interfaces;
@@ -35,17 +34,18 @@ namespace ICSharpCode.Reporting.PageBuilder
 	/// <summary>
 	/// Description of DataPageBuilder.
 	/// </summary>
-	
-	public class DataPageBuilder:BasePageBuilder{
-	
-		public DataPageBuilder(IReportModel reportModel,IEnumerable list):base(reportModel){
+	public class DataPageBuilder : BasePageBuilder
+	{
+		public DataPageBuilder(IReportModel reportModel, IEnumerable list) : base(reportModel)
+		{
 			List = list;
 		}
-		
-		
-		public override void BuildExportList(){
+
+
+		public override void BuildExportList()
+		{
 			CreateDataSource();
-			SetupExpressionRunner(ReportModel.ReportSettings,DataSource);
+			SetupExpressionRunner(ReportModel.ReportSettings, DataSource);
 			base.BuildExportList();
 			BuildDetail();
 			ExpressionRunner.Visitor.SetCurrentDataSource(DataSource.CurrentList);
@@ -58,17 +58,22 @@ namespace ICSharpCode.Reporting.PageBuilder
 			var dv = new DebugVisitor();
 			dv.Run(Pages);
 		}
-		
-		
-		void BuildDetail(){
+
+
+		void BuildDetail()
+		{
 			CurrentSection = ReportModel.DetailSection;
-			if(DataSourceContainsData()) {
+			if (DataSourceContainsData())
+			{
 				CurrentLocation = DetailStart;
 				var converter = new ContainerConverter(DetailStart);
-				if (IsGrouped()) {
-					BuildGroupedDetails(converter,DetailStart);
-				} else {
-					BuildSortedDetails(converter,DetailStart);
+				if (IsGrouped())
+				{
+					BuildGroupedDetails(converter, DetailStart);
+				}
+				else
+				{
+					BuildSortedDetails(converter, DetailStart);
 				}
 			}
 		}
@@ -94,107 +99,124 @@ namespace ICSharpCode.Reporting.PageBuilder
 		}
 */
 
-		void BuildGroupedDetails (IContainerConverter converter,Point startPosition) {
+		void BuildGroupedDetails(IContainerConverter converter, Point startPosition)
+		{
 			var pagePosition = startPosition;
 			var sectionPosition = pagePosition;
-			
-			foreach (IGrouping<object, object> grouping in DataSource.GroupedList) {
-				
+
+			foreach (IGrouping<object, object> grouping in DataSource.GroupedList)
+			{
 //				var groupHeader = (BaseRowItem)CurrentSection.Items.Where(p => p.GetType() == typeof(GroupHeader)).FirstOrDefault();
 				var groupHeader = (BaseRowItem)CurrentSection
-					.Items.
-					FirstOrDefault(p => p.GetType() == typeof(GroupHeader));
-				
+					.Items.FirstOrDefault(p => p.GetType() == typeof(GroupHeader));
+
 				var sectionContainer = CreateContainerForSection(CurrentPage, pagePosition);
-				DataSource.Fill(groupHeader.Items,grouping.FirstOrDefault());
-				
+				DataSource.Fill(groupHeader.Items, grouping.FirstOrDefault());
+
 				var headerRow = converter.ConvertToExportContainer(groupHeader);
 				headerRow.Location = groupHeader.Location;
 
-				
+
 				var headerItems = converter.CreateConvertedList(groupHeader.Items);
 				converter.SetParent(sectionContainer, headerItems);
-				
+
 				headerRow.ExportedItems.AddRange(headerItems);
 				headerRow.Parent = sectionContainer;
 				sectionContainer.ExportedItems.Add(headerRow);
-				
-				EvaluateExpressionsInGroups(sectionContainer,grouping);
-				
-				pagePosition = new Point(CurrentSection.Location.X, pagePosition.Y + sectionContainer.DesiredSize.Height + 1);
-				
+
+				EvaluateExpressionsInGroups(sectionContainer, grouping);
+
+				pagePosition = new Point(CurrentSection.Location.X,
+					pagePosition.Y + sectionContainer.DesiredSize.Height + 1);
+
 				// Set Position Child Elements
-				
-				sectionPosition = new Point(pagePosition.X,headerRow.Location.Y + headerRow.Size.Height + 3);
-				
+
+				sectionPosition = new Point(pagePosition.X, headerRow.Location.Y + headerRow.Size.Height + 3);
+
 				//Childs
-				foreach (var child in grouping) {
+				foreach (var child in grouping)
+				{
 					var dataItems = ExtractDataItems(CurrentSection.Items);
 
 					var convertedItems = FillAndConvert(sectionContainer, child, dataItems, converter)
 						.OrderBy(p => p.Location.X).ToList();
-					
+
 					var xx = convertedItems.FirstOrDefault().Location;
-					
+
 					Console.WriteLine(xx);
-					
-					AdjustLocationInSection(sectionPosition,  convertedItems);
-					
+
+					AdjustLocationInSection(sectionPosition, convertedItems);
+
 					sectionContainer.ExportedItems.AddRange(convertedItems);
 					MeasureAndArrangeContainer(sectionContainer);
-					
-					if (PageFull(sectionContainer)) {
+
+					if (PageFull(sectionContainer))
+					{
 						PerformPageBreak();
 						InsertContainer(sectionContainer);
 						pagePosition = DetailStart;
 						sectionContainer.Location = DetailStart;
 					}
-					
-					sectionPosition = new Point(CurrentSection.Location.X, sectionPosition.Y + convertedItems[0].DisplayRectangle.Size.Height + 5);
-					sectionContainer.Size = new Size(sectionContainer.Size.Width,sectionContainer.Size.Height + convertedItems[0].Size.Height);
+
+					sectionPosition = new Point(CurrentSection.Location.X,
+						sectionPosition.Y + convertedItems[0].DisplayRectangle.Size.Height + 5);
+					sectionContainer.Size = new Size(sectionContainer.Size.Width,
+						sectionContainer.Size.Height + convertedItems[0].Size.Height);
 				}
+
 				MeasureAndArrangeContainer(sectionContainer);
 				InsertContainer(sectionContainer);
-				pagePosition = new Point(pagePosition.X,sectionContainer.DisplayRectangle.Bottom + 1);
+				pagePosition = new Point(pagePosition.X, sectionContainer.DisplayRectangle.Bottom + 1);
 			}
 		}
 
-		
-		List<IPrintableObject> ExtractDataItems (List<IPrintableObject> list) {
+
+		List<IPrintableObject> ExtractDataItems(List<IPrintableObject> list)
+		{
 			List<IPrintableObject> items = null;
-			foreach (var element in list) {
+			foreach (var element in list)
+			{
 				var gh = element as GroupHeader;
-				if (gh == null) {
+				if (gh == null)
+				{
 					var container = element as ReportContainer;
-					if (container == null) {
+					if (container == null)
+					{
 						items = list.Where(p => p.GetType() == typeof(BaseDataItem)).ToList();
-					} else {
+					}
+					else
+					{
 						items = container.Items.Where(p => p.GetType() == typeof(BaseDataItem)).ToList();
 					}
 				}
 			}
+
 			return items;
 		}
-			
-		 
-		void EvaluateExpressionsInGroups(ExportContainer sectionContainer, IGrouping<object, object> grouping){
+
+
+		void EvaluateExpressionsInGroups(ExportContainer sectionContainer, IGrouping<object, object> grouping)
+		{
 			ExpressionRunner.Visitor.SetCurrentDataSource(grouping);
 			ExpressionRunner.Visitor.Visit(sectionContainer);
 		}
 
-		
-		void BuildSortedDetails(IContainerConverter converter,Point startPosition){
-			
+
+		void BuildSortedDetails(IContainerConverter converter, Point startPosition)
+		{
 			var exportRows = new List<IExportContainer>();
 			var pagePosition = startPosition;
-			foreach (var element in DataSource.SortedList) {
+			foreach (var element in DataSource.SortedList)
+			{
 				var sectionContainer = CreateContainerForSection(CurrentPage, pagePosition);
-				var convertedItems = FillAndConvert(sectionContainer,element,ReportModel.DetailSection.Items,converter);
-				
+				var convertedItems =
+					FillAndConvert(sectionContainer, element, ReportModel.DetailSection.Items, converter);
+
 				sectionContainer.ExportedItems.AddRange(convertedItems);
 				MeasureAndArrangeContainer(sectionContainer);
-				
-				if (PageFull(sectionContainer)) {
+
+				if (PageFull(sectionContainer))
+				{
 					InsertExportRows(exportRows);
 					exportRows.Clear();
 					PerformPageBreak();
@@ -203,14 +225,16 @@ namespace ICSharpCode.Reporting.PageBuilder
 				}
 
 				exportRows.Add(sectionContainer);
-				pagePosition = new Point(CurrentSection.Location.X, pagePosition.Y + sectionContainer.DesiredSize.Height + 1);
+				pagePosition = new Point(CurrentSection.Location.X,
+					pagePosition.Y + sectionContainer.DesiredSize.Height + 1);
 			}
 
 			InsertExportRows(exportRows);
 		}
-		
-		
-		void PerformPageBreak(){
+
+
+		void PerformPageBreak()
+		{
 			CurrentPage.PageInfo.PageNumber = Pages.Count + 1;
 			Pages.Add(CurrentPage);
 			CurrentPage = CreateNewPage();
@@ -218,86 +242,102 @@ namespace ICSharpCode.Reporting.PageBuilder
 			CurrentLocation = DetailStart;
 		}
 
-		
-		bool IsGrouped(){
+
+		bool IsGrouped()
+		{
 			return DataSource.OrderGroup == OrderGroup.Grouped;
 		}
 
-		
-		List<IExportColumn> FillAndConvert(ExportContainer parent, object current, List<IPrintableObject> dataItems, IContainerConverter converter)
+
+		List<IExportColumn> FillAndConvert(ExportContainer parent, object current, List<IPrintableObject> dataItems,
+			IContainerConverter converter)
 		{
 			DataSource.Fill(dataItems, current);
 			var convertedItems = converter.CreateConvertedList(dataItems.ToList());
 			converter.SetParent(parent, convertedItems);
 			return convertedItems;
 		}
-		
-		
-		void CreateDataSource(){
+
+
+		void CreateDataSource()
+		{
 			DataSource = new CollectionDataSource(List, ReportModel.ReportSettings);
-			if (DataSourceContainsData()) {
+			if (DataSourceContainsData())
+			{
 				DataSource.Bind();
 			}
 		}
-		
-		
-		bool DataSourceContainsData () {
-			if (DataSource.Count > 0) {
+
+
+		bool DataSourceContainsData()
+		{
+			if (DataSource.Count > 0)
+			{
 				return true;
 			}
+
 			return false;
 		}
-		
-		
-		static void AdjustLocationInSection(Point sectionPosition,List<IExportColumn> convertedItems){
-			
-			convertedItems.ForEach(element => {element.Location = new Point(element.Location.X,sectionPosition.Y); });
-			                       	
-			                      
+
+
+		static void AdjustLocationInSection(Point sectionPosition, List<IExportColumn> convertedItems)
+		{
+			convertedItems.ForEach(element => { element.Location = new Point(element.Location.X, sectionPosition.Y); });
+
+
 //			foreach (var element in convertedItems) {
 ////				element.Location = new Point(element.Location.X + sectionPosition.X , sectionPosition.Y);
 //				element.Location = new Point(element.Location.X , sectionPosition.Y);
 //			}
 		}
-		
-		
-		void MeasureAndArrangeContainer(IExportContainer container){
+
+
+		void MeasureAndArrangeContainer(IExportContainer container)
+		{
 			container.DesiredSize = MeasureElement(container);
 			ArrangeContainer(container);
 		}
 
-		
-		ExportContainer CreateContainerForSection(ExportPage parent,Point location ){
+
+		ExportContainer CreateContainerForSection(ExportPage parent, Point location)
+		{
 			var detail = (ExportContainer)CurrentSection.CreateExportColumn();
 			detail.Location = location;
 			detail.Parent = parent;
 			return detail;
 		}
-		
-		
-		void InsertContainer(ExportContainer sectionContainer){
-			if (Pages.Count == 0) {
+
+
+		void InsertContainer(ExportContainer sectionContainer)
+		{
+			if (Pages.Count == 0)
+			{
 				CurrentPage.ExportedItems.Insert(2, sectionContainer);
-			} else {
+			}
+			else
+			{
 				CurrentPage.ExportedItems.Insert(1, sectionContainer);
 			}
 		}
-		
-		
-		void InsertExportRows(List<IExportContainer> list){
-			if (Pages.Count == 0) {
+
+
+		void InsertExportRows(List<IExportContainer> list)
+		{
+			if (Pages.Count == 0)
+			{
 				CurrentPage.ExportedItems.InsertRange(2, list);
-			} else {
+			}
+			else
+			{
 				CurrentPage.ExportedItems.InsertRange(1, list);
 			}
 		}
-		
-		
-		internal CollectionDataSource DataSource {get; private set;}
-		
-		internal IEnumerable List {get; private set;}
-		
+
+
+		internal CollectionDataSource DataSource { get; private set; }
+
+		internal IEnumerable List { get; private set; }
+
 		protected IReportContainer CurrentSection { get; private set; }
-		
 	}
 }

@@ -28,15 +28,15 @@ namespace ICSharpCode.PackageManagement
 	{
 		public static readonly string DefaultPackageSourceUrl = "https://www.nuget.org/api/v2/";
 		public static readonly string DefaultPackageSourceName = "nuget.org";
-		
-		public static readonly PackageSource DefaultPackageSource = 
+
+		public static readonly PackageSource DefaultPackageSource =
 			new PackageSource(DefaultPackageSourceUrl, DefaultPackageSourceName);
-		
+
 		public RegisteredPackageSources(IEnumerable<PackageSource> packageSources)
 			: this(packageSources, DefaultPackageSource)
 		{
 		}
-		
+
 		public RegisteredPackageSources(
 			IEnumerable<PackageSource> packageSources,
 			PackageSource defaultPackageSource)
@@ -44,29 +44,33 @@ namespace ICSharpCode.PackageManagement
 			AddPackageSources(packageSources);
 			AddDefaultPackageSourceIfNoRegisteredPackageSources(defaultPackageSource);
 		}
-		
+
 		void AddPackageSources(IEnumerable<PackageSource> packageSources)
 		{
-			foreach (PackageSource source in packageSources) {
+			foreach (PackageSource source in packageSources)
+			{
 				Add(source);
 			}
 		}
-		
+
 		void AddDefaultPackageSourceIfNoRegisteredPackageSources(PackageSource defaultPackageSource)
 		{
-			if (HasNoRegisteredPackageSources) {
+			if (HasNoRegisteredPackageSources)
+			{
 				Add(defaultPackageSource);
 			}
 		}
-		
-		bool HasNoRegisteredPackageSources {
+
+		bool HasNoRegisteredPackageSources
+		{
 			get { return Count == 0; }
 		}
-		
-		public bool HasMultipleEnabledPackageSources {
+
+		public bool HasMultipleEnabledPackageSources
+		{
 			get { return GetEnabledPackageSources().Count() > 1; }
 		}
-		
+
 		public IEnumerable<PackageSource> GetEnabledPackageSources()
 		{
 			return this.Where(packageSource => packageSource.IsEnabled);

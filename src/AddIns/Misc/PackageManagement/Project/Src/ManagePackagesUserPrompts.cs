@@ -28,7 +28,7 @@ namespace ICSharpCode.PackageManagement
 		IPackageManagementEvents packageManagementEvents;
 		IFileConflictResolver fileConflictResolver;
 		FileConflictResolution lastFileConflictResolution;
-		
+
 		public ManagePackagesUserPrompts(IPackageManagementEvents packageManagementEvents)
 			: this(
 				packageManagementEvents,
@@ -37,7 +37,7 @@ namespace ICSharpCode.PackageManagement
 				new FileConflictResolver())
 		{
 		}
-		
+
 		public ManagePackagesUserPrompts(
 			IPackageManagementEvents packageManagementEvents,
 			ILicenseAcceptanceService licenseAcceptanceService,
@@ -48,16 +48,16 @@ namespace ICSharpCode.PackageManagement
 			this.licenseAcceptanceService = licenseAcceptanceService;
 			this.selectProjectsService = selectProjectsService;
 			this.fileConflictResolver = fileConflictResolver;
-			
+
 			ResetFileConflictResolution();
 			SubscribeToEvents();
 		}
-		
+
 		void ResetFileConflictResolution()
 		{
 			lastFileConflictResolution = FileConflictResolution.Overwrite;
 		}
-		
+
 		void SubscribeToEvents()
 		{
 			packageManagementEvents.AcceptLicenses += AcceptLicenses;
@@ -65,44 +65,47 @@ namespace ICSharpCode.PackageManagement
 			packageManagementEvents.ResolveFileConflict += ResolveFileConflict;
 			packageManagementEvents.PackageOperationsStarting += PackageOperationsStarting;
 		}
-		
+
 		void AcceptLicenses(object sender, AcceptLicensesEventArgs e)
 		{
 			e.IsAccepted = licenseAcceptanceService.AcceptLicenses(e.Packages);
 		}
-		
+
 		void SelectProjects(object sender, SelectProjectsEventArgs e)
 		{
 			e.IsAccepted = selectProjectsService.SelectProjects(e.SelectedProjects);
 		}
-		
+
 		void ResolveFileConflict(object sender, ResolveFileConflictEventArgs e)
 		{
-			if (UserPreviouslySelectedOverwriteAllOrIgnoreAll()) {
+			if (UserPreviouslySelectedOverwriteAllOrIgnoreAll())
+			{
 				e.Resolution = lastFileConflictResolution;
-			} else {
+			}
+			else
+			{
 				e.Resolution = fileConflictResolver.ResolveFileConflict(e.Message);
 				lastFileConflictResolution = e.Resolution;
 			}
 		}
-		
+
 		bool UserPreviouslySelectedOverwriteAllOrIgnoreAll()
 		{
 			return
 				(lastFileConflictResolution == FileConflictResolution.IgnoreAll) ||
 				(lastFileConflictResolution == FileConflictResolution.OverwriteAll);
 		}
-		
+
 		void PackageOperationsStarting(object sender, EventArgs e)
 		{
 			ResetFileConflictResolution();
 		}
-		
+
 		public void Dispose()
 		{
 			UnsubscribeFromEvents();
 		}
-		
+
 		public void UnsubscribeFromEvents()
 		{
 			packageManagementEvents.SelectProjects -= SelectProjects;

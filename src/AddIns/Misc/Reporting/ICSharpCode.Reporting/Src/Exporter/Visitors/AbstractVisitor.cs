@@ -19,7 +19,6 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
-
 using ICSharpCode.Reporting.Interfaces.Export;
 using ICSharpCode.Reporting.PageBuilder.ExportColumns;
 
@@ -29,79 +28,92 @@ namespace ICSharpCode.Reporting.Exporter.Visitors
 	/// Description of AbstractVisitor.
 	/// </summary>
 	/// 
-	class AbstractVisitor : IVisitor{
-
-		public virtual void Run (Collection<ExportPage> pages) {
+	class AbstractVisitor : IVisitor
+	{
+		public virtual void Run(Collection<ExportPage> pages)
+		{
 			if (pages == null)
 				throw new ArgumentNullException("pages");
 			Pages = pages;
-			foreach (var page in pages) {
+			foreach (var page in pages)
+			{
 				Visit(page);
 			}
 		}
-		
-		
-		public virtual void Visit (ExportPage page) {
-			
-			foreach (var element in page.ExportedItems) {
+
+
+		public virtual void Visit(ExportPage page)
+		{
+			foreach (var element in page.ExportedItems)
+			{
 				var ac = element as IAcceptor;
 				ac.Accept(this);
 			}
 		}
-		
-		
-		public virtual void Visit (ExportContainer exportContainer) {
-			foreach (var element in exportContainer.ExportedItems) {
-				
+
+
+		public virtual void Visit(ExportContainer exportContainer)
+		{
+			foreach (var element in exportContainer.ExportedItems)
+			{
 				var ac = element as IAcceptor;
 				ac.Accept(this);
 			}
 		}
-		
-		
-		public virtual void Visit(ExportText exportColumn){
+
+
+		public virtual void Visit(ExportText exportColumn)
+		{
 		}
-		
-		public virtual void Visit (ExportRow exportRow) {
-			
+
+		public virtual void Visit(ExportRow exportRow)
+		{
 		}
-		
-		public virtual void Visit (ExportImage exportImage) {
-			
+
+		public virtual void Visit(ExportImage exportImage)
+		{
 		}
-		
-		public virtual void Visit(ExportLine exportGraphics){
+
+		public virtual void Visit(ExportLine exportGraphics)
+		{
 		}
-		
-		public virtual void Visit (ExportRectangle exportRectangle) {	
+
+		public virtual void Visit(ExportRectangle exportRectangle)
+		{
 		}
-		
-		
-		public virtual void Visit (ExportCircle exportCircle) {	
+
+
+		public virtual void Visit(ExportCircle exportCircle)
+		{
 		}
-		
-		
-		protected static bool ShouldSetBackcolor (ExportColumn exportColumn) {
+
+
+		protected static bool ShouldSetBackcolor(ExportColumn exportColumn)
+		{
 			return exportColumn.BackColor != Color.White;
 		}
-		
-		protected static bool HasFrame (ExportColumn exportColummn) {
+
+		protected static bool HasFrame(ExportColumn exportColummn)
+		{
 			return exportColummn.DrawBorder;
 		}
-		
-		protected Collection<ExportPage> Pages {get; private set;}
-		
-		
-		static protected bool IsContainer (IExportColumn column) {
-			return (column is ExportContainer)|| (column is GraphicsContainer);
+
+		protected Collection<ExportPage> Pages { get; private set; }
+
+
+		static protected bool IsContainer(IExportColumn column)
+		{
+			return (column is ExportContainer) || (column is GraphicsContainer);
 		}
-		
-		
-		static protected bool IsGraphicsContainer (IExportColumn column) {
+
+
+		static protected bool IsGraphicsContainer(IExportColumn column)
+		{
 			return column is GraphicsContainer;
 		}
-		
-		static protected IAcceptor AsAcceptor (IExportColumn element) {
+
+		static protected IAcceptor AsAcceptor(IExportColumn element)
+		{
 			return element as IAcceptor;
 		}
 	}

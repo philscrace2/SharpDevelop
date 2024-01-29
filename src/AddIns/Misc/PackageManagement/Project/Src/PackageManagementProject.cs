@@ -20,7 +20,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Versioning;
-
 using ICSharpCode.PackageManagement.EnvDTE;
 using ICSharpCode.SharpDevelop.Project;
 using NuGet;
@@ -34,7 +33,7 @@ namespace ICSharpCode.PackageManagement
 		IPackageManagementEvents packageManagementEvents;
 		MSBuildBasedProject msbuildProject;
 		ProjectTargetFramework targetFramework;
-		
+
 		public PackageManagementProject(
 			IPackageRepository sourceRepository,
 			MSBuildBasedProject project,
@@ -45,107 +44,116 @@ namespace ICSharpCode.PackageManagement
 			msbuildProject = project;
 			targetFramework = new ProjectTargetFramework(project);
 			this.packageManagementEvents = packageManagementEvents;
-			
+
 			packageManager = packageManagerFactory.CreatePackageManager(sourceRepository, project);
 			projectManager = packageManager.ProjectManager;
 		}
-		
-		public string Name {
+
+		public string Name
+		{
 			get { return msbuildProject.Name; }
 		}
-		
-		public FrameworkName TargetFramework {
+
+		public FrameworkName TargetFramework
+		{
 			get { return targetFramework.TargetFrameworkName; }
 		}
-		
+
 		public IPackageRepository SourceRepository { get; private set; }
-		
-		public ILogger Logger {
+
+		public ILogger Logger
+		{
 			get { return packageManager.Logger; }
-			set {
+			set
+			{
 				packageManager.Logger = value;
 				packageManager.FileSystem.Logger = value;
-			
+
 				projectManager.Logger = value;
 				projectManager.Project.Logger = value;
 			}
 		}
-		
-		public event EventHandler<PackageOperationEventArgs> PackageInstalled {
+
+		public event EventHandler<PackageOperationEventArgs> PackageInstalled
+		{
 			add { packageManager.PackageInstalled += value; }
 			remove { packageManager.PackageInstalled -= value; }
 		}
-		
-		public event EventHandler<PackageOperationEventArgs> PackageUninstalled {
+
+		public event EventHandler<PackageOperationEventArgs> PackageUninstalled
+		{
 			add { packageManager.PackageUninstalled += value; }
 			remove { packageManager.PackageUninstalled -= value; }
 		}
-		
-		public event EventHandler<PackageOperationEventArgs> PackageReferenceAdded {
+
+		public event EventHandler<PackageOperationEventArgs> PackageReferenceAdded
+		{
 			add { projectManager.PackageReferenceAdded += value; }
 			remove { projectManager.PackageReferenceAdded -= value; }
 		}
-		
-		public event EventHandler<PackageOperationEventArgs> PackageReferenceRemoving {
+
+		public event EventHandler<PackageOperationEventArgs> PackageReferenceRemoving
+		{
 			add { projectManager.PackageReferenceRemoving += value; }
 			remove { projectManager.PackageReferenceRemoving -= value; }
 		}
-		
+
 		public bool IsPackageInstalled(IPackage package)
 		{
 			return projectManager.IsInstalled(package);
 		}
-		
+
 		public bool IsPackageInstalled(string packageId)
 		{
 			return projectManager.IsInstalled(packageId);
 		}
-		
+
 		public IQueryable<IPackage> GetPackages()
 		{
 			return projectManager.LocalRepository.GetPackages();
 		}
-		
-		public IEnumerable<PackageOperation> GetInstallPackageOperations(IPackage package, InstallPackageAction installAction)
+
+		public IEnumerable<PackageOperation> GetInstallPackageOperations(IPackage package,
+			InstallPackageAction installAction)
 		{
 			return packageManager.GetInstallPackageOperations(package, installAction);
 		}
-		
+
 		public void InstallPackage(IPackage package, InstallPackageAction installAction)
 		{
 			packageManager.InstallPackage(package, installAction);
 		}
-		
+
 		public void UninstallPackage(IPackage package, UninstallPackageAction uninstallAction)
 		{
 			packageManager.UninstallPackage(package, uninstallAction);
 		}
-		
+
 		public void UpdatePackage(IPackage package, UpdatePackageAction updateAction)
 		{
 			packageManager.UpdatePackage(package, updateAction);
 		}
-		
+
 		public InstallPackageAction CreateInstallPackageAction()
 		{
 			return new InstallPackageAction(this, packageManagementEvents);
 		}
-		
+
 		public UninstallPackageAction CreateUninstallPackageAction()
 		{
 			return new UninstallPackageAction(this, packageManagementEvents);
 		}
-		
+
 		public UpdatePackageAction CreateUpdatePackageAction()
 		{
 			return new UpdatePackageAction(this, packageManagementEvents);
 		}
-		
+
 		public Project ConvertToDTEProject()
 		{
 			return new Project(msbuildProject);
 		}
-		
+
 		public IEnumerable<IPackage> GetPackagesInReverseDependencyOrder()
 		{
 			var packageSorter = new PackageSorter(null);
@@ -153,45 +161,49 @@ namespace ICSharpCode.PackageManagement
 				.GetPackagesByDependencyOrder(projectManager.LocalRepository)
 				.Reverse();
 		}
-		
+
 		public void UpdatePackages(UpdatePackagesAction updateAction)
 		{
 			packageManager.UpdatePackages(updateAction);
 		}
-		
+
 		public UpdatePackagesAction CreateUpdatePackagesAction()
 		{
 			return new UpdatePackagesAction(this, packageManagementEvents);
 		}
-		
+
 		public IEnumerable<PackageOperation> GetUpdatePackagesOperations(
 			IEnumerable<IPackage> packages,
 			IUpdatePackageSettings settings)
 		{
 			return packageManager.GetUpdatePackageOperations(packages, settings);
 		}
-		
+
 		public void RunPackageOperations(IEnumerable<PackageOperation> operations)
 		{
 			packageManager.RunPackageOperations(operations);
 		}
-		
+
 		public bool HasOlderPackageInstalled(IPackage package)
 		{
 			return projectManager.HasOlderPackageInstalled(package);
 		}
-		
+
 		public void UpdatePackageReference(IPackage package, IUpdatePackageSettings settings)
 		{
 			packageManager.UpdatePackageReference(package, settings);
 		}
-		
-		public IPackageConstraintProvider ConstraintProvider {
-			get {
+
+		public IPackageConstraintProvider ConstraintProvider
+		{
+			get
+			{
 				var constraintProvider = projectManager.LocalRepository as IPackageConstraintProvider;
-				if (constraintProvider != null) {
+				if (constraintProvider != null)
+				{
 					return constraintProvider;
 				}
+
 				return NullConstraintProvider.Instance;
 			}
 		}
@@ -200,19 +212,22 @@ namespace ICSharpCode.PackageManagement
 		{
 			IPackage package = projectManager.LocalRepository.FindPackage(packageId, version);
 
-			if (package != null) {
+			if (package != null)
+			{
 				return package;
 			}
 
-			if (version != null) {
+			if (version != null)
+			{
 				return packageManager.LocalRepository.FindPackage(packageId, version);
 			}
 
 			List<IPackage> packages = packageManager.LocalRepository.FindPackagesById(packageId).ToList();
-			if (packages.Count > 1) {
+			if (packages.Count > 1)
+			{
 				throw CreateAmbiguousPackageException(packageId);
-			} 
-			
+			}
+
 			return packages.FirstOrDefault();
 		}
 
@@ -221,7 +236,7 @@ namespace ICSharpCode.PackageManagement
 			string message = String.Format("Multiple versions of '{0}' found. Please specify the version.", packageId);
 			return new InvalidOperationException(message);
 		}
-		
+
 		public ReinstallPackageAction CreateReinstallPackageAction()
 		{
 			return new ReinstallPackageAction(this, packageManagementEvents);

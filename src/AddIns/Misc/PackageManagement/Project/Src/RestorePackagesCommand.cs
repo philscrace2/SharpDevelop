@@ -20,7 +20,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Gui;
@@ -31,12 +30,12 @@ namespace ICSharpCode.PackageManagement
 	{
 		IPackageManagementOutputMessagesView outputMessagesView;
 		IPackageManagementSolution solution;
-		
+
 		public RestorePackagesCommand()
 			: this(PackageManagementServices.OutputMessagesView, PackageManagementServices.Solution)
 		{
 		}
-		
+
 		public RestorePackagesCommand(
 			IPackageManagementOutputMessagesView outputMessagesView,
 			IPackageManagementSolution solution)
@@ -44,60 +43,69 @@ namespace ICSharpCode.PackageManagement
 			this.outputMessagesView = outputMessagesView;
 			this.solution = solution;
 		}
-		
+
 		public override void Run()
 		{
-			try {
+			try
+			{
 				ClearOutputWindow();
 				BringOutputWindowToFront();
 				RunRestore();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				LoggingService.Debug(ex.ToString());
 				outputMessagesView.AppendLine(ex.Message);
 			}
 		}
-		
+
 		void ClearOutputWindow()
 		{
 			outputMessagesView.Clear();
 		}
-		
+
 		void BringOutputWindowToFront()
 		{
 			CompilerMessageView.Instance.BringToFront();
 		}
-		
+
 		void RunRestore()
 		{
 			var commandLine = new NuGetPackageRestoreCommandLine(solution);
 			commandLine.Command = NuGetExePath.GetPath();
-			
+
 			var runner = new ProcessRunner();
 			runner.WorkingDirectory = Path.GetDirectoryName(solution.FileName);
 			runner.RunInOutputPadAsync(outputMessagesView.OutputCategory, commandLine.Command, commandLine.Arguments)
 				.ContinueWith(task => OnNuGetPackageRestoreComplete(task));
 		}
-		
+
 		void OnNuGetPackageRestoreComplete(Task<int> task)
 		{
-			if (task.Exception != null) {
+			if (task.Exception != null)
+			{
 				LoggingService.Debug(task.Exception.ToString());
 				outputMessagesView.AppendLine(task.Exception.Message);
-			} else {
+			}
+			else
+			{
 				ForceGenerationOfRepositoriesConfigFile();
 			}
 		}
-		
+
 		/// <summary>
 		/// Create a Package Manager for each project to force a new repositories.config file
 		/// to be generated with references to all projects that have NuGet packages.
 		/// </summary>
 		void ForceGenerationOfRepositoriesConfigFile()
 		{
-			try {
+			try
+			{
 				var repository = PackageManagementServices.RegisteredPackageRepositories.CreateAggregateRepository();
 				var projects = solution.GetProjects(repository).ToList();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				LoggingService.Debug(ex.ToString());
 				outputMessagesView.AppendLine(ex.Message);
 			}

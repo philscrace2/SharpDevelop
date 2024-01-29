@@ -24,22 +24,12 @@ namespace ICSharpCode.AddInManager2.Model
 {
 	public interface IPackageRepositories
 	{
-		IPackageRepository AllRegistered
-		{
-			get;
-		}
-		
-		IEnumerable<PackageSource> RegisteredPackageSources
-		{
-			get;
-			set;
-		}
-		
-		IEnumerable<IPackageRepository> RegisteredPackageRepositories
-		{
-			get;
-		}
-		
+		IPackageRepository AllRegistered { get; }
+
+		IEnumerable<PackageSource> RegisteredPackageSources { get; set; }
+
+		IEnumerable<IPackageRepository> RegisteredPackageRepositories { get; }
+
 		IPackageRepository GetRepositoryFromSource(PackageSource packageSource);
 	}
 }

@@ -28,30 +28,31 @@ namespace MSHelpSystem.Core.Native
 		}
 
 		[DllImport("Wtsapi32.dll")]
-		internal static extern bool WTSQuerySessionInformation(IntPtr hServer, int sessionId, WTSInfoClass wtsInfoClass, out IntPtr ppBuffer, out uint pBytesReturned);
+		internal static extern bool WTSQuerySessionInformation(IntPtr hServer, int sessionId, WTSInfoClass wtsInfoClass,
+			out IntPtr ppBuffer, out uint pBytesReturned);
 
 		[DllImport("Wtsapi32.dll", ExactSpelling = true, SetLastError = false)]
 		public static extern void WTSFreeMemory(IntPtr memory);
 
 		internal enum WTSInfoClass
 		{
-	        WTSInitialProgram,
-	        WTSApplicationName,
-	        WTSWorkingDirectory,
-	        WTSOEMId,
-	        WTSSessionId,
-	        WTSUserName,
-	        WTSWinStationName,
-	        WTSDomainName,
-	        WTSConnectState,
-	        WTSClientBuildNumber,
-	        WTSClientName,
-	        WTSClientDirectory,
-	        WTSClientProductId,
-	        WTSClientHardwareId,
-	        WTSClientAddress,
-	        WTSClientDisplay,
-	        WTSClientProtocolType
+			WTSInitialProgram,
+			WTSApplicationName,
+			WTSWorkingDirectory,
+			WTSOEMId,
+			WTSSessionId,
+			WTSUserName,
+			WTSWinStationName,
+			WTSDomainName,
+			WTSConnectState,
+			WTSClientBuildNumber,
+			WTSClientName,
+			WTSClientDirectory,
+			WTSClientProductId,
+			WTSClientHardwareId,
+			WTSClientAddress,
+			WTSClientDisplay,
+			WTSClientProtocolType
 		}
 
 		internal static IntPtr WTS_CURRENT_SERVER_HANDLE = IntPtr.Zero;
@@ -62,15 +63,19 @@ namespace MSHelpSystem.Core.Native
 			IntPtr pSessionId = IntPtr.Zero;
 			Int32 sessionId = 0;
 			uint bytesReturned;
-			
-			try {
-				bool returnValue = WTSQuerySessionInformation(WTS_CURRENT_SERVER_HANDLE, WTS_CURRENT_SESSION, WTSInfoClass.WTSSessionId, out pSessionId, out bytesReturned);
-				if  (returnValue) sessionId = Marshal.ReadInt32(pSessionId);
+
+			try
+			{
+				bool returnValue = WTSQuerySessionInformation(WTS_CURRENT_SERVER_HANDLE, WTS_CURRENT_SESSION,
+					WTSInfoClass.WTSSessionId, out pSessionId, out bytesReturned);
+				if (returnValue) sessionId = Marshal.ReadInt32(pSessionId);
 			}
-			finally {
+			finally
+			{
 				if (pSessionId != IntPtr.Zero) WTSFreeMemory(pSessionId);
 			}
+
 			return sessionId;
 		}
-	}		
+	}
 }

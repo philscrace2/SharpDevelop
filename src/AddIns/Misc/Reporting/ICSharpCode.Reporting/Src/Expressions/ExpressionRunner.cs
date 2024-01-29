@@ -30,32 +30,39 @@ namespace ICSharpCode.Reporting.Expressions
 	/// </summary>
 	class ExpressionRunner
 	{
-		 
 //	http://www.killswtch.net/2013/08/01/time-arithmetic-with-irony/
 //	http://blog.miraclespain.com/archive/2009/Oct-07.html	
 //		
 		readonly Collection<ExportPage> pages;
 		readonly CollectionDataSource dataSource;
-		
-		public ExpressionRunner(Collection<ExportPage> pages,IReportSettings reportSettings,CollectionDataSource dataSource){
+
+		public ExpressionRunner(Collection<ExportPage> pages, IReportSettings reportSettings,
+			CollectionDataSource dataSource)
+		{
 			this.pages = pages;
 			this.dataSource = dataSource;
 			Visitor = new ExpressionVisitor(reportSettings);
 		}
-		
-		
-		public  void Run(){
-			if (dataSource != null) {
-				if (dataSource.SortedList != null) {
+
+
+		public void Run()
+		{
+			if (dataSource != null)
+			{
+				if (dataSource.SortedList != null)
+				{
 					Visitor.SetCurrentDataSource(dataSource.SortedList);
 				}
-				if (dataSource.GroupedList != null) {
+
+				if (dataSource.GroupedList != null)
+				{
 					Visitor.SetCurrentDataSource(dataSource.GroupedList);
 				}
 			}
+
 			Visitor.Run(pages);
 		}
-		
-		public ExpressionVisitor Visitor {get; private set;}
+
+		public ExpressionVisitor Visitor { get; private set; }
 	}
 }

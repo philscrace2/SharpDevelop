@@ -32,41 +32,40 @@ namespace ICSharpCode.Reporting.PageBuilder.ExportColumns
 	/// 
 	public interface IExportText : IExportColumn
 	{
-		 Font Font {get;set;}
-		 string Text {get;set;}
-		 ContentAlignment ContentAlignment {get;set;}
-		 TextAlignment TextAlignment {get;set;}
-		 string DataType {get;set;}
-		 string FormatString {get;set;}
+		Font Font { get; set; }
+		string Text { get; set; }
+		ContentAlignment ContentAlignment { get; set; }
+		TextAlignment TextAlignment { get; set; }
+		string DataType { get; set; }
+		string FormatString { get; set; }
 	}
-	
-	
-	public class ExportText:ExportColumn,IExportText,IAcceptor
+
+
+	public class ExportText : ExportColumn, IExportText, IAcceptor
 	{
 		public ExportText()
 		{
 		}
-		
-		
+
+
 		public void Accept(IVisitor visitor)
 		{
 			visitor.Visit(this);
 		}
-		
-		public Font Font {get;set;}
-		
-		
-		public string Text {get;set;}
-		
-		public string FormatString {get;set;}
-		
-		[Obsolete ("Use TextAlignment")]
-		public ContentAlignment ContentAlignment {get;set;}
-		
-		public TextAlignment TextAlignment {get;set;}
-		
-		public string DataType {get;set;}
-		
+
+		public Font Font { get; set; }
+
+
+		public string Text { get; set; }
+
+		public string FormatString { get; set; }
+
+		[Obsolete("Use TextAlignment")] public ContentAlignment ContentAlignment { get; set; }
+
+		public TextAlignment TextAlignment { get; set; }
+
+		public string DataType { get; set; }
+
 		public override ICSharpCode.Reporting.Arrange.IMeasurementStrategy MeasurementStrategy()
 		{
 			return new TextBasedMeasurementStrategy();

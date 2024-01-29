@@ -26,21 +26,23 @@ namespace ICSharpCode.TextTemplating
 	public class TextTemplatingAppDomain : ITextTemplatingAppDomain
 	{
 		AppDomain appDomain;
-		
+
 		public TextTemplatingAppDomain(string applicationBase)
 		{
 			AppDomainSetup setupInfo = new AppDomainSetup();
 			setupInfo.ApplicationBase = applicationBase;
 			this.appDomain = AppDomain.CreateDomain("TextTemplatingAppDomain", null, setupInfo);
 		}
-		
-		public AppDomain AppDomain {
+
+		public AppDomain AppDomain
+		{
 			get { return this.appDomain; }
 		}
-		
+
 		public void Dispose()
 		{
-			if (this.appDomain != null) {
+			if (this.appDomain != null)
+			{
 				AppDomain.Unload(this.appDomain);
 				this.appDomain = null;
 			}

@@ -29,7 +29,8 @@ namespace ICSharpCode.Reporting.Globals
 	{
 		public static DbType DbTypeFromStringRepresenation(string type)
 		{
-			switch (type.ToLower(CultureInfo.CurrentCulture)){
+			switch (type.ToLower(CultureInfo.CurrentCulture))
+			{
 				case "int":
 					return DbType.Int16;
 				case "int16":
@@ -50,11 +51,11 @@ namespace ICSharpCode.Reporting.Globals
 					return DbType.Double;
 				case "decimal":
 					return DbType.Decimal;
-				case "datetime" :
+				case "datetime":
 					return DbType.DateTime;
-				case "datetime2" :
+				case "datetime2":
 					return DbType.DateTime2;
-				case "boolean" :
+				case "boolean":
 					return DbType.Boolean;
 				case "nvarchar":
 					return DbType.String;
@@ -72,11 +73,12 @@ namespace ICSharpCode.Reporting.Globals
 					return DbType.Object;
 			}
 		}
-		
-		public static TypeCode TypeCodeFromString (string type) {
+
+		public static TypeCode TypeCodeFromString(string type)
+		{
 			if (type == null)
 				type = "System.String";
-			return Type.GetTypeCode( Type.GetType(type));
+			return Type.GetTypeCode(Type.GetType(type));
 		}
 	}
 }

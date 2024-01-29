@@ -39,83 +39,99 @@ namespace ICSharpCode.PackageManagement
 		static readonly PackageActionRunner packageActionRunner;
 		static readonly PackageRepositoryCache packageRepositoryCache;
 		static readonly UserAgentGeneratorForRepositoryRequests userAgentGenerator;
-		
+
 		static PackageManagementServices()
 		{
 			options = new PackageManagementOptions();
 			packageRepositoryCache = new PackageRepositoryCache(options);
 			userAgentGenerator = new UserAgentGeneratorForRepositoryRequests(packageRepositoryCache);
 			registeredPackageRepositories = new RegisteredPackageRepositories(packageRepositoryCache, options);
-			
+
 			outputMessagesView = new PackageManagementOutputMessagesView(packageManagementEvents);
 			projectBrowserRefresher = new ProjectBrowserRefresher(projectService, packageManagementEvents);
 			solution = new PackageManagementSolution(registeredPackageRepositories, packageManagementEvents);
-			
+
 			consoleHostProvider = new PackageManagementConsoleHostProvider(solution, registeredPackageRepositories);
 			runPackageInitializationScripts = new RunPackageInitializationScriptsOnSolutionOpen(projectService);
-			resetPowerShellWorkingDirectory = new ResetPowerShellWorkingDirectoryOnSolutionClosed(projectService, ConsoleHost);
+			resetPowerShellWorkingDirectory =
+				new ResetPowerShellWorkingDirectoryOnSolutionClosed(projectService, ConsoleHost);
 			var consolePackageActionRunner = new ConsolePackageActionRunner(ConsoleHost, packageActionsToRun);
 			packageActionRunner = new PackageActionRunner(consolePackageActionRunner, packageManagementEvents);
-			
+
 			InitializeCredentialProvider();
 		}
-		
+
 		static void InitializeCredentialProvider()
 		{
 			ISettings settings = LoadSettings();
 			var packageSourceProvider = new PackageSourceProvider(settings);
-			var credentialProvider = new SettingsCredentialProvider(new SharpDevelopCredentialProvider(), packageSourceProvider);
-			
+			var credentialProvider =
+				new SettingsCredentialProvider(new SharpDevelopCredentialProvider(), packageSourceProvider);
+
 			HttpClient.DefaultCredentialProvider = credentialProvider;
 		}
-		
-		static ISettings LoadSettings ()
+
+		static ISettings LoadSettings()
 		{
-			try {
+			try
+			{
 				return Settings.LoadDefaultSettings(null, null, null);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				LoggingService.Error("Unable to load NuGet.Config.", ex);
 			}
+
 			return NullSettings.Instance;
 		}
-		
-		public static PackageManagementOptions Options {
+
+		public static PackageManagementOptions Options
+		{
 			get { return options; }
 		}
-		
-		public static IPackageManagementSolution Solution {
+
+		public static IPackageManagementSolution Solution
+		{
 			get { return solution; }
 		}
-		
-		public static IPackageManagementConsoleHost ConsoleHost {
+
+		public static IPackageManagementConsoleHost ConsoleHost
+		{
 			get { return consoleHostProvider.ConsoleHost; }
 		}
-		
-		public static IRegisteredPackageRepositories RegisteredPackageRepositories {
+
+		public static IRegisteredPackageRepositories RegisteredPackageRepositories
+		{
 			get { return registeredPackageRepositories; }
 		}
-		
-		public static IPackageRepositoryCache PackageRepositoryCache {
+
+		public static IPackageRepositoryCache PackageRepositoryCache
+		{
 			get { return packageRepositoryCache; }
 		}
-		
-		public static IPackageManagementEvents PackageManagementEvents {
+
+		public static IPackageManagementEvents PackageManagementEvents
+		{
 			get { return packageManagementEvents; }
 		}
-		
-		public static IPackageManagementOutputMessagesView OutputMessagesView {
+
+		public static IPackageManagementOutputMessagesView OutputMessagesView
+		{
 			get { return outputMessagesView; }
 		}
-		
-		public static IPackageManagementProjectService ProjectService {
+
+		public static IPackageManagementProjectService ProjectService
+		{
 			get { return projectService; }
 		}
-		
-		public static PackageActionsToRun PackageActionsToRun {
+
+		public static PackageActionsToRun PackageActionsToRun
+		{
 			get { return packageActionsToRun; }
 		}
-		
-		public static IPackageActionRunner PackageActionRunner {
+
+		public static IPackageActionRunner PackageActionRunner
+		{
 			get { return packageActionRunner; }
 		}
 	}

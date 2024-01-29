@@ -26,35 +26,39 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 	{
 		public Property CreateProperty(string name)
 		{
-			if (IsFontsAndColorItems(name)) {
+			if (IsFontsAndColorItems(name))
+			{
 				return new TextEditorFontsAndColorsItemsProperty();
-			} else if (IsFontSize(name)) {
+			}
+			else if (IsFontSize(name))
+			{
 				return new TextEditorFontSizeProperty();
 			}
+
 			return null;
 		}
-		
+
 		bool IsFontsAndColorItems(string name)
 		{
 			return IsCaseInsensitiveMatch(name, "FontsAndColorsItems");
 		}
-		
+
 		bool IsCaseInsensitiveMatch(string a, string b)
 		{
 			return String.Equals(a, b, StringComparison.InvariantCultureIgnoreCase);
 		}
-		
+
 		bool IsFontSize(string name)
 		{
 			return IsCaseInsensitiveMatch(name, "FontSize");
 		}
-		
+
 		public IEnumerator<Property> GetEnumerator()
 		{
 			List<Property> properties = GetProperties().ToList();
 			return properties.GetEnumerator();
 		}
-		
+
 		IEnumerable<Property> GetProperties()
 		{
 			yield return new TextEditorFontSizeProperty();

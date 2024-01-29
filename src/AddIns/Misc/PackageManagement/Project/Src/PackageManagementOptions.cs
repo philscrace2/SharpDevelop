@@ -34,7 +34,7 @@ namespace ICSharpCode.PackageManagement
 		Properties properties;
 		ObservableCollection<RecentPackageInfo> recentPackages;
 		PackageRestoreConsent packageRestoreConsent;
-		
+
 		public PackageManagementOptions(
 			Properties properties,
 			ISettingsProvider settingsProvider)
@@ -43,49 +43,58 @@ namespace ICSharpCode.PackageManagement
 			registeredPackageSourceSettings = new RegisteredPackageSourceSettings(settingsProvider);
 			packageRestoreConsent = new PackageRestoreConsent(settingsProvider.LoadSettings());
 		}
-		
+
 		public PackageManagementOptions(Properties properties)
 			: this(properties, new SettingsProvider())
 		{
 		}
-		
+
 		public PackageManagementOptions()
 			: this(PropertyService.NestedProperties("PackageManagementSettings"))
 		{
 		}
-		
-		public bool IsPackageRestoreEnabled {
+
+		public bool IsPackageRestoreEnabled
+		{
 			get { return packageRestoreConsent.IsGrantedInSettings; }
 			set { packageRestoreConsent.IsGrantedInSettings = value; }
 		}
-		
-		public RegisteredPackageSources PackageSources {
+
+		public RegisteredPackageSources PackageSources
+		{
 			get { return registeredPackageSourceSettings.PackageSources; }
 		}
-		
-		public string PackagesDirectory {
+
+		public string PackagesDirectory
+		{
 			get { return properties.Get(PackageDirectoryPropertyName, "packages"); }
 			set { properties.Set(PackageDirectoryPropertyName, value); }
 		}
-		
-		public PackageSource ActivePackageSource {
+
+		public PackageSource ActivePackageSource
+		{
 			get { return registeredPackageSourceSettings.ActivePackageSource; }
 			set { registeredPackageSourceSettings.ActivePackageSource = value; }
 		}
-		
-		public IList<RecentPackageInfo> RecentPackages {
-			get {
-				if (recentPackages == null) {
+
+		public IList<RecentPackageInfo> RecentPackages
+		{
+			get
+			{
+				if (recentPackages == null)
+				{
 					ReadRecentPackages();
 				}
+
 				return recentPackages;
 			}
 		}
-		
+
 		void ReadRecentPackages()
 		{
-			IReadOnlyList<RecentPackageInfo> savedRecentPackages = properties.GetList<RecentPackageInfo>(RecentPackagesPropertyName);
-			
+			IReadOnlyList<RecentPackageInfo> savedRecentPackages =
+				properties.GetList<RecentPackageInfo>(RecentPackagesPropertyName);
+
 			recentPackages = new ObservableCollection<RecentPackageInfo>();
 			recentPackages.AddRange(savedRecentPackages);
 			recentPackages.CollectionChanged += RecentPackagesCollectionChanged;
@@ -95,7 +104,7 @@ namespace ICSharpCode.PackageManagement
 		{
 			properties.SetList(RecentPackagesPropertyName, recentPackages);
 		}
-		
+
 		public string GetCustomPackagesDirectory()
 		{
 			return registeredPackageSourceSettings.Settings.GetRepositoryPath();

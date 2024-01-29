@@ -24,49 +24,38 @@ namespace ICSharpCode.AddInManager2.Model
 	public class PackageRepository : Model<PackageRepository>
 	{
 		private int _highlightCount;
-		
+
 		public PackageRepository()
 			: base()
 		{
 		}
-		
+
 		public PackageRepository(IAddInManagerServices services)
 			: base(services)
 		{
 		}
-		
+
 		public PackageRepository(PackageSource packageSource)
 			: base()
 		{
 			Name = packageSource.Name;
 			SourceUrl = packageSource.Source;
 		}
-		
+
 		public PackageRepository(IAddInManagerServices services, PackageSource packageSource)
 			: base(services)
 		{
 			Name = packageSource.Name;
 			SourceUrl = packageSource.Source;
 		}
-		
-		public string Name
-		{
-			get;
-			set;
-		}
-		
-		public string SourceUrl
-		{
-			get;
-			set;
-		}
-		
+
+		public string Name { get; set; }
+
+		public string SourceUrl { get; set; }
+
 		public int HighlightCount
 		{
-			get
-			{
-				return _highlightCount;
-			}
+			get { return _highlightCount; }
 			set
 			{
 				_highlightCount = value;
@@ -75,15 +64,12 @@ namespace ICSharpCode.AddInManager2.Model
 				OnPropertyChanged(vm => vm.NameWithHighlight);
 			}
 		}
-		
+
 		public bool HasHighlightCount
 		{
-			get
-			{
-				return (_highlightCount > 0);
-			}
+			get { return (_highlightCount > 0); }
 		}
-		
+
 		public string NameWithHighlight
 		{
 			get
@@ -98,7 +84,7 @@ namespace ICSharpCode.AddInManager2.Model
 				}
 			}
 		}
-		
+
 		public PackageSource ToPackageSource()
 		{
 			return new PackageSource(SourceUrl, Name);

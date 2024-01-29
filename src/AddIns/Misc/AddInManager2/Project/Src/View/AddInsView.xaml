@@ -10,23 +10,23 @@
 	mc:Ignorable="d"
 	d:DesignHeight="250"
 	d:DesignWidth="500">
-	
+
 	<UserControl.Resources>
-		<aimvm:OpenHyperlinkCommand x:Key="OpenHyperlinkCommand"/>
+		<aimvm:OpenHyperlinkCommand x:Key="OpenHyperlinkCommand" />
 		<BitmapImage x:Key="DefaultPackageIcon"
-		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/packageicon.png"/>
+		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/packageicon.png" />
 		<BitmapImage x:Key="SmallPackageIcon"
-		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/packageicon_small.png"/>
+		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/packageicon_small.png" />
 		<BitmapImage x:Key="SDPackageIcon"
-		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/sd_packageicon.png"/>
+		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/sd_packageicon.png" />
 		<BitmapImage x:Key="SmallExternalAddInIcon"
-		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/external_addin_small.png"/>
+		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/external_addin_small.png" />
 		<BitmapImage x:Key="InstalledTickIcon"
-		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/accept.png"/>
+		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/accept.png" />
 		<BitmapImage x:Key="SearchIcon"
-		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/magnifier.png"/>
-		<BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
-		
+		             UriSource="pack://application:,,,/ICSharpCode.AddInManager2;component/Resources/magnifier.png" />
+		<BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
 		<DataTemplate x:Key="PackageSourceComboBoxItemTemplate">
 			<TextBlock Text="{Binding Path=NameWithHighlight}">
 				<TextBlock.Style>
@@ -40,7 +40,7 @@
 				</TextBlock.Style>
 			</TextBlock>
 		</DataTemplate>
-		
+
 		<Style x:Key="AddInImageStyle" TargetType="{x:Type Image}">
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding IsOffline}" Value="False">
@@ -54,7 +54,7 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
-		
+
 		<Style x:Key="AddInOnlineStateImageStyle" TargetType="{x:Type Image}">
 			<Setter Property="Source" Value="{StaticResource SmallPackageIcon}" />
 			<Setter Property="Visibility" Value="{Binding Path=HasNuGetConnection, Converter={StaticResource BoolToVisibility}}" />
@@ -64,17 +64,18 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
-		
+
 		<Style x:Key="AddInExternalStateImageStyle" TargetType="{x:Type Image}">
 			<Setter Property="Source" Value="{StaticResource SmallExternalAddInIcon}" />
-			<Setter Property="Visibility" Value="{Binding Path=IsExternallyReferenced, Converter={StaticResource BoolToVisibility}}" />
+			<Setter Property="Visibility"
+			        Value="{Binding Path=IsExternallyReferenced, Converter={StaticResource BoolToVisibility}}" />
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding IsEnabled}" Value="False">
 					<Setter Property="Opacity" Value="0.5" />
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
-		
+
 		<Style x:Key="InstalledTickImageStyle" TargetType="{x:Type Image}">
 			<Setter Property="Source" Value="{StaticResource InstalledTickIcon}" />
 			<Setter Property="Visibility" Value="Collapsed" />
@@ -88,7 +89,7 @@
 				</MultiDataTrigger>
 			</Style.Triggers>
 		</Style>
-		
+
 		<Style x:Key="addInListButtonStyle" TargetType="{x:Type Button}" BasedOn="{x:Static core:GlobalStyles.ButtonStyle}">
 			<Setter Property="Visibility" Value="Collapsed" />
 			<Setter Property="HorizontalAlignment" Value="Left" />
@@ -96,15 +97,17 @@
 			<Style.Triggers>
 				<MultiDataTrigger>
 					<MultiDataTrigger.Conditions>
-						<Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}" Value="True" />
+						<Condition Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+						           Value="True" />
 						<Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled}" Value="True" />
 					</MultiDataTrigger.Conditions>
 					<Setter Property="Visibility" Value="Visible" />
 				</MultiDataTrigger>
 			</Style.Triggers>
 		</Style>
-		
-		<Style x:Key="addInDetailsButtonStyle" TargetType="{x:Type Button}" BasedOn="{x:Static core:GlobalStyles.ButtonStyle}">
+
+		<Style x:Key="addInDetailsButtonStyle" TargetType="{x:Type Button}"
+		       BasedOn="{x:Static core:GlobalStyles.ButtonStyle}">
 			<Setter Property="Visibility" Value="Collapsed" />
 			<Style.Triggers>
 				<DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsEnabled}" Value="True">
@@ -112,7 +115,7 @@
 				</DataTrigger>
 			</Style.Triggers>
 		</Style>
-		
+
 		<Style x:Key="PackageSourceComboBoxStyle" TargetType="{x:Type ComboBox}">
 			<!--			<Style.Triggers>
 				<DataTrigger Binding="{Binding IsReadingPackages}" Value="True">
@@ -120,22 +123,22 @@
 				</DataTrigger>
 			</Style.Triggers>-->
 		</Style>
-		
+
 		<Style x:Key="packageListBoxItemContainerStyle" TargetType="{x:Type ListBoxItem}">
-			<Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}"/>
+			<Setter Property="IsSelected" Value="{Binding Mode=TwoWay, Path=IsSelected}" />
 		</Style>
-		
+
 		<DataTemplate x:Key="PackageListBoxItemTemplate">
 			<Grid>
 				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="60"/>
-					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="60" />
+					<ColumnDefinition Width="*" />
 				</Grid.ColumnDefinitions>
-				
+
 				<!--<Grid.RowDefinitions>
 					<RowDefinition Height="60"/>
 				</Grid.RowDefinitions>-->
-				
+
 				<Image
 					Grid.Column="0"
 					Height="32"
@@ -160,8 +163,8 @@
 					Height="16"
 					Width="16"
 					Style="{StaticResource InstalledTickImageStyle}"
-					Margin="36,0,0,0"/>
-				
+					Margin="36,0,0,0" />
+
 				<Grid Grid.Column="1" Margin="0,0,0,0" HorizontalAlignment="Left">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto" />
@@ -173,12 +176,12 @@
 							Text="{Binding Path=Name}"
 							FontWeight="Bold"
 							TextWrapping="Wrap"
-							Margin="0,0,0,6"/>
+							Margin="0,0,0,6" />
 						<TextBlock
 							x:Name="summaryTextBlock"
 							Text="{Binding Path=Summary}"
 							TextWrapping="Wrap"
-							TextTrimming="CharacterEllipsis"/>
+							TextTrimming="CharacterEllipsis" />
 					</StackPanel>
 					<StackPanel Grid.Row="1" Margin="2,2,2,2" Orientation="Horizontal">
 						<Button
@@ -186,43 +189,43 @@
 							Content="{core:Localize AddInManager.ActionInstall}"
 							IsDefault="True"
 							Command="{Binding Path=AddPackageCommand}"
-							Style="{StaticResource addInListButtonStyle}"/>
+							Style="{StaticResource addInListButtonStyle}" />
 						<Button
 							x:Name="updatePackageButton"
 							Content="{core:Localize AddInManager.ActionUpdate}"
 							IsDefault="True"
 							Command="{Binding Path=UpdatePackageCommand}"
-							Style="{StaticResource addInListButtonStyle}"/>
+							Style="{StaticResource addInListButtonStyle}" />
 						<Button
 							x:Name="disablePackageButton"
 							Content="{core:Localize AddInManager.ActionDisable}"
 							IsDefault="True"
 							Command="{Binding Path=DisablePackageCommand}"
-							Style="{StaticResource addInListButtonStyle}"/>
+							Style="{StaticResource addInListButtonStyle}" />
 						<Button
 							x:Name="removePackageButton"
 							Content="{core:Localize AddInManager.ActionUninstall}"
 							Command="{Binding Path=RemovePackageCommand}"
-							Style="{StaticResource addInListButtonStyle}"/>
+							Style="{StaticResource addInListButtonStyle}" />
 						<Button
 							x:Name="cancelInstallationButton"
 							Content="{core:Localize AddInManager.ActionCancelInstallation}"
 							Command="{Binding Path=CancelInstallationCommand}"
-							Style="{StaticResource addInListButtonStyle}"/>
+							Style="{StaticResource addInListButtonStyle}" />
 						<Button
 							x:Name="cancelUpdateButton"
 							Content="{core:Localize AddInManager.ActionCancelUpdate}"
 							Command="{Binding Path=CancelUpdateCommand}"
-							Style="{StaticResource addInListButtonStyle}"/>
+							Style="{StaticResource addInListButtonStyle}" />
 						<Button
 							x:Name="cancelUninstallationButton"
 							Content="{core:Localize AddInManager.ActionCancelDeinstallation}"
 							Command="{Binding Path=CancelUninstallationCommand}"
-							Style="{StaticResource addInListButtonStyle}"/>
+							Style="{StaticResource addInListButtonStyle}" />
 					</StackPanel>
 				</Grid>
 			</Grid>
-			
+
 			<DataTemplate.Triggers>
 				<!-- Disabled AddIns -->
 				<DataTrigger Binding="{Binding Path=IsEnabled}" Value="False">
@@ -233,63 +236,63 @@
 					<Setter
 						TargetName="nameTextBlock"
 						Property="Foreground"
-						Value="Gray"/>
+						Value="Gray" />
 					<Setter
 						TargetName="summaryTextBlock"
 						Property="Foreground"
-						Value="Gray"/>
+						Value="Gray" />
 					<Setter
 						TargetName="nameTextBlock"
 						Property="TextDecorations"
-						Value="Strikethrough"/>
+						Value="Strikethrough" />
 				</DataTrigger>
-				
+
 				<!-- AddIns marked for installation -->
 				<DataTrigger Binding="{Binding Path=IsAdded}" Value="True">
 					<Setter
 						TargetName="nameTextBlock"
 						Property="FontStyle"
-						Value="Italic"/>
+						Value="Italic" />
 					<Setter
 						TargetName="summaryTextBlock"
 						Property="FontStyle"
-						Value="Italic"/>
+						Value="Italic" />
 				</DataTrigger>
-				
+
 				<!-- AddIns marked for uninstallation -->
 				<DataTrigger Binding="{Binding Path=IsRemoved}" Value="True">
 					<Setter
 						TargetName="nameTextBlock"
 						Property="FontStyle"
-						Value="Italic"/>
+						Value="Italic" />
 					<Setter
 						TargetName="summaryTextBlock"
 						Property="FontStyle"
-						Value="Italic"/>
+						Value="Italic" />
 				</DataTrigger>
-				
+
 				<!-- AddIns with dependency conflicts -->
 				<MultiDataTrigger>
 					<MultiDataTrigger.Conditions>
 						<Condition
 							Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
-							Value="False"/>
+							Value="False" />
 						<Condition
 							Binding="{Binding Path=HasDependencyConflicts}"
-							Value="True"/>
+							Value="True" />
 					</MultiDataTrigger.Conditions>
 					<Setter
 						TargetName="nameTextBlock"
 						Property="Foreground"
-						Value="Red"/>
+						Value="Red" />
 					<Setter
 						TargetName="summaryTextBlock"
 						Property="Foreground"
-						Value="Red"/>
+						Value="Red" />
 				</MultiDataTrigger>
 			</DataTemplate.Triggers>
 		</DataTemplate>
-		
+
 		<DataTemplate x:Key="PackageTemplate">
 			<ScrollViewer
 				VerticalScrollBarVisibility="Auto">
@@ -300,17 +303,17 @@
 						<TextBlock
 							Text="{Binding Name}"
 							FontWeight="Bold"
-							FontSize="14"/>
+							FontSize="14" />
 					</StackPanel>
 					<StackPanel
 						Orientation="Horizontal"
 						Margin="0, 4">
 						<TextBlock
 							Text="{core:Localize AddInManager2.Details.CreatedBy}"
-							FontWeight="Bold"/>
+							FontWeight="Bold" />
 						<ItemsControl
 							Margin="4, 0"
-							ItemsSource="{Binding Path=Authors}"/>
+							ItemsSource="{Binding Path=Authors}" />
 					</StackPanel>
 					<StackPanel
 						Orientation="Horizontal"
@@ -319,8 +322,8 @@
 						<TextBlock
 							Text="{core:Localize AddInManager2.Details.Version}"
 							FontWeight="Bold"
-							Margin="0, 0, 4, 0"/>
-						<TextBlock Text="{Binding Path=Version}"/>
+							Margin="0, 0, 4, 0" />
+						<TextBlock Text="{Binding Path=Version}" />
 					</StackPanel>
 					<StackPanel
 						Orientation="Horizontal"
@@ -329,8 +332,8 @@
 						<TextBlock
 							Text="{core:Localize AddInManager2.Details.InstalledVersion}"
 							FontWeight="Bold"
-							Margin="0, 0, 4, 0"/>
-						<TextBlock Text="{Binding Path=OldVersion}"/>
+							Margin="0, 0, 4, 0" />
+						<TextBlock Text="{Binding Path=OldVersion}" />
 					</StackPanel>
 					<StackPanel
 						Orientation="Horizontal"
@@ -339,8 +342,8 @@
 						<TextBlock
 							Text="{core:Localize AddInManager2.Details.NewVersion}"
 							FontWeight="Bold"
-							Margin="0, 0, 4, 0"/>
-						<TextBlock Text="{Binding Path=Version}"/>
+							Margin="0, 0, 4, 0" />
+						<TextBlock Text="{Binding Path=Version}" />
 					</StackPanel>
 					<StackPanel
 						Orientation="Horizontal"
@@ -349,8 +352,8 @@
 						<TextBlock
 							Margin="0, 0, 4, 0"
 							Text="{core:Localize AddInManager2.Details.LastUpdated}"
-							FontWeight="Bold"/>
-						<TextBlock Text="{Binding Path=LastUpdated, StringFormat=d}"/>
+							FontWeight="Bold" />
+						<TextBlock Text="{Binding Path=LastUpdated, StringFormat=d}" />
 					</StackPanel>
 					<StackPanel
 						Orientation="Horizontal"
@@ -359,8 +362,8 @@
 						<TextBlock
 							Margin="0, 0, 4, 0"
 							Text="{core:Localize AddInManager2.Details.DownloadCount}"
-							FontWeight="Bold"/>
-						<TextBlock Text="{Binding Path=DownloadCount}"/>
+							FontWeight="Bold" />
+						<TextBlock Text="{Binding Path=DownloadCount}" />
 					</StackPanel>
 					<StackPanel
 						Visibility="Collapsed"
@@ -369,15 +372,15 @@
 						<TextBlock
 							Margin="0, 0, 4, 0"
 							Text="{core:Localize AddInManager2.Details.Rating}"
-							FontWeight="Bold"/>
-						<TextBlock Text="{Binding Path=Rating}"/>
+							FontWeight="Bold" />
+						<TextBlock Text="{Binding Path=Rating}" />
 					</StackPanel>
 					<TextBlock
 						Visibility="{Binding Path=HasLicenseUrl, Converter={StaticResource BoolToVisibility}}">
 						<Hyperlink
 							Command="{StaticResource OpenHyperlinkCommand}"
 							CommandParameter="{Binding Path=LicenseUrl}">
-							<TextBlock Text="{core:Localize AddInManager2.Details.ViewLicenseTerms}"/>
+							<TextBlock Text="{core:Localize AddInManager2.Details.ViewLicenseTerms}" />
 						</Hyperlink>
 					</TextBlock>
 					<TextBlock
@@ -385,7 +388,7 @@
 						<Hyperlink
 							Command="{StaticResource OpenHyperlinkCommand}"
 							CommandParameter="{Binding Path=ProjectUrl}">
-							<TextBlock Text="{core:Localize AddInManager2.Details.MoreInformation}"/>
+							<TextBlock Text="{core:Localize AddInManager2.Details.MoreInformation}" />
 						</Hyperlink>
 					</TextBlock>
 					<TextBlock
@@ -393,26 +396,26 @@
 						<Hyperlink
 							Command="{StaticResource OpenHyperlinkCommand}"
 							CommandParameter="{Binding Path=ReportAbuseUrl}">
-							<TextBlock Text="{core:Localize AddInManager2.Details.ReportAbuse}"/>
+							<TextBlock Text="{core:Localize AddInManager2.Details.ReportAbuse}" />
 						</Hyperlink>
 					</TextBlock>
 					<TextBlock
 						Margin="0, 4"
 						TextWrapping="Wrap"
-						Text="{Binding Path=Description}"/>
+						Text="{Binding Path=Description}" />
 					<StackPanel Margin="0, 4">
 						<StackPanel Orientation="Horizontal">
 							<TextBlock
 								Text="{core:Localize AddInManager2.Details.Dependencies}"
 								Margin="0, 0, 4, 0"
-								FontWeight="Bold"/>
+								FontWeight="Bold" />
 							<TextBlock
 								Text="None"
-								Visibility="{Binding Path=HasNoDependencies, Converter={StaticResource BoolToVisibility}}"/>
+								Visibility="{Binding Path=HasNoDependencies, Converter={StaticResource BoolToVisibility}}" />
 						</StackPanel>
 						<ItemsControl
 							Margin="4, 4"
-							ItemsSource="{Binding Path=Dependencies}"/>
+							ItemsSource="{Binding Path=Dependencies}" />
 					</StackPanel>
 					<Grid
 						Visibility="{Binding Path=IsOffline, Converter={StaticResource BoolToVisibility}}"
@@ -425,7 +428,7 @@
 							Grid.Column="0"
 							Margin="0, 0, 4, 0"
 							Text="{core:Localize AddInManager2.Details.FileName}"
-							FontWeight="Bold"/>
+							FontWeight="Bold" />
 						<TextBlock Grid.Column="1" Text="{Binding Path=FileName}" TextWrapping="Wrap" />
 					</Grid>
 					<Grid Margin="0,20,0,0">
@@ -438,22 +441,22 @@
 							Grid.Column="0"
 							Content="{core:Localize AddInManager.Options}"
 							Command="{Binding Path=OptionsCommand}"
-							Style="{StaticResource addInDetailsButtonStyle}"/>
+							Style="{StaticResource addInDetailsButtonStyle}" />
 					</Grid>
 				</StackPanel>
 			</ScrollViewer>
-			
+
 			<DataTemplate.Triggers>
 				<DataTrigger
 					Binding="{Binding}"
 					Value="{x:Null}">
 					<Setter
 						Property="StackPanel.Visibility"
-						Value="Hidden"/>
+						Value="Hidden" />
 				</DataTrigger>
 			</DataTemplate.Triggers>
 		</DataTemplate>
-		
+
 		<Style x:Key="allPackagesListBoxStyle" TargetType="ListBox">
 			<Setter Property="Visibility" Value="Hidden" />
 			<Style.Triggers>
@@ -463,35 +466,35 @@
 			</Style.Triggers>
 		</Style>
 	</UserControl.Resources>
-	
+
 	<Grid>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition MinWidth="200"/>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width=".6*" MinWidth="100"/>
+			<ColumnDefinition MinWidth="200" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width=".6*" MinWidth="100" />
 		</Grid.ColumnDefinitions>
-		
+
 		<Grid Grid.Column="0">
 			<Grid>
 				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition/>
-					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto" />
+					<RowDefinition />
+					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
-				
+
 				<Grid
 					Visibility="{Binding Path=IsSearchable, Converter={StaticResource BoolToVisibility}}"
 					Grid.Row="0">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="Auto" />
 						<ColumnDefinition />
-						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 					<Grid.RowDefinitions>
-						<RowDefinition Height="Auto"/>
-						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
 					</Grid.RowDefinitions>
-					
+
 					<TextBlock
 						Grid.Row="1"
 						Grid.Column="0"
@@ -506,7 +509,7 @@
 						<TextBox.InputBindings>
 							<KeyBinding
 								Key="Enter"
-								Command="{Binding Path=SearchCommand}"/>
+								Command="{Binding Path=SearchCommand}" />
 						</TextBox.InputBindings>
 					</TextBox>
 					<TextBlock
@@ -519,11 +522,11 @@
 							<Image
 								Source="{StaticResource SearchIcon}"
 								Height="16"
-								Width="16"/>
+								Width="16" />
 						</Hyperlink>
 					</TextBlock>
 				</Grid>
-				
+
 				<Grid Grid.Row="1">
 					<ListBox
 						x:Name="allPackagesListBox"
@@ -534,7 +537,7 @@
 						ItemsSource="{Binding Path=AddInPackages}"
 						ItemContainerStyle="{StaticResource packageListBoxItemContainerStyle}"
 						HorizontalContentAlignment="Stretch"
-						ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+						ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
 					<TextBlock
 						x:Name="ErrorMessageText"
 						Grid.Row="0"
@@ -542,7 +545,7 @@
 						Text="{Binding Path=ErrorMessage}"
 						TextWrapping="Wrap"
 						HorizontalAlignment="Center"
-						VerticalAlignment="Center"/>
+						VerticalAlignment="Center" />
 					<ProgressBar
 						Grid.Row="0"
 						Height="20"
@@ -550,21 +553,21 @@
 						IsIndeterminate="True"
 						Visibility="{Binding Path=IsReadingPackages, Converter={StaticResource BoolToVisibility}}"
 						HorizontalAlignment="Center"
-						VerticalAlignment="Center"/>
+						VerticalAlignment="Center" />
 					<aimview:PagedResultsView
 						x:Name="pagedResultsView"
 						Grid.Row="1"
 						HorizontalAlignment="Center"
 						Visibility="{Binding Path=IsPaged, Converter={StaticResource BoolToVisibility}}"
-						DataContext="{Binding}"/>
+						DataContext="{Binding}" />
 				</Grid>
-				
+
 				<Grid Grid.Row="2">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*" />
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
-					
+
 					<StackPanel Grid.Column="0" Orientation="Vertical">
 						<Grid
 							Visibility="{Binding Path=HasFilterForPreinstalled, Converter={StaticResource BoolToVisibility}}">
@@ -575,7 +578,7 @@
 								IsChecked="{Binding Path=ShowPreinstalledAddIns, UpdateSourceTrigger=PropertyChanged}"
 								Command="{Binding Path=UpdatePreinstalledFilterCommand}" />
 						</Grid>
-						
+
 						<Grid
 							Visibility="{Binding Path=HasFilterForPrereleases, Converter={StaticResource BoolToVisibility}}">
 							<CheckBox
@@ -586,7 +589,7 @@
 								Command="{Binding Path=UpdatePrereleaseFilterCommand}" />
 						</Grid>
 					</StackPanel>
-					
+
 					<Grid Grid.Column="1">
 						<Button
 							x:Name="installFromFileButton"
@@ -603,17 +606,17 @@
 			Grid.Column="1"
 			Width="5"
 			HorizontalAlignment="Stretch"
-			VerticalAlignment="Stretch"/>
+			VerticalAlignment="Stretch" />
 		<Grid
 			Grid.Column="2">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto" />
 				<RowDefinition />
 			</Grid.RowDefinitions>
 			<ContentControl
 				Grid.Row="1"
 				ContentTemplate="{StaticResource PackageTemplate}"
-				Content="{Binding ElementName=allPackagesListBox, Path=SelectedItem}"/>
+				Content="{Binding ElementName=allPackagesListBox, Path=SelectedItem}" />
 		</Grid>
 	</Grid>
 </UserControl>

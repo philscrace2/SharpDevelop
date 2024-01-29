@@ -25,33 +25,15 @@ namespace ICSharpCode.AddInManager2.Model
 	/// </summary>
 	public interface IAddInManagerServices
 	{
-		IAddInManagerEvents Events
-		{
-			get;
-		}
+		IAddInManagerEvents Events { get; }
 
-		IPackageRepositories Repositories
-		{
-			get;
-		}
+		IPackageRepositories Repositories { get; }
 
-		IAddInSetup Setup
-		{
-			get;
-		}
+		IAddInSetup Setup { get; }
 
-		INuGetPackageManager NuGet
-		{
-			get;
-		}
-		
-		IAddInManagerSettings Settings
-		{
-			get;
-		}
-		ISDAddInManagement SDAddInManagement
-		{
-			get;
-		}
+		INuGetPackageManager NuGet { get; }
+
+		IAddInManagerSettings Settings { get; }
+		ISDAddInManagement SDAddInManagement { get; }
 	}
 }

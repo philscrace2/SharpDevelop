@@ -26,20 +26,21 @@ namespace ICSharpCode.PackageManagement.VisualStudio
 	public class VsPackageInstallerServices : IVsPackageInstallerServices
 	{
 		IPackageManagementSolution solution;
-		
+
 		public VsPackageInstallerServices()
 			: this(PackageManagementServices.Solution)
 		{
 		}
-		
+
 		public VsPackageInstallerServices(IPackageManagementSolution solution)
 		{
 			this.solution = solution;
 		}
-		
+
 		public IEnumerable<IVsPackageMetadata> GetInstalledPackages()
 		{
-			foreach (IPackage package in solution.GetPackages()) {
+			foreach (IPackage package in solution.GetPackages())
+			{
 				string installPath = solution.GetInstallPath(package);
 				yield return new VsPackageMetadata(package, installPath);
 			}

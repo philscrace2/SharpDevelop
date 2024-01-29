@@ -24,21 +24,21 @@ namespace ICSharpCode.Reporting.BaseClasses
 	/// <summary>
 	/// Description of AbstractColumn.
 	/// </summary>
-	public  class AbstractColumn
+	public class AbstractColumn
 	{
-		
-		public AbstractColumn() {
+		public AbstractColumn()
+		{
 			this.DataTypeName = typeof(String).FullName;
 		}
-		
-		public AbstractColumn(string columnName, Type dataType){
+
+		public AbstractColumn(string columnName, Type dataType)
+		{
 			this.ColumnName = columnName;
 			this.DataTypeName = dataType.FullName;
 		}
-		
-		public string ColumnName {get;set;}
-		
-		public string DataTypeName {get;set;}
-		
+
+		public string ColumnName { get; set; }
+
+		public string DataTypeName { get; set; }
 	}
 }

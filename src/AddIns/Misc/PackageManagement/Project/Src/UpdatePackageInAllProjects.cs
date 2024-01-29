@@ -30,7 +30,7 @@ namespace ICSharpCode.PackageManagement
 		IPackageRepository sourceRepository;
 		List<IPackageManagementProject> projects;
 		PackageReference packageReference;
-		
+
 		public UpdatePackageInAllProjects(
 			PackageReference packageReference,
 			IPackageManagementSolution solution,
@@ -40,21 +40,22 @@ namespace ICSharpCode.PackageManagement
 			this.solution = solution;
 			this.sourceRepository = sourceRepository;
 		}
-		
+
 		public override IEnumerable<UpdatePackageAction> CreateActions()
 		{
 			GetProjects();
-			foreach (IPackageManagementProject project in projects) {
+			foreach (IPackageManagementProject project in projects)
+			{
 				yield return CreateUpdatePackageAction(project);
 			}
 		}
-		
+
 		void GetProjects()
 		{
 			projects = new List<IPackageManagementProject>();
 			projects.AddRange(solution.GetProjects(sourceRepository));
 		}
-		
+
 		UpdatePackageAction CreateUpdatePackageAction(IPackageManagementProject project)
 		{
 			UpdatePackageAction action = CreateDefaultUpdatePackageAction(project);

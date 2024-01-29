@@ -29,14 +29,14 @@ namespace ICSharpCode.PackageManagement
 		{
 			GetFileNameForProject(project);
 		}
-		
+
 		void GetFileNameForProject(IProject project)
 		{
 			FileName = Path.Combine(project.Directory, Constants.PackageReferenceFile);
 		}
-		
+
 		public string FileName { get; private set; }
-		
+
 		public override string ToString()
 		{
 			return FileName;

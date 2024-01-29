@@ -27,13 +27,14 @@ namespace ICSharpCode.PackageManagement.Scripting
 			: base(packageInstallDirectory)
 		{
 		}
-		
+
 		public PackageInstallScriptFileName(IFileSystem fileSystem)
 			: base(fileSystem)
 		{
 		}
-		
-		public override string Name {
+
+		public override string Name
+		{
 			get { return "install.ps1"; }
 		}
 	}

@@ -28,23 +28,27 @@ namespace ICSharpCode.PackageManagement.EnvDTE
 			: base(context, typeDefinition, typeArguments)
 		{
 		}
-		
-		public override global::EnvDTE.vsCMElement Kind {
+
+		public override global::EnvDTE.vsCMElement Kind
+		{
 			get { return global::EnvDTE.vsCMElement.vsCMElementInterface; }
 		}
-		
-		public global::EnvDTE.CodeFunction AddFunction(string name, global::EnvDTE.vsCMFunction kind, object type, object Position = null, global::EnvDTE.vsCMAccess Access = global::EnvDTE.vsCMAccess.vsCMAccessPublic)
+
+		public global::EnvDTE.CodeFunction AddFunction(string name, global::EnvDTE.vsCMFunction kind, object type,
+			object Position = null, global::EnvDTE.vsCMAccess Access = global::EnvDTE.vsCMAccess.vsCMAccessPublic)
 		{
 			IType returnType = FindType((string)type);
-			
+
 			context.CodeGenerator.AddMethodAtStart(typeDefinition, Access.ToAccessibility(), returnType, name);
-			
+
 			ReloadTypeDefinition();
-			
+
 			IMethod method = typeDefinition.Methods.FirstOrDefault(f => f.Name == name);
-			if (method != null) {
+			if (method != null)
+			{
 				return new CodeFunction(context, method);
 			}
+
 			return null;
 		}
 	}

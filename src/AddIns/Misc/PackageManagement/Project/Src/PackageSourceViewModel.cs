@@ -24,28 +24,31 @@ namespace ICSharpCode.PackageManagement
 	public class PackageSourceViewModel : ViewModelBase<PackageSourceViewModel>
 	{
 		RegisteredPackageSource packageSource;
-		
+
 		public PackageSourceViewModel(PackageSource packageSource)
 		{
 			this.packageSource = new RegisteredPackageSource(packageSource);
 		}
-		
+
 		public PackageSource GetPackageSource()
 		{
 			return packageSource.ToPackageSource();
 		}
-		
-		public string Name {
+
+		public string Name
+		{
 			get { return packageSource.Name; }
 			set { packageSource.Name = value; }
 		}
-		
-		public string SourceUrl {
+
+		public string SourceUrl
+		{
 			get { return packageSource.Source; }
 			set { packageSource.Source = value; }
 		}
-		
-		public bool IsEnabled {
+
+		public bool IsEnabled
+		{
 			get { return packageSource.IsEnabled; }
 			set { packageSource.IsEnabled = value; }
 		}

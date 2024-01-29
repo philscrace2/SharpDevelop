@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
 using ICSharpCode.Core;
 
 namespace ICSharpCode.TextTemplating
@@ -27,19 +26,21 @@ namespace ICSharpCode.TextTemplating
 	public class TextTemplatingAddIn : IAddIn
 	{
 		AddIn addIn;
-		
+
 		public TextTemplatingAddIn(AddIn addIn)
 		{
 			this.addIn = addIn;
 		}
-		
-		public string PrimaryIdentity {
+
+		public string PrimaryIdentity
+		{
 			get { return this.addIn.Manifest.PrimaryIdentity; }
 		}
-		
+
 		public IEnumerable<IAddInRuntime> GetRuntimes()
 		{
-			foreach (Runtime runtime in this.addIn.Runtimes) {
+			foreach (Runtime runtime in this.addIn.Runtimes)
+			{
 				yield return new TextTemplatingAddInRuntime(runtime);
 			}
 		}

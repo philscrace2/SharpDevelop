@@ -24,14 +24,14 @@ namespace ICSharpCode.Reporting.PageBuilder.ExportColumns
 	/// <summary>
 	/// Description of ExportRectangle.
 	/// </summary>
-	public class ExportRectangle:GraphicsContainer,IExportGraphics
+	public class ExportRectangle : GraphicsContainer, IExportGraphics
 	{
 		public int CornerRadius { get; set; }
-		
-		public DashStyle DashStyle {get;set;}
-		
-		public LineCap StartLineCap {get;set;}
-		
-		public LineCap EndLineCap {get;set;}
+
+		public DashStyle DashStyle { get; set; }
+
+		public LineCap StartLineCap { get; set; }
+
+		public LineCap EndLineCap { get; set; }
 	}
 }

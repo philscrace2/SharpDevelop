@@ -26,35 +26,43 @@ namespace ICSharpCode.PackageManagement
 	public partial class RegisteredPackageSourcesView : OptionPanel
 	{
 		RegisteredPackageSourcesViewModel viewModel;
-			
+
 		public RegisteredPackageSourcesView()
 		{
 			InitializeComponent();
 		}
-		
-		RegisteredPackageSourcesViewModel ViewModel { 
-			get {
-				if (viewModel == null) {
+
+		RegisteredPackageSourcesViewModel ViewModel
+		{
+			get
+			{
+				if (viewModel == null)
+				{
 					viewModel = MainGrid.DataContext as RegisteredPackageSourcesViewModel;
 				}
+
 				return viewModel;
 			}
 		}
-		
+
 		public override void LoadOptions()
 		{
 			ViewModel.Load();
 		}
-		
+
 		public override bool SaveOptions()
 		{
-			try {
+			try
+			{
 				ViewModel.Save();
 				return true;
-			} catch (Exception ex) {
+			}
+			catch (Exception ex)
+			{
 				LoggingService.Error("Unable to save NuGet.config changes", ex);
 				MessageServiceExtensions.ShowNuGetConfigFileSaveError("Unable to save package source changes.");
 			}
+
 			return false;
 		}
 	}

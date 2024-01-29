@@ -27,31 +27,31 @@ namespace ICSharpCode.Reporting.PageBuilder.ExportColumns
 	/// <summary>
 	/// Description of BaseExportContainer.
 	/// </summary>
-	public class ExportContainer:ExportColumn,IExportContainer,IAcceptor
+	public class ExportContainer : ExportColumn, IExportContainer, IAcceptor
 	{
 		public ExportContainer()
 		{
 			exportedItems = new List<IExportColumn>();
 		}
-		
+
 		List<IExportColumn> exportedItems;
-		
-		public List<IExportColumn> ExportedItems {
+
+		public List<IExportColumn> ExportedItems
+		{
 			get { return exportedItems; }
 		}
-		
-		
-		
+
+
 		public override IArrangeStrategy GetArrangeStrategy()
 		{
 			return new ContainerArrangeStrategy();
 		}
-		
+
 		public override IMeasurementStrategy MeasurementStrategy()
 		{
 			return new ContainerMeasurementStrategy();
 		}
-		
+
 		public void Accept(IVisitor visitor)
 		{
 			visitor.Visit(this);

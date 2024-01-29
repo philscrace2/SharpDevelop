@@ -25,17 +25,16 @@ namespace ICSharpCode.Reporting.PageBuilder
 	/// <summary>
 	/// Description of FormPageBuilder.
 	/// </summary>
-	public class FormPageBuilder:BasePageBuilder
+	public class FormPageBuilder : BasePageBuilder
 	{
-		
-		public FormPageBuilder(IReportModel reportModel):base(reportModel)
+		public FormPageBuilder(IReportModel reportModel) : base(reportModel)
 		{
 		}
-		
-		
+
+
 		public override void BuildExportList()
 		{
-			SetupExpressionRunner(ReportModel.ReportSettings,null);
+			SetupExpressionRunner(ReportModel.ReportSettings, null);
 			base.BuildExportList();
 			BuildDetail();
 			BuildReportFooter();
@@ -45,13 +44,13 @@ namespace ICSharpCode.Reporting.PageBuilder
 			ExpressionRunner.Run();
 		}
 
-		
+
 		void BuildDetail()
 		{
 			CurrentLocation = DetailStart;
-			var detail = CreateSection(ReportModel.DetailSection,CurrentLocation);
+			var detail = CreateSection(ReportModel.DetailSection, CurrentLocation);
 			detail.Parent = CurrentPage;
-			CurrentPage.ExportedItems.Insert(2,detail);
+			CurrentPage.ExportedItems.Insert(2, detail);
 		}
 	}
 }

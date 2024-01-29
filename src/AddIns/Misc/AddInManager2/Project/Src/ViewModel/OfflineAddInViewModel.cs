@@ -34,7 +34,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 	{
 		private AddIn _addIn;
 		private ManagedAddIn _markedAddIn;
-		
+
 		private string _name;
 		private Uri _licenseUrl;
 		private Uri _projectUrl;
@@ -50,19 +50,19 @@ namespace ICSharpCode.AddInManager2.ViewModel
 		private int _downloadCount;
 		private string _description;
 		private DateTime? _lastUpdated;
-		
+
 		public OfflineAddInsViewModel(ManagedAddIn addIn)
 			: base()
 		{
 			Initialize(addIn);
 		}
-		
+
 		public OfflineAddInsViewModel(IAddInManagerServices services, ManagedAddIn addIn)
 			: base(services)
 		{
 			Initialize(addIn);
 		}
-		
+
 		private void Initialize(ManagedAddIn addIn)
 		{
 			_markedAddIn = addIn;
@@ -70,19 +70,20 @@ namespace ICSharpCode.AddInManager2.ViewModel
 			{
 				_addIn = addIn.AddIn;
 			}
+
 			if (_addIn != null)
 			{
 				UpdateMembers();
 			}
 		}
-		
+
 		public void UpdateMembers()
 		{
 			if ((_addIn == null) || (_markedAddIn == null))
 			{
 				return;
 			}
-			
+
 			_id = _addIn.Manifest.PrimaryIdentity;
 			_name = _addIn.Name;
 			if (HasNuGetConnection && (_markedAddIn.LinkedNuGetPackageVersion != null))
@@ -96,86 +97,71 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					_version = _addIn.Version;
 				}
 			}
+
 			_description = _addIn.Properties["description"];
 			_summary = _addIn.Properties["description"];
 			if (!String.IsNullOrEmpty(_addIn.Properties["url"]))
 			{
 				_projectUrl = new Uri(_addIn.Properties["url"]);
 			}
+
 			if (!String.IsNullOrEmpty(_addIn.Properties["license"]))
 			{
 				_licenseUrl = new Uri(_addIn.Properties["license"]);
 			}
+
 			if (!String.IsNullOrEmpty(_addIn.Properties["author"]))
 			{
 				_authors = new string[] { _addIn.Properties["author"] };
 			}
-			
+
 			if ((_addIn.Manifest != null) && (_addIn.Manifest.Dependencies != null))
 			{
 				_dependencies = _addIn.Manifest.Dependencies.Select(d => new AddInDependency(d));
 			}
-			
+
 			if (_markedAddIn.IsUpdate)
 			{
 				_oldVersion = _markedAddIn.OldVersion;
 			}
-			
+
 			_iconUrl = null;
 			_hasDownloadCount = false;
 			_downloadCount = 0;
 			_lastUpdated = null;
 			_reportAbuseUrl = null;
 		}
-		
+
 		public AddIn AddIn
 		{
-			get
-			{
-				return _addIn;
-			}
+			get { return _addIn; }
 		}
-		
+
 		public override string Name
 		{
-			get
-			{
-				return _name;
-			}
+			get { return _name; }
 		}
-		
+
 		public override Uri LicenseUrl
 		{
-			get
-			{
-				return _licenseUrl;
-			}
+			get { return _licenseUrl; }
 		}
 
 		public override Uri ProjectUrl
 		{
-			get
-			{
-				return _projectUrl;
-			}
+			get { return _projectUrl; }
 		}
 
 		public override Uri ReportAbuseUrl
 		{
-			get
-			{
-				return _reportAbuseUrl;
-			}
+			get { return _reportAbuseUrl; }
 		}
-		
+
 		public override bool IsOffline
 		{
-			get
-			{
-				return true;
-			}
+			get { return true; }
 		}
-		
+
 		public override bool IsExternallyReferenced
 		{
 			get
@@ -192,7 +178,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override bool IsPreinstalled
 		{
 			get
@@ -223,15 +209,12 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override bool IsUpdate
 		{
-			get
-			{
-				return _markedAddIn.IsUpdate;
-			}
+			get { return _markedAddIn.IsUpdate; }
 		}
-		
+
 		public override bool IsInstalled
 		{
 			get
@@ -246,23 +229,17 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override bool IsInstallable
 		{
-			get
-			{
-				return false;
-			}
+			get { return false; }
 		}
-		
+
 		public override bool IsUninstallable
 		{
-			get
-			{
-				return !IsPreinstalled && (Id != null);
-			}
+			get { return !IsPreinstalled && (Id != null); }
 		}
-		
+
 		public override bool IsDisablingPossible
 		{
 			get
@@ -271,7 +248,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				return (Id != null) && (_addIn.Manifest.PrimaryIdentity != "ICSharpCode.AddInManager2");
 			}
 		}
-		
+
 		public override bool IsEnabled
 		{
 			get
@@ -286,7 +263,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override bool IsRemoved
 		{
 			get
@@ -301,45 +278,30 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override IEnumerable<AddInDependency> Dependencies
 		{
-			get
-			{
-				return _dependencies;
-			}
+			get { return _dependencies; }
 		}
 
 		public override IEnumerable<string> Authors
 		{
-			get
-			{
-				return _authors;
-			}
+			get { return _authors; }
 		}
 
 		public override bool HasDownloadCount
 		{
-			get
-			{
-				return _hasDownloadCount;
-			}
+			get { return _hasDownloadCount; }
 		}
 
 		public override string Id
 		{
-			get
-			{
-				return _id;
-			}
+			get { return _id; }
 		}
 
 		public override Uri IconUrl
 		{
-			get
-			{
-				return _iconUrl;
-			}
+			get { return _iconUrl; }
 		}
 
 		public override string Summary
@@ -358,7 +320,8 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					}
 					else if (HasDependencyConflicts)
 					{
-						return SurroundWithParantheses(SD.ResourceService.GetString("AddInManager.AddInDependencyFailed"));
+						return SurroundWithParantheses(
+							SD.ResourceService.GetString("AddInManager.AddInDependencyFailed"));
 					}
 					else if (IsRemoved)
 					{
@@ -372,7 +335,8 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					{
 						if (_addIn.Enabled)
 						{
-							return SurroundWithParantheses(SD.ResourceService.GetString("AddInManager.AddInWillBeDisabled"));
+							return SurroundWithParantheses(
+								SD.ResourceService.GetString("AddInManager.AddInWillBeDisabled"));
 						}
 						else
 						{
@@ -381,7 +345,8 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					}
 					else if (_addIn.Action == AddInAction.InstalledTwice)
 					{
-						return SurroundWithParantheses(SD.ResourceService.GetString("AddInManager.AddInInstalledTwice"));
+						return SurroundWithParantheses(
+							SD.ResourceService.GetString("AddInManager.AddInInstalledTwice"));
 					}
 					else
 					{
@@ -397,52 +362,34 @@ namespace ICSharpCode.AddInManager2.ViewModel
 
 		public override Version Version
 		{
-			get
-			{
-				return _version;
-			}
+			get { return _version; }
 		}
-		
+
 		public override Version OldVersion
 		{
-			get
-			{
-				return _oldVersion;
-			}
+			get { return _oldVersion; }
 		}
-		
+
 		public override bool ShowSplittedVersions
 		{
-			get
-			{
-				return IsUpdate;
-			}
+			get { return IsUpdate; }
 		}
 
 		public override int DownloadCount
 		{
-			get
-			{
-				return _downloadCount;
-			}
+			get { return _downloadCount; }
 		}
 
 		public override string Description
 		{
-			get
-			{
-				return _description;
-			}
+			get { return _description; }
 		}
 
 		public override DateTime? LastUpdated
 		{
-			get
-			{
-				return _lastUpdated;
-			}
+			get { return _lastUpdated; }
 		}
-		
+
 		public override string FileName
 		{
 			get
@@ -457,7 +404,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override bool HasDependencyConflicts
 		{
 			get
@@ -472,7 +419,7 @@ namespace ICSharpCode.AddInManager2.ViewModel
 				}
 			}
 		}
-		
+
 		public override bool HasNuGetConnection
 		{
 			get
@@ -495,13 +442,14 @@ namespace ICSharpCode.AddInManager2.ViewModel
 		public override void RemovePackage()
 		{
 			ClearReportedMessages();
-			
+
 			if (_addIn.Manifest.PrimaryIdentity == "ICSharpCode.AddInManager2")
 			{
-				MessageService.ShowMessage("${res:AddInManager2.CannotRemoveAddInManager}", "${res:AddInManager.Title}");
+				MessageService.ShowMessage("${res:AddInManager2.CannotRemoveAddInManager}",
+					"${res:AddInManager.Title}");
 				return;
 			}
-			
+
 			if (!this.IsRemoved)
 			{
 				var dependentAddIns = AddInManager.Setup.GetDependentAddIns(_addIn);
@@ -512,52 +460,56 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					{
 						addInNames += "\t " + dependentAddIn.AddIn.Name + Environment.NewLine;
 					}
+
 					if (!MessageService.AskQuestionFormatted(
-						"${res:AddInManager.Title}", "${res:AddInManager2.DisableDependentWarning}", _addIn.Name, addInNames))
+						    "${res:AddInManager.Title}", "${res:AddInManager2.DisableDependentWarning}", _addIn.Name,
+						    addInNames))
 					{
 						return;
 					}
 				}
 			}
-			
+
 			AddInManager.Setup.UninstallAddIn(_addIn);
 		}
-		
+
 		public override void CancelInstallation()
 		{
 			ClearReportedMessages();
-			
+
 			AddInManager.Setup.CancelInstallation(_addIn);
 		}
-		
+
 		public override void CancelUpdate()
 		{
 			ClearReportedMessages();
-			
+
 			AddInManager.Setup.CancelUpdate(_addIn);
 		}
-		
+
 		public override void CancelUninstallation()
 		{
 			ClearReportedMessages();
-			
+
 			AddInManager.Setup.CancelUninstallation(_addIn);
 		}
 
 		public override void DisablePackage()
 		{
 			ClearReportedMessages();
-			
+
 			if (_addIn == null)
 			{
 				return;
 			}
+
 			if (_addIn.Manifest.PrimaryIdentity == "ICSharpCode.AddInManager2")
 			{
-				MessageService.ShowMessage("${res:AddInManager.CannotDisableAddInManager}", "${res:AddInManager.Title}");
+				MessageService.ShowMessage("${res:AddInManager.CannotDisableAddInManager}",
+					"${res:AddInManager.Title}");
 				return;
 			}
-			
+
 			if (this.IsEnabled)
 			{
 				var dependentAddIns = AddInManager.Setup.GetDependentAddIns(_addIn);
@@ -568,17 +520,19 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					{
 						addInNames += "\t " + dependentAddIn.AddIn.Name + Environment.NewLine;
 					}
+
 					if (!MessageService.AskQuestionFormatted(
-						"${res:AddInManager.Title}", "${res:AddInManager2.DisableDependentWarning}", _addIn.Name, addInNames))
+						    "${res:AddInManager.Title}", "${res:AddInManager2.DisableDependentWarning}", _addIn.Name,
+						    addInNames))
 					{
 						return;
 					}
 				}
 			}
-			
+
 			AddInManager.Setup.SwitchAddInActivation(_addIn);
 		}
-		
+
 		public override bool HasOptions
 		{
 			get
@@ -593,14 +547,15 @@ namespace ICSharpCode.AddInManager2.ViewModel
 						}
 					}
 				}
+
 				return false;
 			}
 		}
-		
+
 		public override void ShowOptions()
 		{
 			ClearReportedMessages();
-			
+
 			AddInTreeNode dummyNode = new AddInTreeNode();
 			foreach (KeyValuePair<string, ExtensionPath> pair in _addIn.Paths)
 			{
@@ -609,11 +564,12 @@ namespace ICSharpCode.AddInManager2.ViewModel
 					dummyNode.AddCodons(pair.Value.Codons);
 				}
 			}
+
 			ICSharpCode.SharpDevelop.Commands.OptionsCommand.ShowTabbedOptions(
 				_addIn.Name + " " + SD.ResourceService.GetString("AddInManager.Options"),
 				dummyNode);
 		}
-		
+
 		private void ClearReportedMessages()
 		{
 			// Notify about new operation

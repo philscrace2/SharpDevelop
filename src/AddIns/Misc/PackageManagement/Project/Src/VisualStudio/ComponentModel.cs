@@ -28,46 +28,54 @@ namespace ICSharpCode.PackageManagement.VisualStudio
 	{
 		IPackageManagementConsoleHost consoleHost;
 		IPackageManagementSolution solution;
-		
+
 		public ComponentModel(IPackageManagementConsoleHost consoleHost, IPackageManagementSolution solution)
 		{
 			this.consoleHost = consoleHost;
 			this.solution = solution;
 		}
-		
+
 		public ComponentModel()
 		{
 		}
-		
+
 		public T GetService<T>()
 			where T : class
 		{
 			return GetService(typeof(T)) as T;
 		}
-		
+
 		public object GetService(Type type)
 		{
-			if (type.FullName == typeof(IConsoleInitializer).FullName) {
+			if (type.FullName == typeof(IConsoleInitializer).FullName)
+			{
 				return new ConsoleInitializer(GetConsoleHost());
-			} else if (type.FullName == typeof(IVsPackageInstallerServices).FullName) {
+			}
+			else if (type.FullName == typeof(IVsPackageInstallerServices).FullName)
+			{
 				return new VsPackageInstallerServices(GetSolution());
 			}
+
 			return null;
 		}
-		
+
 		IPackageManagementConsoleHost GetConsoleHost()
 		{
-			if (consoleHost != null) {
+			if (consoleHost != null)
+			{
 				return consoleHost;
 			}
+
 			return PackageManagementServices.ConsoleHost;
 		}
-		
+
 		IPackageManagementSolution GetSolution()
 		{
-			if (solution != null) {
+			if (solution != null)
+			{
 				return solution;
 			}
+
 			return PackageManagementServices.Solution;
 		}
 	}

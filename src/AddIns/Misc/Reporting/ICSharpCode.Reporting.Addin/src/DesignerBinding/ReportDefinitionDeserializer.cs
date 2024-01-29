@@ -21,7 +21,6 @@ using System.ComponentModel.Design;
 using System.IO;
 using System.Reflection;
 using System.Xml;
-
 using ICSharpCode.Core;
 using ICSharpCode.Reporting.Factories;
 using ICSharpCode.Reporting.Interfaces;
@@ -32,51 +31,61 @@ namespace ICSharpCode.Reporting.Addin.DesignerBinding
 {
 	class ReportDefinitionDeserializer : ReportDefinitionParser
 	{
-		
-		public static XmlDocument LoadXmlFromStream(Stream stream){	
+		public static XmlDocument LoadXmlFromStream(Stream stream)
+		{
 			if (stream == null)
 				throw new ArgumentNullException("stream");
 			var xmlDocument = new XmlDocument();
 			xmlDocument.Load(stream);
-			if (xmlDocument.FirstChild.NodeType == XmlNodeType.XmlDeclaration) {
+			if (xmlDocument.FirstChild.NodeType == XmlNodeType.XmlDeclaration)
+			{
 				var xmlDeclaration = (XmlDeclaration)xmlDocument.FirstChild;
 				xmlDeclaration.Encoding = "utf-8";
 			}
+
 			return xmlDocument;
 		}
-		
-		
-		public  ReportModel CreateModelFromXml(XmlElement elem,IDesignerHost host){
+
+
+		public ReportModel CreateModelFromXml(XmlElement elem, IDesignerHost host)
+		{
 			var reportSettings = CreateReportSettings(elem);
 			var reportModel = ReportModelFactory.Create();
 			reportModel.ReportSettings = reportSettings;
-			
+
 			host.Container.Add(reportSettings);
-			
+
 			//Move to SectionCollection
-			XmlNodeList sectionList =  elem.LastChild.ChildNodes;
-			
-			foreach (XmlNode sectionNode in sectionList) {
-				try {
-					var o = this.Load(sectionNode as XmlElement,null);
+			XmlNodeList sectionList = elem.LastChild.ChildNodes;
+
+			foreach (XmlNode sectionNode in sectionList)
+			{
+				try
+				{
+					var o = this.Load(sectionNode as XmlElement, null);
 					var section = o as ICSharpCode.Reporting.Addin.DesignableItems.BaseSection;
 					host.Container.Add(section);
-				} catch (Exception e) {
+				}
+				catch (Exception e)
+				{
 					MessageService.ShowException(e);
 				}
 			}
+
 			return reportModel;
 		}
 
-		
-		IReportSettings CreateReportSettings(XmlElement elem){
+
+		IReportSettings CreateReportSettings(XmlElement elem)
+		{
 			XmlNodeList nodes = elem.FirstChild.ChildNodes;
 			var reportSettingsNode = (XmlElement)nodes[0];
-			return Load(reportSettingsNode,null) as IReportSettings;
+			return Load(reportSettingsNode, null) as IReportSettings;
 		}
-		
-		
-		protected override Type GetTypeByName(string ns, string name){
+
+
+		protected override Type GetTypeByName(string ns, string name)
+		{
 			var assembly = Assembly.GetExecutingAssembly();
 			Type type = assembly.GetType("ICSharpCode.Reporting.Addin.DesignableItems" + "." + name);
 			return type;
