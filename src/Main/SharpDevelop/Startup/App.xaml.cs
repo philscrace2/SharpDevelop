@@ -28,7 +28,7 @@ namespace ICSharpCode.SharpDevelop.Startup
 	{
 		public App()
 		{
-			InitializeComponent();
+			//InitializeComponent();
 		}
 	}
 }

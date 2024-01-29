@@ -168,7 +168,7 @@ namespace ICSharpCode.SharpDevelop.Startup
 				#if DEBUG
 				startup.UseSharpDevelopErrorHandler = UseExceptionBox;
 				#endif
-				
+
 				Assembly exe = typeof(SharpDevelopMain).Assembly;
 				startup.ApplicationRootPath = Path.Combine(Path.GetDirectoryName(exe.Location), "..");
 				startup.AllowUserAddIns = true;
